@@ -16,6 +16,15 @@
             android:layout_gravity="top"
             android:weightSum="1">
 
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="49dp"
+                android:id="@+id/imageView"
+                android:src="@drawable/Tags"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -25,7 +34,7 @@
                 android:textSize="28dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="12dp"
-                android:layout_marginLeft="12dp" />
+                android:layout_marginLeft="8dp" />
 
         </LinearLayout>
 
@@ -44,6 +53,32 @@
             android:background="#ff2ba9d3"
             android:backgroundTint="#ff2ba9d3">
 
+            <ImageButton
+                android:layout_width="122dp"
+                android:layout_height="99dp"
+                android:id="@+id/imageButton"
+                android:src="@drawable/barcode1"
+                android:layout_gravity="bottom"
+                android:layout_weight="0.27"
+                android:background="#ff2ea9d3" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="97dp"
+                android:id="@+id/imageButton2"
+                android:src="@drawable/gps45"
+                android:layout_weight="1.57"
+                android:layout_gravity="bottom"
+                android:background="#ff2ea9d3" />
+
+            <ImageButton
+                android:layout_width="122dp"
+                android:layout_height="98dp"
+                android:id="@+id/imageButton3"
+                android:src="@drawable/wirelessconnectivity14"
+                android:layout_gravity="bottom"
+                android:layout_weight="0.19"
+                android:background="#ff2ea9d3" />
         </LinearLayout>
 
         <LinearLayout
@@ -115,12 +150,6 @@
                 android:id="@+id/scrollView"
                 android:background="#fff1f1f1" >
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add Data"
-                    android:id="@+id/button_Data"
-                    android:onClick="onAddDataClicked"/>
             </ScrollView>
 
         </LinearLayout>
