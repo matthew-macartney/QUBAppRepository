@@ -16,10 +16,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Database_Entry"
-            android:label="@string/title_activity_database__entry" >
-        </activity>
     </application>
 
 </manifest>
