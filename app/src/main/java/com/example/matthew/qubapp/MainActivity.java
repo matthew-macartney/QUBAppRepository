@@ -1,27 +1,37 @@
 package com.example.matthew.qubapp;
 
-import android.content.Intent;
+import android.annotation.TargetApi;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    DatabaseHelper myDB;
+    DBAdapter myDB;
+    TextView appName;
+    DatabaseHelper myDBHelper;
+    SQLiteDatabase db;
+    ListView myListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DatabaseHelper myDB = new DatabaseHelper(this);
+        appName = (TextView) findViewById(R.id.textViewAppName);
+        myDBHelper = new DatabaseHelper(this, null, null, 1);
+        queryDatabase();
+        populateListView();
+
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -42,6 +52,28 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+
+    public void queryDatabase(){
+        String dbString = myDBHelper.databaseToString();
+        appName.setText(dbString);
+
+    }
+
+
+    private void populateListView(){
+
+        Cursor cursor = myDBHelper.getSomeRows();
+
+        startManagingCursor(cursor);
+        String[] fromFieldNames = new String[]{DBAdapter.PRODUCT_NAME};
+        int[] toViewIDs = new int[]{R.id.textViewProductDes};
+        SimpleCursorAdapter myCursorAdapter;
+        myCursorAdapter = new SimpleCursorAdapter(this, R.layout.offer_layout, cursor, fromFieldNames, toViewIDs);
+        myListView = (ListView) findViewById(R.id.listViewFromDB);
+        myListView.setAdapter(myCursorAdapter);
     }
 
 
