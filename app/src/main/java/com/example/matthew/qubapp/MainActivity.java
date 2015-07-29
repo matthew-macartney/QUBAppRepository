@@ -67,7 +67,7 @@ public class MainActivity extends ActionBarActivity {
 
         Cursor cursor = myDBHelper.getSomeRows();
 
-        String[] fromFieldNames = new String[]{DatabaseHelper.PRODUCT_ID, DatabaseHelper.PRODUCT_NAME};
+        String[] fromFieldNames = new String[]{DatabaseHelper.PRODUCT_NAME, DatabaseHelper.PRODUCT_BRAND};
         int[] toViewIDs = new int[]{R.id.textViewProductDes, R.id.textViewBrand};
         SimpleCursorAdapter myCursorAdapter;
         myCursorAdapter = new SimpleCursorAdapter(getBaseContext(), R.layout.offer_layout, cursor, fromFieldNames, toViewIDs, 0);

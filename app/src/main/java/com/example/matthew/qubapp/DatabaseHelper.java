@@ -145,7 +145,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor getSomeRows() {
         String where = null;
         db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("Select distinct " + PRODUCT_ID + " as _id, " + PRODUCT_NAME + " from " + TABLE2_NAME, null);
+        Cursor c = db.rawQuery("Select distinct " + PRODUCT_ID + " as _id, " + PRODUCT_NAME + ", " + PRODUCT_BRAND + " from " + TABLE2_NAME, null);
         if (c != null) {
             c.moveToFirst();
         }
