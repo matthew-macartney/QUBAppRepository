@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
 
-    DBAdapter myDB;
+
     TextView appName;
     DatabaseHelper myDBHelper;
     SQLiteDatabase db;
@@ -26,7 +26,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         appName = (TextView) findViewById(R.id.textViewAppName);
-        myDBHelper = new DatabaseHelper(this, null, null, 1);
+        myDBHelper = new DatabaseHelper(this, null, null, 4);
         queryDatabase();
         populateListView();
 
@@ -67,11 +67,10 @@ public class MainActivity extends ActionBarActivity {
 
         Cursor cursor = myDBHelper.getSomeRows();
 
-        startManagingCursor(cursor);
-        String[] fromFieldNames = new String[]{DBAdapter.PRODUCT_NAME};
-        int[] toViewIDs = new int[]{R.id.textViewProductDes};
+        String[] fromFieldNames = new String[]{DatabaseHelper.PRODUCT_ID, DatabaseHelper.PRODUCT_NAME};
+        int[] toViewIDs = new int[]{R.id.textViewProductDes, R.id.textViewBrand};
         SimpleCursorAdapter myCursorAdapter;
-        myCursorAdapter = new SimpleCursorAdapter(this, R.layout.offer_layout, cursor, fromFieldNames, toViewIDs);
+        myCursorAdapter = new SimpleCursorAdapter(getBaseContext(), R.layout.offer_layout, cursor, fromFieldNames, toViewIDs, 0);
         myListView = (ListView) findViewById(R.id.listViewFromDB);
         myListView.setAdapter(myCursorAdapter);
     }
