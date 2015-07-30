@@ -1,13 +1,17 @@
 package com.example.matthew.qubapp;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -20,6 +24,7 @@ public class MainActivity extends ActionBarActivity {
     DatabaseHelper myDBHelper;
     SQLiteDatabase db;
     ListView myListView;
+    ImageButton barcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,7 @@ public class MainActivity extends ActionBarActivity {
         myDBHelper = new DatabaseHelper(this, null, null, 4);
         queryDatabase();
         populateListView();
+
 
     }
 
@@ -74,6 +80,26 @@ public class MainActivity extends ActionBarActivity {
         myListView = (ListView) findViewById(R.id.listViewFromDB);
         myListView.setAdapter(myCursorAdapter);
     }
+
+    public void scanNow(View view) {
+        Log.d("test", "button works!");
+        Intent intent = new Intent("com.google.zxing.client.android.SCAN"); intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE", "QR_CODE_MODE"); startActivityForResult(intent, 0);
+
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent intent){
+        if(requestCode == 0){
+            if(resultCode == RESULT_OK){
+                String contents = intent.getStringExtra("SCAN_RESULT");
+                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+                Log.i("xZing", "contents: "+contents+" format: "+format); // Handle successful scan
+            }
+            else if(resultCode == RESULT_CANCELED){ // Handle cancel
+                Log.i("xZing", "Cancelled");
+            }
+        }
+    }
+
 
 
 
