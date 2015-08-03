@@ -1,6 +1,25 @@
 package com.example.matthew.qubapp;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,21 +35,33 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import com.dm.zbar.android.scanner.ZBarConstants;
+import com.dm.zbar.android.scanner.ZBarScannerActivity;
+
 
 public class MainActivity extends ActionBarActivity {
 
+    private static final int ZBAR_SCANNER_REQUEST = 0;
+    private static final int ZBAR_QR_SCANNER_REQUEST = 1;
 
     TextView appName;
     DatabaseHelper myDBHelper;
     SQLiteDatabase db;
     ListView myListView;
     ImageButton barcode;
+    TextView scanForm;
+    TextView scanCont;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         appName = (TextView) findViewById(R.id.textViewAppName);
+        barcode = (ImageButton) findViewById(R.id.imageButtonBarcode);
+        scanForm = (TextView) findViewById(R.id.textViewScanFrom);
+        scanCont = (TextView) findViewById(R.id.textViewScanCont);
         myDBHelper = new DatabaseHelper(this, null, null, 4);
         queryDatabase();
         populateListView();
@@ -61,15 +92,14 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-
-    public void queryDatabase(){
+    public void queryDatabase() {
         String dbString = myDBHelper.databaseToString();
         appName.setText(dbString);
 
     }
 
 
-    private void populateListView(){
+    private void populateListView() {
 
         Cursor cursor = myDBHelper.getSomeRows();
 
@@ -81,26 +111,37 @@ public class MainActivity extends ActionBarActivity {
         myListView.setAdapter(myCursorAdapter);
     }
 
-    public void scanNow(View view) {
-        Log.d("test", "button works!");
-        Intent intent = new Intent("com.google.zxing.client.android.SCAN"); intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE", "QR_CODE_MODE"); startActivityForResult(intent, 0);
-
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent intent){
-        if(requestCode == 0){
-            if(resultCode == RESULT_OK){
-                String contents = intent.getStringExtra("SCAN_RESULT");
-                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-                Log.i("xZing", "contents: "+contents+" format: "+format); // Handle successful scan
-            }
-            else if(resultCode == RESULT_CANCELED){ // Handle cancel
-                Log.i("xZing", "Cancelled");
-            }
+    public void launchScanner(View v) {
+        if (isCameraAvailable()) {
+            Intent intent = new Intent(this, ZBarScannerActivity.class);
+            startActivityForResult(intent, ZBAR_SCANNER_REQUEST);
+        } else {
+            Toast.makeText(this, "Rear Facing Camera Unavailable", Toast.LENGTH_SHORT).show();
         }
     }
 
 
 
+    public boolean isCameraAvailable() {
+        PackageManager pm = getPackageManager();
+        return pm.hasSystemFeature(PackageManager.FEATURE_CAMERA);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case ZBAR_SCANNER_REQUEST:
+            case ZBAR_QR_SCANNER_REQUEST:
+                if (resultCode == RESULT_OK) {
+                    Toast.makeText(this, "Scan Result = " + data.getStringExtra(ZBarConstants.SCAN_RESULT), Toast.LENGTH_SHORT).show();
+                } else if(resultCode == RESULT_CANCELED && data != null) {
+                    String error = data.getStringExtra(ZBarConstants.ERROR_INFO);
+                    if(!TextUtils.isEmpty(error)) {
+                        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+        }
+    }
 
 }

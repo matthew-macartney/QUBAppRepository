@@ -3,6 +3,12 @@
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
+    <FrameLayout
+        android:id="@+id/cameraPreview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -58,7 +64,9 @@
                 android:layout_gravity="bottom"
                 android:layout_weight="0.27"
                 android:background="#ff2ea9d3"
-                android:onClick="scanNow"/>
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:onClick="launchScanner" />
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -135,12 +143,19 @@
                 android:layout_width="fill_parent"
                 android:layout_height="35dp"
                 android:text="Discounts &amp; Offers"
-                android:id="@+id/textView8"
+                android:id="@+id/textViewScanFrom"
                 android:textColor="#ff363636"
                 android:textSize="20dp"
                 android:paddingLeft="15dp"
                 android:paddingTop="5dp"
                 android:background="#fff1f1f1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Medium Text"
+                android:id="@+id/textViewScanCont" />
 
             <ListView
                 android:layout_width="wrap_content"
@@ -150,4 +165,5 @@
         </LinearLayout>
 
     </LinearLayout>
+
 </RelativeLayout>
