@@ -62,11 +62,9 @@ public class MainActivity extends ActionBarActivity {
         barcode = (ImageButton) findViewById(R.id.imageButtonBarcode);
         scanForm = (TextView) findViewById(R.id.textViewScanFrom);
         scanCont = (TextView) findViewById(R.id.textViewScanCont);
-        myDBHelper = new DatabaseHelper(this, null, null, 4);
+        myDBHelper = new DatabaseHelper(this, null, null, 6);
         queryDatabase();
         populateListView();
-
-
     }
 
     @Override
@@ -111,7 +109,9 @@ public class MainActivity extends ActionBarActivity {
         myListView.setAdapter(myCursorAdapter);
     }
 
-    public void launchScanner(View v) {
+
+
+    public void barcodeButtonOnClick(View v) {
         if (isCameraAvailable()) {
             Intent intent = new Intent(this, ZBarScannerActivity.class);
             startActivityForResult(intent, ZBAR_SCANNER_REQUEST);
@@ -119,8 +119,6 @@ public class MainActivity extends ActionBarActivity {
             Toast.makeText(this, "Rear Facing Camera Unavailable", Toast.LENGTH_SHORT).show();
         }
     }
-
-
 
     public boolean isCameraAvailable() {
         PackageManager pm = getPackageManager();
@@ -133,7 +131,9 @@ public class MainActivity extends ActionBarActivity {
             case ZBAR_SCANNER_REQUEST:
             case ZBAR_QR_SCANNER_REQUEST:
                 if (resultCode == RESULT_OK) {
-                    Toast.makeText(this, "Scan Result = " + data.getStringExtra(ZBarConstants.SCAN_RESULT), Toast.LENGTH_SHORT).show();
+                    String result = data.getStringExtra(ZBarConstants.SCAN_RESULT);
+                    String product = myDBHelper.barcodeQueryDatabase(result);
+                    Toast.makeText(this, "Product = " + product, Toast.LENGTH_SHORT).show();
                 } else if(resultCode == RESULT_CANCELED && data != null) {
                     String error = data.getStringExtra(ZBarConstants.ERROR_INFO);
                     if(!TextUtils.isEmpty(error)) {
