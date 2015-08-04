@@ -5,12 +5,17 @@
     android:versionCode="1"
     android:versionName="1.0">
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="14"
         android:targetSdkVersion="22"/>
 
     <uses-permission android:name="android.permission.CAMERA"/>
-
     <uses-feature android:name="android.hardware.camera"/>
+    <!-- Needed permissions in order to scan for beacons. -->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
+    <!-- Declaration that this app is usable on phones with Bluetooth Low Energy. -->
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
 
 
     <application
@@ -27,6 +32,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ListBeaconActivity"
+            android:label="Select Beacon"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".NotifyDemoActivity"
+            android:label="Notify Demo"
+            android:screenOrientation="portrait"/>
+
+        <!-- Jaalee service responsible for scanning beacons. -->
+        <service android:name="com.jaalee.sdk.service.BeaconService"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

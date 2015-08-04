@@ -34,12 +34,23 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.SubMenu;
+import android.view.View;
+import android.widget.Toast;
 
 import com.dm.zbar.android.scanner.ZBarConstants;
 import com.dm.zbar.android.scanner.ZBarScannerActivity;
+import com.jaalee.sdk.utils.L;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     private static final int ZBAR_SCANNER_REQUEST = 0;
     private static final int ZBAR_QR_SCANNER_REQUEST = 1;
@@ -58,34 +69,65 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         appName = (TextView) findViewById(R.id.textViewAppName);
         barcode = (ImageButton) findViewById(R.id.imageButtonBarcode);
         scanForm = (TextView) findViewById(R.id.textViewScanFrom);
         scanCont = (TextView) findViewById(R.id.textViewScanCont);
+        findViewById(R.id.imageButtonBeacon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ListBeaconActivity.class);
+                intent.putExtra(ListBeaconActivity.EXTRAS_TARGET_ACTIVITY, NotifyDemoActivity.class.getName());
+                startActivity(intent);
+            }
+        });
         myDBHelper = new DatabaseHelper(this, null, null, 6);
         queryDatabase();
         populateListView();
+
+        L.enableDebugLogging(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        MenuItem mun1 = menu.add(0, -1, 0, "More");
+        {
+            mun1.setIcon(android.R.drawable.ic_menu_search);
+            mun1.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        }
+
+        menu.addSubMenu(1, Menu.FIRST, 0, "Jaalee");
+        menu.addSubMenu(1, Menu.FIRST + 10, 1, "Buy Beacon");
+        menu.addSubMenu(1, Menu.FIRST + 20, 2, "Get Source-Code");
+
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId()) {
+            case -1:
+                Uri uri0 = Uri.parse("https://www.jaalee.com/store");
+                startActivity(new Intent(Intent.ACTION_VIEW, uri0));
+                break;
+            case Menu.FIRST:
+                Uri uri = Uri.parse("http://www.jaalee.com/index_en.html");
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                break;
+            case Menu.FIRST + 10:
+                Uri url1 = Uri.parse("https://www.jaalee.com/store");
+                startActivity(new Intent(Intent.ACTION_VIEW, url1));
+                break;
+            case Menu.FIRST + 20:
+                Uri url2 = Uri.parse("http://www.jaalee.com/contact_en.html");
+                startActivity(new Intent(Intent.ACTION_VIEW, url2));
+                break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -143,5 +185,10 @@ public class MainActivity extends ActionBarActivity {
                 break;
         }
     }
+
+//    public void iBeaconButtonOnClick(View v){
+//        Intent intent = new Intent(this, NotifyDemoActivity.class);
+//        startActivity(intent);
+//    }
 
 }

@@ -84,7 +84,7 @@
                 android:src="@drawable/wirelessconnectivity14"
                 android:layout_gravity="bottom"
                 android:layout_weight="0.19"
-                android:background="#ff2ea9d3" />
+                android:background="#ff2ea9d3"/>
         </LinearLayout>
 
         <LinearLayout

@@ -24,4 +24,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'org.altbeacon:android-beacon-library:2+'
     compile project(':zBarScannerLibrary')
+    compile files('src/main/java/jaalee-beacon-android-sdk-master_2.5.jar')
 }
