@@ -5,7 +5,11 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.jaalee.sdk.Beacon;
@@ -16,6 +20,7 @@ import com.jaalee.sdk.ServiceReadyCallback;
 import com.jaalee.sdk.utils.L;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -34,15 +39,19 @@ public class ListBeaconActivity extends Activity {
     private static final Region ALL_BEACONS_REGION = new Region("rid", null, null, null);
 
     private BeaconManager beaconManager;
-
+    private LeDeviceListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-
+        // Configure device list.
+        adapter = new LeDeviceListAdapter(this);
+        ListView list = (ListView) findViewById(R.id.device_list);
+        list.setAdapter(adapter);
+        list.setOnItemClickListener(createOnItemClickListener());
 
         // Configure verbose debug logging.
         L.enableDebugLogging(false);
@@ -61,7 +70,7 @@ public class ListBeaconActivity extends Activity {
                         List<Beacon> JaaleeBeacons = filterBeacons(beacons);
                         getActionBar().setSubtitle("Found beacons: " + JaaleeBeacons.size());
 
-
+                        adapter.replaceWith(JaaleeBeacons);
                     }
                 });
             }
@@ -75,13 +84,20 @@ public class ListBeaconActivity extends Activity {
 //    	only detect the Beacon of Jaalee
 //    	if ( beacon.getProximityUUID().equalsIgnoreCase(JAALEE_BEACON_PROXIMITY_UUID) )
             {
-                Log.i("JAALEE", "JAALEE:" + beacon.getBattLevel());
+                Log.i("JAALEE", "JAALEE:"+beacon.getBattLevel());
                 filteredBeacons.add(beacon);
             }
         }
         return filteredBeacons;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.scan_menu, menu);
+        MenuItem refreshItem = menu.findItem(R.id.refresh);
+        refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -132,15 +148,15 @@ public class ListBeaconActivity extends Activity {
                 connectToService();
             } else {
                 Toast.makeText(this, "Bluetooth not enabled", Toast.LENGTH_LONG).show();
-
+                getActionBar().setSubtitle("Bluetooth not enabled");
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void connectToService() {
-
-
+        getActionBar().setSubtitle("Scanning...");
+        adapter.replaceWith(Collections.<Beacon>emptyList());
         beaconManager.connect(new ServiceReadyCallback() {
             @Override
             public void onServiceReady() {
@@ -149,6 +165,46 @@ public class ListBeaconActivity extends Activity {
         });
     }
 
+    private AdapterView.OnItemClickListener createOnItemClickListener() {
+        return new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (getIntent().getStringExtra(EXTRAS_TARGET_ACTIVITY) != null) {
+                    try {
+                        Class<?> clazz = Class.forName(getIntent().getStringExtra(EXTRAS_TARGET_ACTIVITY));
+                        Intent intent = new Intent(ListBeaconActivity.this, clazz);
+                        Beacon temp = adapter.getItem(position);
+                        intent.putExtra(EXTRAS_BEACON, temp);
 
+                        if (getIntent().getStringExtra(EXTRAS_TARGET_ACTIVITY).contains("com.jaalee.BeaconDemo.CharacteristicsDemoActivity"))
+                        {
+                            if (temp.getConnectable())
+                            {
+                                startActivity(intent);
+                            }
+                            else
+                            {
+                                ListBeaconActivity.this.runOnUiThread(new Runnable()
+                                {
+                                    public void run()
+                                    {
+                                        Toast.makeText(ListBeaconActivity.this, "Current Beacon is in Non-Connectable mode", Toast.LENGTH_LONG).show();
+                                    }
+
+                                });
+                            }
+                        }
+                        else
+                        {
+                            startActivity(intent);
+                        }
+
+                    } catch (ClassNotFoundException e) {
+                        Log.e(TAG, "Finding class by name failed", e);
+                    }
+                }
+            }
+        };
+    }
 
 }

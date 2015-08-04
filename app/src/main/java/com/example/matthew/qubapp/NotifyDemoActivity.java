@@ -34,6 +34,7 @@ public class NotifyDemoActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notify_demo);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         Beacon beacon = getIntent().getParcelableExtra(ListBeaconActivity.EXTRAS_BEACON);
