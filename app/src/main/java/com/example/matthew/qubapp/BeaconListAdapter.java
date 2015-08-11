@@ -16,12 +16,12 @@ import java.util.Collection;
 /**
  * Created by Matthew on 04/08/2015.
  */
-public class LeDeviceListAdapter extends BaseAdapter {
+public class BeaconListAdapter extends BaseAdapter {
 
     private ArrayList<Beacon> beacons;
     private LayoutInflater inflater;
 
-    public LeDeviceListAdapter(Context context) {
+    public BeaconListAdapter(Context context) {
         this.inflater = LayoutInflater.from(context);
         this.beacons = new ArrayList<Beacon>();
     }

@@ -1,13 +1,16 @@
 package com.example.matthew.qubapp;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
-import android.support.v7.app.ActionBarActivity;
+
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,49 +22,37 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.annotation.TargetApi;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.SubMenu;
-import android.view.View;
-import android.widget.Toast;
 
 import com.dm.zbar.android.scanner.ZBarConstants;
 import com.dm.zbar.android.scanner.ZBarScannerActivity;
+import com.jaalee.sdk.*;
+import com.jaalee.sdk.Beacon;
 import com.jaalee.sdk.utils.L;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends Activity {
 
     private static final int ZBAR_SCANNER_REQUEST = 0;
     private static final int ZBAR_QR_SCANNER_REQUEST = 1;
+    private static final int NOTIFICATION_ID = 123;
+    private static final int REQUEST_ENABLE_BT = 1234;
+    Region region = new Region("rid", null, null, null);
+    private NotificationManager notificationManager;
 
-    TextView appName;
-    DatabaseHelper myDBHelper;
+    private BeaconManager beaconManager;
+
+    ProductDatabase myProductDB;
+    OfferDatabase myOfferDB;
     SQLiteDatabase db;
     ListView myListView;
     ImageButton barcode;
-    TextView scanForm;
-    TextView scanCont;
+    TextView scanFrom;
+    private BeaconListAdapter adapter;
+
 
 
 
@@ -71,10 +62,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
 
-        appName = (TextView) findViewById(R.id.textViewAppName);
+
         barcode = (ImageButton) findViewById(R.id.imageButtonBarcode);
-        scanForm = (TextView) findViewById(R.id.textViewScanFrom);
-        scanCont = (TextView) findViewById(R.id.textViewScanCont);
+        scanFrom = (TextView) findViewById(R.id.textViewScanFrom);
         findViewById(R.id.imageButtonBeacon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,26 +73,92 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
-        myDBHelper = new DatabaseHelper(this, null, null, 6);
-        queryDatabase();
+        myProductDB = new ProductDatabase(this, null, null, 7);
+        myOfferDB = new OfferDatabase(this, null, null, 1);
         populateListView();
+
+        adapter = new BeaconListAdapter(this);
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Configure BeaconManager.
+        beaconManager = new BeaconManager(this);
+        beaconManager.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 0);
+        List<Beacon> JaaleeBeacons;
+
+            beaconManager.setRangingListener(new RangingListener() {
+
+                @Override
+                public void onBeaconsDiscovered(Region region, final List beacons) {
+                    // Note that results are not delivered on UI thread.
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Note that beacons reported here are already sorted by estimated
+                            // distance between device and beacon.
+                            List<Beacon> JaaleeBeacons = filterBeacons(beacons);
+                            adapter.replaceWith(JaaleeBeacons);
+                            if(adapter.getCount()>0){
+                                startMonitoring();
+                            }
+                        }
+                    });
+                }
+
+
+            });
+
+
 
         L.enableDebugLogging(true);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-
-        MenuItem mun1 = menu.add(0, -1, 0, "More");
+    private List<Beacon> filterBeacons(List<Beacon> beacons) {
+        List<Beacon> filteredBeacons = new ArrayList<Beacon>(beacons.size());
+        for (Beacon beacon : beacons)
         {
-            mun1.setIcon(android.R.drawable.ic_menu_search);
-            mun1.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+//    	only detect the BeaconHelper of Jaalee
+//    	if ( beacon.getProximityUUID().equalsIgnoreCase(JAALEE_BEACON_PROXIMITY_UUID) )
+            {
+                Log.i("JAALEE", "JAALEE:"+beacon.getBattLevel());
+                filteredBeacons.add(beacon);
+            }
+        }
+        return filteredBeacons;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Check if device supports Bluetooth Low Energy.
+        if (!beaconManager.hasBluetooth()) {
+            Toast.makeText(this, "Device does not have Bluetooth Low Energy", Toast.LENGTH_LONG).show();
+            return;
         }
 
-        menu.addSubMenu(1, Menu.FIRST, 0, "Jaalee");
-        menu.addSubMenu(1, Menu.FIRST + 10, 1, "Buy Beacon");
-        menu.addSubMenu(1, Menu.FIRST + 20, 2, "Get Source-Code");
+        // If Bluetooth is not enabled, let user enable it.
+        if (!beaconManager.isBluetoothEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        } else {
+           connectToService();
+        }
+    }
+
+    public void connectToService() {
+        final Region myRegion = region;
+        beaconManager.connect(new ServiceReadyCallback() {
+            @Override
+            public void onServiceReady() {
+                beaconManager.startRanging(myRegion);
+            }
+        });
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
 
         return true;
     }
@@ -110,41 +166,24 @@ public class MainActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        switch (item.getItemId()) {
-            case -1:
-                Uri uri0 = Uri.parse("https://www.jaalee.com/store");
-                startActivity(new Intent(Intent.ACTION_VIEW, uri0));
-                break;
-            case Menu.FIRST:
-                Uri uri = Uri.parse("http://www.jaalee.com/index_en.html");
-                startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                break;
-            case Menu.FIRST + 10:
-                Uri url1 = Uri.parse("https://www.jaalee.com/store");
-                startActivity(new Intent(Intent.ACTION_VIEW, url1));
-                break;
-            case Menu.FIRST + 20:
-                Uri url2 = Uri.parse("http://www.jaalee.com/contact_en.html");
-                startActivity(new Intent(Intent.ACTION_VIEW, url2));
-                break;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 
 
     public void queryDatabase() {
-        String dbString = myDBHelper.databaseToString();
-        appName.setText(dbString);
+        String dbString = myOfferDB.databaseToString();
+        scanFrom.setText(dbString);
 
     }
 
 
     private void populateListView() {
 
-        Cursor cursor = myDBHelper.getSomeRows();
+        Cursor cursor = myProductDB.getSomeRows();
 
-        String[] fromFieldNames = new String[]{DatabaseHelper.PRODUCT_NAME, DatabaseHelper.PRODUCT_BRAND};
-        int[] toViewIDs = new int[]{R.id.textViewProductDes, R.id.textViewBrand};
+        String[] fromFieldNames = new String[]{ProductDatabase.PRODUCT_NAME, ProductDatabase.PRODUCT_BRAND, ProductDatabase.PRODUCT_PRICE, ProductDatabase.PRODUCT_RRP, ProductDatabase.PRODUCT_SAVING};
+        int[] toViewIDs = new int[]{R.id.textViewProductDes, R.id.textViewBrand, R.id.textViewPrice, R.id.textViewRRP, R.id.textViewSaving};
         SimpleCursorAdapter myCursorAdapter;
         myCursorAdapter = new SimpleCursorAdapter(getBaseContext(), R.layout.offer_layout, cursor, fromFieldNames, toViewIDs, 0);
         myListView = (ListView) findViewById(R.id.listViewFromDB);
@@ -174,7 +213,7 @@ public class MainActivity extends Activity {
             case ZBAR_QR_SCANNER_REQUEST:
                 if (resultCode == RESULT_OK) {
                     String result = data.getStringExtra(ZBarConstants.SCAN_RESULT);
-                    String product = myDBHelper.barcodeQueryDatabase(result);
+                    String product = myProductDB.barcodeQueryDatabase(result);
                     Toast.makeText(this, "Product = " + product, Toast.LENGTH_SHORT).show();
                 } else if(resultCode == RESULT_CANCELED && data != null) {
                     String error = data.getStringExtra(ZBarConstants.ERROR_INFO);
@@ -184,6 +223,16 @@ public class MainActivity extends Activity {
                 }
                 break;
         }
+
+        if (requestCode == REQUEST_ENABLE_BT) {
+            if (resultCode == Activity.RESULT_OK) {
+                connectToService();
+            } else {
+                Toast.makeText(this, "Bluetooth not enabled", Toast.LENGTH_LONG).show();
+                getActionBar().setSubtitle("Bluetooth not enabled");
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 //    public void iBeaconButtonOnClick(View v){
@@ -191,4 +240,50 @@ public class MainActivity extends Activity {
 //        startActivity(intent);
 //    }
 
+    private void postNotification(String msg) {
+        Intent notifyIntent = new Intent(MainActivity.this, NotifyDemoActivity.class);
+        notifyIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivities(
+                MainActivity.this,
+                0,
+                new Intent[]{notifyIntent},
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        Notification notification = new Notification.Builder(MainActivity.this)
+                .setSmallIcon(R.drawable.tags)
+                .setContentTitle(msg)
+                .setContentText("Click to view offer")
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .build();
+        notification.defaults |= Notification.DEFAULT_SOUND;
+        notification.defaults |= Notification.DEFAULT_LIGHTS;
+        notificationManager.notify(NOTIFICATION_ID, notification);
+
+    }
+
+    public void startMonitoring(){
+
+            beaconManager.stopRanging(region);
+            final Beacon beacon = adapter.getItem(0);
+            region = new Region("regionId", beacon.getProximityUUID(), beacon.getMajor(), beacon.getMinor());
+            beaconManager.startMonitoring(region);
+
+            beaconManager.setMonitoringListener(new MonitoringListener() {
+                @Override
+                public void onEnteredRegion(Region region) {
+
+                    postNotification(myOfferDB.getOffer(beacon.getMajor()));
+                    beaconManager.stopMonitoring(region);
+                }
+
+                @Override
+                public void onExitedRegion(Region region) {
+                    region = new Region("rid", null, null, null);
+                    beaconManager.startRanging(region);
+                    postNotification("Exited region" + beacon.getProximityUUID());
+                }
+            });
+
+
+    }
 }

@@ -39,7 +39,7 @@ public class ListBeaconActivity extends Activity {
     private static final Region ALL_BEACONS_REGION = new Region("rid", null, null, null);
 
     private BeaconManager beaconManager;
-    private LeDeviceListAdapter adapter;
+    private BeaconListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class ListBeaconActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Configure device list.
-        adapter = new LeDeviceListAdapter(this);
+        adapter = new BeaconListAdapter(this);
         ListView list = (ListView) findViewById(R.id.device_list);
         list.setAdapter(adapter);
         list.setOnItemClickListener(createOnItemClickListener());
@@ -68,7 +68,6 @@ public class ListBeaconActivity extends Activity {
                         // Note that beacons reported here are already sorted by estimated
                         // distance between device and beacon.
                         List<Beacon> JaaleeBeacons = filterBeacons(beacons);
-                        getActionBar().setSubtitle("Found beacons: " + JaaleeBeacons.size());
 
                         adapter.replaceWith(JaaleeBeacons);
                     }
@@ -81,7 +80,7 @@ public class ListBeaconActivity extends Activity {
         List<Beacon> filteredBeacons = new ArrayList<Beacon>(beacons.size());
         for (Beacon beacon : beacons)
         {
-//    	only detect the Beacon of Jaalee
+//    	only detect the BeaconHelper of Jaalee
 //    	if ( beacon.getProximityUUID().equalsIgnoreCase(JAALEE_BEACON_PROXIMITY_UUID) )
             {
                 Log.i("JAALEE", "JAALEE:"+beacon.getBattLevel());
@@ -188,7 +187,7 @@ public class ListBeaconActivity extends Activity {
                                 {
                                     public void run()
                                     {
-                                        Toast.makeText(ListBeaconActivity.this, "Current Beacon is in Non-Connectable mode", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(ListBeaconActivity.this, "Current BeaconHelper is in Non-Connectable mode", Toast.LENGTH_LONG).show();
                                     }
 
                                 });

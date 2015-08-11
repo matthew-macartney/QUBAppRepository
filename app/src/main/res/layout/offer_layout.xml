@@ -5,24 +5,74 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="View"
+        android:id="@+id/textViewBrand"
+        android:layout_marginLeft="28dp"
+        android:textSize="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/textViewPrice" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/textViewProductDes"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textSize="35dp" />
+        android:textSize="25dp"
+        android:layout_above="@+id/textViewRRP"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
-        android:id="@+id/textViewBrand"
-        android:layout_alignBottom="@+id/textViewProductDes"
-        android:layout_toRightOf="@+id/textViewProductDes"
-        android:layout_toEndOf="@+id/textViewProductDes"
-        android:layout_marginLeft="28dp"
-        android:layout_marginStart="28dp" />
+        android:id="@+id/textViewRRP"
+        android:textSize="16dp"
+        android:layout_below="@+id/textViewBrand"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/textViewPrice"
+        android:layout_alignBottom="@+id/textViewRRP"
+        android:layout_toEndOf="@+id/textViewRRP"
+        android:layout_marginStart="10dp"
+        android:textSize="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/textViewSaving"
+        android:layout_marginStart="10dp"
+        android:layout_alignTop="@+id/textViewPrice"
+        android:layout_toEndOf="@+id/textViewPrice"
+        android:textSize="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="View >"
+        android:id="@+id/textView4"
+        android:layout_below="@+id/textViewProductDes"
+        android:layout_alignParentEnd="true"
+        android:textSize="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text=" saving!"
+        android:id="@+id/textView"
+        android:layout_alignBottom="@+id/textViewSaving"
+        android:layout_toEndOf="@+id/textViewSaving"
+        android:textSize="16dp" />
 
 </RelativeLayout>
