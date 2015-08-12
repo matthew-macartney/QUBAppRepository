@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -60,6 +61,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
 
 
@@ -182,8 +184,8 @@ public class MainActivity extends Activity {
 
         Cursor cursor = myProductDB.getSomeRows();
 
-        String[] fromFieldNames = new String[]{ProductDatabase.PRODUCT_NAME, ProductDatabase.PRODUCT_BRAND, ProductDatabase.PRODUCT_PRICE, ProductDatabase.PRODUCT_RRP, ProductDatabase.PRODUCT_SAVING};
-        int[] toViewIDs = new int[]{R.id.textViewProductDes, R.id.textViewBrand, R.id.textViewPrice, R.id.textViewRRP, R.id.textViewSaving};
+        String[] fromFieldNames = new String[]{ProductDatabase.PRODUCT_NAME,  ProductDatabase.PRODUCT_PRICE, ProductDatabase.PRODUCT_RRP, ProductDatabase.PRODUCT_SAVING};
+        int[] toViewIDs = new int[]{R.id.textViewProductDes, R.id.textViewPrice, R.id.textViewRRP, R.id.textViewSaving};
         SimpleCursorAdapter myCursorAdapter;
         myCursorAdapter = new SimpleCursorAdapter(getBaseContext(), R.layout.offer_layout, cursor, fromFieldNames, toViewIDs, 0);
         myListView = (ListView) findViewById(R.id.listViewFromDB);
@@ -249,7 +251,7 @@ public class MainActivity extends Activity {
                 new Intent[]{notifyIntent},
                 PendingIntent.FLAG_UPDATE_CURRENT);
         Notification notification = new Notification.Builder(MainActivity.this)
-                .setSmallIcon(R.drawable.tags)
+                .setSmallIcon(R.drawable.tag_icon)
                 .setContentTitle(msg)
                 .setContentText("Click to view offer")
                 .setAutoCancel(true)
@@ -286,4 +288,6 @@ public class MainActivity extends Activity {
 
 
     }
+
+
 }

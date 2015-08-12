@@ -19,10 +19,11 @@
 
 
     <application
-        android:allowBackup="true">
+        android:allowBackup="true"
+        android:theme="@style/Theme.MyStyle">
         <activity
             android:name=".MainActivity"
-            android:label="Beacon Buddy" >
+            android:label="Bargain Buddy" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

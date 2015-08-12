@@ -47,7 +47,7 @@ public class ProductDatabase extends SQLiteOpenHelper {
 
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(PRODUCT_NAME, "Tennis Racket");
+        contentValues.put(PRODUCT_NAME, "Wilson Tennis Racket");
         contentValues.put(PRODUCT_BRAND, "Wilson");
         contentValues.put(PRODUCT_CAT, "Sports");
         contentValues.put(PRODUCT_RRP, "$120.00");
@@ -56,7 +56,7 @@ public class ProductDatabase extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_CODE, "9771234567003");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
-        contentValues.put(PRODUCT_NAME, "Men's Jeans");
+        contentValues.put(PRODUCT_NAME, "Levis Men's Jeans");
         contentValues.put(PRODUCT_BRAND, "Levis");
         contentValues.put(PRODUCT_CAT, "Menswear");
         contentValues.put(PRODUCT_RRP, "$60.00");
@@ -65,7 +65,7 @@ public class ProductDatabase extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_CODE, "5060249470113");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
         //fix
-        contentValues.put(PRODUCT_NAME, "Men's Running Trainers");
+        contentValues.put(PRODUCT_NAME, "Adidas Men's Running Trainers");
         contentValues.put(PRODUCT_BRAND, "Adidas");
         contentValues.put(PRODUCT_CAT, "Sports");
         contentValues.put(PRODUCT_RRP, 60);
@@ -74,7 +74,7 @@ public class ProductDatabase extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_CODE, "9780735623873");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
-        contentValues.put(PRODUCT_NAME, "Women's Black Cardigan");
+        contentValues.put(PRODUCT_NAME, "Next Women's Black Cardigan");
         contentValues.put(PRODUCT_BRAND, "Next");
         contentValues.put(PRODUCT_CAT, "Womenswear");
         contentValues.put(PRODUCT_RRP, 30);
@@ -83,7 +83,7 @@ public class ProductDatabase extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_CODE, "0123456789005");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
-        contentValues.put(PRODUCT_NAME, "Men's Brown Leather Shoes");
+        contentValues.put(PRODUCT_NAME, "Red Herring Men's Brown Leather Shoes");
         contentValues.put(PRODUCT_BRAND, "Red Herring");
         contentValues.put(PRODUCT_CAT, "Men's Footwear");
         contentValues.put(PRODUCT_RRP, 100);
@@ -92,7 +92,7 @@ public class ProductDatabase extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_CODE, "5014016150821");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
-        contentValues.put(PRODUCT_NAME, "Leather Recliner Chair & Stool");
+        contentValues.put(PRODUCT_NAME, "Debenhams Leather Recliner Chair & Stool");
         contentValues.put(PRODUCT_BRAND, "Debenhams");
         contentValues.put(PRODUCT_CAT, "Furniture");
         contentValues.put(PRODUCT_RRP, 400);
@@ -101,7 +101,7 @@ public class ProductDatabase extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_CODE, "0850006000012");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
-        contentValues.put(PRODUCT_NAME, "Ultra Agents Stealth Patrol");
+        contentValues.put(PRODUCT_NAME, "Lego Ultra Agents Stealth Patrol");
         contentValues.put(PRODUCT_BRAND, "Lego");
         contentValues.put(PRODUCT_CAT, "Toys");
         contentValues.put(PRODUCT_RRP, 40);
@@ -110,7 +110,7 @@ public class ProductDatabase extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_CODE, "0671860013624");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
-        contentValues.put(PRODUCT_NAME, "Black Powershot sx610 Camera");
+        contentValues.put(PRODUCT_NAME, "Canon Black Powershot sx610 Camera");
         contentValues.put(PRODUCT_BRAND, "Canon");
         contentValues.put(PRODUCT_CAT, "Cameras & camcorders");
         contentValues.put(PRODUCT_RRP, 180);
@@ -119,7 +119,7 @@ public class ProductDatabase extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_CODE, "9781234567897");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
-        contentValues.put(PRODUCT_NAME, "DC44 Origin Cordless Vacuum Cleaner");
+        contentValues.put(PRODUCT_NAME, "Dyson DC44 Origin Cordless Vacuum Cleaner");
         contentValues.put(PRODUCT_BRAND, "Dyson");
         contentValues.put(PRODUCT_CAT, "Vacuum cleaners");
         contentValues.put(PRODUCT_RRP, 269);
@@ -128,7 +128,7 @@ public class ProductDatabase extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_CODE, "0123456789012");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
-        contentValues.put(PRODUCT_NAME, "Charcoal 2 Button Suit Jacket");
+        contentValues.put(PRODUCT_NAME, "Jeff Banks Charcoal 2 Button Suit Jacket");
         contentValues.put(PRODUCT_BRAND, "Jeff Banks");
         contentValues.put(PRODUCT_CAT, "Menswear");
         contentValues.put(PRODUCT_RRP, 95);

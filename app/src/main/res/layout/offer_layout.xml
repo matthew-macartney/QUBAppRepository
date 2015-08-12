@@ -1,27 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="View"
-        android:id="@+id/textViewBrand"
-        android:layout_marginLeft="28dp"
-        android:textSize="25dp"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/textViewPrice" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/textViewProductDes"
-        android:textSize="25dp"
-        android:layout_above="@+id/textViewRRP"
-        android:layout_alignParentStart="true" />
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:paddingBottom="3dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,9 +9,9 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/textViewRRP"
-        android:textSize="16dp"
-        android:layout_below="@+id/textViewBrand"
-        android:layout_alignParentStart="true" />
+        android:textSize="14dp"
+        android:layout_below="@+id/textViewProductDes"
+        android:layout_alignStart="@+id/textViewProductDes" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -39,10 +19,13 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/textViewPrice"
-        android:layout_alignBottom="@+id/textViewRRP"
-        android:layout_toEndOf="@+id/textViewRRP"
-        android:layout_marginStart="10dp"
-        android:textSize="16dp" />
+        android:textSize="20dp"
+        android:singleLine="false"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:textColor="#ffee222c"
+        android:layout_below="@+id/textViewRRP"
+        android:layout_alignStart="@+id/textViewRRP" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -50,10 +33,10 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/textViewSaving"
-        android:layout_marginStart="10dp"
-        android:layout_alignTop="@+id/textViewPrice"
-        android:layout_toEndOf="@+id/textViewPrice"
-        android:textSize="16dp" />
+        android:textSize="14dp"
+        android:layout_below="@+id/textViewPrice"
+        android:layout_alignStart="@+id/textViewPrice"
+        android:paddingBottom="3dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -61,18 +44,32 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="View >"
         android:id="@+id/textView4"
-        android:layout_below="@+id/textViewProductDes"
+        android:textSize="14dp"
+        android:layout_marginEnd="17dp"
+        android:layout_below="@+id/imageViewProduct"
         android:layout_alignParentEnd="true"
-        android:textSize="16dp" />
+        android:paddingBottom="3dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageViewProduct"
+        android:src="@drawable/ic_launcher"
+        android:layout_marginStart="31dp"
+        android:layout_alignBottom="@+id/textViewPrice"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text=" saving!"
-        android:id="@+id/textView"
-        android:layout_alignBottom="@+id/textViewSaving"
-        android:layout_toEndOf="@+id/textViewSaving"
-        android:textSize="16dp" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/textViewProductDes"
+        android:textSize="22dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/imageViewProduct"
+        android:layout_marginStart="28dp" />
 
 </RelativeLayout>
