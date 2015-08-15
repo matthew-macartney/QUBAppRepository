@@ -12,7 +12,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -23,6 +22,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.jaalee.sdk.Utils;
 
 import com.dm.zbar.android.scanner.ZBarConstants;
 import com.dm.zbar.android.scanner.ZBarScannerActivity;
@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
     private static final int ZBAR_QR_SCANNER_REQUEST = 1;
     private static final int NOTIFICATION_ID = 123;
     private static final int REQUEST_ENABLE_BT = 1234;
-    Region region = new Region("rid", null, null, null);
+    Region beaconRegion = new Region("rid", null, null, null);
     private NotificationManager notificationManager;
 
     private BeaconManager beaconManager;
@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
     ImageButton barcode;
     TextView scanFrom;
     private BeaconListAdapter adapter;
-
+    AppDatabase appDb;
 
 
 
@@ -77,6 +77,7 @@ public class MainActivity extends Activity {
         });
         myProductDB = new ProductDatabase(this, null, null, 7);
         myOfferDB = new OfferDatabase(this, null, null, 1);
+        appDb = new AppDatabase(this, null, null, 1);
         populateListView();
 
         adapter = new BeaconListAdapter(this);
@@ -97,10 +98,14 @@ public class MainActivity extends Activity {
                         public void run() {
                             // Note that beacons reported here are already sorted by estimated
                             // distance between device and beacon.
+
                             List<Beacon> JaaleeBeacons = filterBeacons(beacons);
                             adapter.replaceWith(JaaleeBeacons);
                             if(adapter.getCount()>0){
-                                startMonitoring();
+                                int nextBeacon = 0;
+                                //beaconManager.stopRanging(beaconRegion);
+                                final Beacon beacon = adapter.getItem(nextBeacon++);
+                                startMonitoring(beacon);
                             }
                         }
                     });
@@ -148,7 +153,7 @@ public class MainActivity extends Activity {
     }
 
     public void connectToService() {
-        final Region myRegion = region;
+        final Region myRegion = beaconRegion;
         beaconManager.connect(new ServiceReadyCallback() {
             @Override
             public void onServiceReady() {
@@ -263,26 +268,54 @@ public class MainActivity extends Activity {
 
     }
 
-    public void startMonitoring(){
+    public void startMonitoring(final Beacon beacon){
 
-            beaconManager.stopRanging(region);
-            final Beacon beacon = adapter.getItem(0);
-            region = new Region("regionId", beacon.getProximityUUID(), beacon.getMajor(), beacon.getMinor());
-            beaconManager.startMonitoring(region);
+            beaconRegion = new Region("regionId", beacon.getProximityUUID(), beacon.getMajor(), beacon.getMinor());
+            beaconManager.startMonitoring(beaconRegion);
 
             beaconManager.setMonitoringListener(new MonitoringListener() {
                 @Override
                 public void onEnteredRegion(Region region) {
 
-                    postNotification(myOfferDB.getOffer(beacon.getMajor()));
-                    beaconManager.stopMonitoring(region);
+                    long tsLong = (System.currentTimeMillis()/1000);
+                    String UUID = beacon.getProximityUUID().toString();
+                    Boolean beaconFound = appDb.beaconQueryDatabase(UUID, beacon.getMajor(), beacon.getMinor());
+
+                    if (!beaconFound) {
+
+                        postNotification(myOfferDB.getOffer(UUID, beacon.getMajor(), beacon.getMinor()));
+                        String distance = String.format("(%.2fm)", Utils.computeAccuracy(beacon));
+                        Log.d("DISTANCE", "DIstance: " + distance);
+                        appDb.insertBeacon(UUID, beacon.getMajor(), beacon.getMinor(), tsLong);
+                        beaconManager.stopMonitoring(beaconRegion);
+                        connectToService();
+
+                    }else if(beaconFound){
+                        long timestamp = appDb.getTimestamp(UUID, beacon.getMajor(), beacon.getMinor());
+                        Log.d("TIMESTAMP", "Timestamp: " + timestamp);
+                        String distance = String.format("(%.2fm)", Utils.computeAccuracy(beacon));
+                        Log.d("DISTANCE", "DIstance: " + distance);
+                        if((System.currentTimeMillis()/1000) - timestamp >= 30){
+                            appDb.updateTimestamp(UUID, beacon.getMajor(), beacon.getMinor());
+                            postNotification(myOfferDB.getOffer(UUID, beacon.getMajor(), beacon.getMinor()));
+                            beaconManager.stopMonitoring(beaconRegion);
+                            connectToService();
+                        }else{
+                            beaconManager.stopMonitoring(beaconRegion);
+                            connectToService();
+                        }
+
+                    }else{
+                        beaconManager.stopMonitoring(beaconRegion);
+                        connectToService();
+                    }
                 }
 
                 @Override
                 public void onExitedRegion(Region region) {
                     region = new Region("rid", null, null, null);
                     beaconManager.startRanging(region);
-                    postNotification("Exited region" + beacon.getProximityUUID());
+
                 }
             });
 

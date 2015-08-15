@@ -38,6 +38,12 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues.put(OFFER_MINOR, 1);
         db.insert(TABLE_NAME_OFFER, null, contentValues);
 
+        contentValues.put(OFFER_DESCRIPTION, "2 for 1 Heineken beers in store just for you!!");
+        contentValues.put(OFFER_UUID,"ebefd083-70a2-47c8-9837-e7b5634df524");
+        contentValues.put(OFFER_MAJOR, 1);
+        contentValues.put(OFFER_MINOR, 2);
+        db.insert(TABLE_NAME_OFFER, null, contentValues);
+
 
     }
     @Override
@@ -55,7 +61,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
     public String databaseToString(){
         String dbString;
         db = this.getReadableDatabase();
-        String query = "SELECT " + OFFER_DESCRIPTION + " FROM " + TABLE_NAME_OFFER + " WHERE " + OFFER_MAJOR + "= '1';";
+        String query = "SELECT " + OFFER_DESCRIPTION + " FROM " + TABLE_NAME_OFFER + " WHERE " + OFFER_MINOR + "= '1';";
 
         Cursor cs = db.rawQuery(query, null);
         cs.moveToFirst();
@@ -64,11 +70,14 @@ public class OfferDatabase extends SQLiteOpenHelper {
         return dbString;
     }
 
-    public String getOffer(int major){
+    public String getOffer(String UUID, int major, int minor){
 
         String offerDes = null;
         db = this.getReadableDatabase();
-        String query = "SELECT " + OFFER_DESCRIPTION + " FROM " + TABLE_NAME_OFFER + " WHERE " +  OFFER_MAJOR + "= '" + major +"'";
+        String query = "SELECT " + OFFER_DESCRIPTION + " FROM " + TABLE_NAME_OFFER + " WHERE "
+                +  OFFER_UUID + " = '" + UUID + "' AND "
+                + OFFER_MAJOR + " = '" + major + "' AND "
+                + OFFER_MINOR + "= '" + minor +"'";
 
         Cursor cs = db.rawQuery(query, null);
         cs.moveToFirst();

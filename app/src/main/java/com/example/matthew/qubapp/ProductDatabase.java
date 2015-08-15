@@ -27,7 +27,7 @@ public class ProductDatabase extends SQLiteOpenHelper {
 
 
     //Offer Table
-    public static final String TABLE_NAME_OFFER  = "offer_table";
+    public static final String TABLE_NAME_OFFER = "offer_table";
     public static final String OFFER_ID = "_id";
     public static final String OFFER_DESCRIPTION = "DESCRIPTION";
     public static final String OFFER_UUID = "UUID";
@@ -35,10 +35,9 @@ public class ProductDatabase extends SQLiteOpenHelper {
     public static final String OFFER_MINOR = "MINOR";
 
 
-    public static final String[] SOME_KEYS = new String[] {PRODUCT_ID, PRODUCT_NAME,};
+    public static final String[] SOME_KEYS = new String[]{PRODUCT_ID, PRODUCT_NAME,};
 
     public SQLiteDatabase db;
-
 
 
     public ProductDatabase(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -136,14 +135,7 @@ public class ProductDatabase extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_SAVING, 40);
         contentValues.put(PRODUCT_CODE, "9781855683006");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
-
-        contentValues.put(OFFER_DESCRIPTION, "2 for 1 on all pizzas in store just for you!!");
-        contentValues.put(OFFER_UUID,"ebefd083-70a2-47c8-9837-e7b5634df524");
-        contentValues.put(OFFER_MAJOR, 1);
-        contentValues.put(OFFER_MINOR, 1);
-        db.insert(TABLE_NAME_OFFER, null, contentValues);
-
-
+        
     }
 
     @Override
@@ -160,7 +152,7 @@ public class ProductDatabase extends SQLiteOpenHelper {
     }
 
 
-    public String databaseToString(){
+    public String databaseToString() {
         String dbString;
         db = this.getReadableDatabase();
         String query = "SELECT " + OFFER_DESCRIPTION + " FROM " + TABLE_NAME_OFFER + " WHERE " + OFFER_MAJOR + "= '1';";
@@ -182,26 +174,22 @@ public class ProductDatabase extends SQLiteOpenHelper {
         return c;
     }
 
-    public String barcodeQueryDatabase(String barcode){
+    public String barcodeQueryDatabase(String barcode) {
         String error = "Please try again!";
         String dbString;
         db = this.getReadableDatabase();
-        String query = "SELECT " + PRODUCT_NAME + " FROM " + TABLE_NAME_PRODUCT + " WHERE " + PRODUCT_CODE + "= '" + barcode +"'";
+        String query = "SELECT " + PRODUCT_NAME + " FROM " + TABLE_NAME_PRODUCT + " WHERE " + PRODUCT_CODE + "= '" + barcode + "'";
 
         Cursor cs = db.rawQuery(query, null);
         cs.moveToFirst();
         dbString = cs.getString(cs.getColumnIndex(PRODUCT_NAME));
 
-        if(dbString!= null) {
+        if (dbString != null) {
             return dbString;
-        }else{
+        } else {
             return error;
         }
     }
-
-
-
-
 
 
 }

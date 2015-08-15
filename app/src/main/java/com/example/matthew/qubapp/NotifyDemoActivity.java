@@ -49,12 +49,12 @@ public class NotifyDemoActivity extends Activity {
         beaconManager.setMonitoringListener(new MonitoringListener() {
             @Override
             public void onEnteredRegion(Region region) {
-                postNotification("Entered region");
+                postNotification("Entered beaconRegion");
             }
 
             @Override
             public void onExitedRegion(Region region) {
-                postNotification("Exited region");
+                postNotification("Exited beaconRegion");
             }
         });
     }
