@@ -1,6 +1,7 @@
 package com.example.matthew.qubapp;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -32,7 +33,6 @@ import com.jaalee.sdk.utils.L;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends Activity {
@@ -85,13 +85,13 @@ public class MainActivity extends Activity {
 
         // Configure BeaconManager.
         beaconManager = new BeaconManager(this);
-        beaconManager.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 0);
+        beaconManager.setBackgroundScanPeriod(1,0);
         List<Beacon> JaaleeBeacons;
 
             beaconManager.setRangingListener(new RangingListener() {
 
                 @Override
-                public void onBeaconsDiscovered(Region region, final List beacons) {
+                public void onBeaconsDiscovered(final Region region, final List beacons) {
                     // Note that results are not delivered on UI thread.
                     runOnUiThread(new Runnable() {
                         @Override
@@ -106,6 +106,7 @@ public class MainActivity extends Activity {
                                 //beaconManager.stopRanging(beaconRegion);
                                 final Beacon beacon = adapter.getItem(nextBeacon++);
                                 startMonitoring(beacon);
+                                beaconManager.stopRanging(region);
                             }
                         }
                     });
@@ -192,7 +193,7 @@ public class MainActivity extends Activity {
         String[] fromFieldNames = new String[]{ProductDatabase.PRODUCT_NAME,  ProductDatabase.PRODUCT_PRICE, ProductDatabase.PRODUCT_RRP, ProductDatabase.PRODUCT_SAVING};
         int[] toViewIDs = new int[]{R.id.textViewProductDes, R.id.textViewPrice, R.id.textViewRRP, R.id.textViewSaving};
         SimpleCursorAdapter myCursorAdapter;
-        myCursorAdapter = new SimpleCursorAdapter(getBaseContext(), R.layout.offer_layout, cursor, fromFieldNames, toViewIDs, 0);
+        myCursorAdapter = new SimpleCursorAdapter(getBaseContext(), R.layout.offer_list_layout, cursor, fromFieldNames, toViewIDs, 0);
         myListView = (ListView) findViewById(R.id.listViewFromDB);
         myListView.setAdapter(myCursorAdapter);
     }
@@ -277,35 +278,51 @@ public class MainActivity extends Activity {
                 @Override
                 public void onEnteredRegion(Region region) {
 
-                    long tsLong = (System.currentTimeMillis()/1000);
+                    long tsLong = (System.currentTimeMillis() / 1000);
                     String UUID = beacon.getProximityUUID().toString();
                     Boolean beaconFound = appDb.beaconQueryDatabase(UUID, beacon.getMajor(), beacon.getMinor());
 
                     if (!beaconFound) {
 
-                        postNotification(myOfferDB.getOffer(UUID, beacon.getMajor(), beacon.getMinor()));
-                        String distance = String.format("(%.2fm)", Utils.computeAccuracy(beacon));
-                        Log.d("DISTANCE", "DIstance: " + distance);
-                        appDb.insertBeacon(UUID, beacon.getMajor(), beacon.getMinor(), tsLong);
-                        beaconManager.stopMonitoring(beaconRegion);
-                        connectToService();
+                            Toast.makeText(getApplicationContext(), "" + myOfferDB.getOffer(UUID, beacon.getMajor(), beacon.getMinor()), Toast.LENGTH_LONG).show();
+                            String distance = String.format("(%.2fm)", Utils.computeAccuracy(beacon));
+                            Log.d("DISTANCE", "DIstance: " + distance);
+                            appDb.insertBeacon(UUID, beacon.getMajor(), beacon.getMinor(), tsLong);
+                            beaconManager.stopMonitoring(beaconRegion);
+                            connectToService();
 
-                    }else if(beaconFound){
+                        if(isAppInForeground(getApplicationContext())){
+                            Toast.makeText(getApplicationContext(), "" + myOfferDB.getOffer(UUID, beacon.getMajor(), beacon.getMinor()), Toast.LENGTH_LONG).show();
+                        }else{
+                            postNotification(myOfferDB.getOffer(UUID, beacon.getMajor(), beacon.getMinor()));
+                        }
+
+
+                    } else if (beaconFound) {
+
+
                         long timestamp = appDb.getTimestamp(UUID, beacon.getMajor(), beacon.getMinor());
                         Log.d("TIMESTAMP", "Timestamp: " + timestamp);
                         String distance = String.format("(%.2fm)", Utils.computeAccuracy(beacon));
                         Log.d("DISTANCE", "DIstance: " + distance);
-                        if((System.currentTimeMillis()/1000) - timestamp >= 30){
-                            appDb.updateTimestamp(UUID, beacon.getMajor(), beacon.getMinor());
-                            postNotification(myOfferDB.getOffer(UUID, beacon.getMajor(), beacon.getMinor()));
-                            beaconManager.stopMonitoring(beaconRegion);
-                            connectToService();
-                        }else{
+                        if ((System.currentTimeMillis() / 1000) - timestamp >= 30) {
+
+                                appDb.updateTimestamp(UUID, beacon.getMajor(), beacon.getMinor());
+                                beaconManager.stopMonitoring(beaconRegion);
+                                connectToService();
+
+                            if(isAppInForeground(getApplicationContext())){
+                                Toast.makeText(getApplicationContext(), "" + myOfferDB.getOffer(UUID, beacon.getMajor(), beacon.getMinor()), Toast.LENGTH_LONG).show();
+                            }else{
+                                postNotification(myOfferDB.getOffer(UUID, beacon.getMajor(), beacon.getMinor()));
+                            }
+
+                        } else {
                             beaconManager.stopMonitoring(beaconRegion);
                             connectToService();
                         }
 
-                    }else{
+                    } else {
                         beaconManager.stopMonitoring(beaconRegion);
                         connectToService();
                     }
@@ -320,6 +337,25 @@ public class MainActivity extends Activity {
             });
 
 
+    }
+
+    //---helper method to determine if the app is in
+    // the foreground---
+    public static boolean isAppInForeground(
+            Context context) {
+        List<ActivityManager.RunningTaskInfo> task = ((ActivityManager)
+                context.getSystemService(
+                        Context.ACTIVITY_SERVICE))
+                .getRunningTasks(1);
+        if (task.isEmpty()) {
+            return false;
+        }
+        return task
+                .get(0)
+                .topActivity
+                .getPackageName()
+                .equalsIgnoreCase(
+                        context.getPackageName());
     }
 
 

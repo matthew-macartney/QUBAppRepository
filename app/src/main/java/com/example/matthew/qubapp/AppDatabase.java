@@ -23,6 +23,8 @@ public class AppDatabase extends SQLiteOpenHelper {
     public static final String BEACON_TIMESTAMP = "TIMESTAMP";
     public static final long BEACON_TIME_PERIOD = System.currentTimeMillis()/1000 - 30;;
 
+    public static final String TABLE_NAME_OFFER_RECEIVED = "offer_received_table";
+
     private static final String TAG = AppDatabase.class.getSimpleName();
 
 
@@ -40,6 +42,7 @@ public class AppDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_NAME_BEACON + " (_id INTEGER PRIMARY KEY, UUID TEXT, MAJOR TEXT, MINOR TEXT, TIMESTAMP TEXT);");
+        db.execSQL("CREATE TABLE " + TABLE_NAME_OFFER_RECEIVED + " (_id INTEGER PRIMARY KEY, UUID TEXT, MAJOR TEXT, MINOR TEXT, TIMESTAMP TEXT);");
     }
 
     @Override
@@ -103,12 +106,11 @@ public class AppDatabase extends SQLiteOpenHelper {
 
         db = this.getWritableDatabase();
 
-        String query = "UPDATE " + TABLE_NAME_BEACON + " SET " + BEACON_TIMESTAMP + " = " + System.currentTimeMillis()/1000 + " WHERE "
+       db.execSQL("UPDATE " + TABLE_NAME_BEACON + " SET " + BEACON_TIMESTAMP + " = " + System.currentTimeMillis()/1000 + " WHERE "
                 + BEACON_UUID + "= '" + UUID + "' AND "
                 + BEACON_MAJOR + "= '" + major + "' AND "
-                + BEACON_MINOR + "= '" + minor + "'";
+                + BEACON_MINOR + "= '" + minor + "'");
 
-        db.rawQuery(query, null);
         Log.d(TAG, "Timestamp updated ");
 
     }
