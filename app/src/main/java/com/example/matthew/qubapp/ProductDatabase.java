@@ -1,5 +1,6 @@
 package com.example.matthew.qubapp;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,6 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class ProductDatabase extends SQLiteOpenHelper {
 
+    private static ProductDatabase instance = null;
 
     public static final String DATABASE_NAME = "ProductDatabase.db";
 
@@ -39,8 +41,15 @@ public class ProductDatabase extends SQLiteOpenHelper {
 
     public SQLiteDatabase db;
 
+    public static synchronized ProductDatabase getInstance(Context context){
+        if (instance == null){
+            instance = new ProductDatabase(context.getApplicationContext());
+        }
 
-    public ProductDatabase(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+        return instance;
+    }
+
+    private ProductDatabase(Context context) {
         super(context, DATABASE_NAME, null, 7);
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -164,8 +173,7 @@ public class ProductDatabase extends SQLiteOpenHelper {
         return dbString;
     }
 
-    public Cursor getSomeRows() {
-        String where = null;
+    public Cursor getAllRows() {
         db = this.getReadableDatabase();
         Cursor c = db.rawQuery("Select distinct " + PRODUCT_ID + " as _id, " + PRODUCT_NAME + ", " + PRODUCT_BRAND + ", " + PRODUCT_PRICE + ", " + PRODUCT_RRP + ", " + PRODUCT_SAVING + " from " + TABLE_NAME_PRODUCT, null);
         if (c != null) {
@@ -190,6 +198,5 @@ public class ProductDatabase extends SQLiteOpenHelper {
             return error;
         }
     }
-
 
 }

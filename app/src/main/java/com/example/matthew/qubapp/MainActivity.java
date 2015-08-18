@@ -2,6 +2,8 @@ package com.example.matthew.qubapp;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,18 +11,15 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.jaalee.sdk.Utils;
@@ -31,11 +30,13 @@ import com.jaalee.sdk.*;
 import com.jaalee.sdk.Beacon;
 import com.jaalee.sdk.utils.L;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
     private static final int ZBAR_SCANNER_REQUEST = 0;
     private static final int ZBAR_QR_SCANNER_REQUEST = 1;
@@ -50,10 +51,12 @@ public class MainActivity extends Activity {
     OfferDatabase myOfferDB;
     SQLiteDatabase db;
     ListView myListView;
-    ImageButton barcode;
+    ImageButton barcodeButton;
     TextView scanFrom;
     private BeaconListAdapter adapter;
     AppDatabase appDb;
+    ImageButton gpsButton;
+    ImageButton beaconButton;
 
 
 
@@ -62,24 +65,22 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(savedInstanceState == null) {
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            ProductListFragment productListFragment = new ProductListFragment();
+            fragmentTransaction.add(R.id.list_fragment_container, productListFragment);
+            fragmentTransaction.commit();
+        }
 
+        gpsButton = (ImageButton) findViewById(R.id.imageButtonGPS);
+        barcodeButton = (ImageButton) findViewById(R.id.imageButtonBeacon);
+        beaconButton = (ImageButton)findViewById(R.id.imageButtonBeacon);
 
-
-        barcode = (ImageButton) findViewById(R.id.imageButtonBarcode);
-        scanFrom = (TextView) findViewById(R.id.textViewScanFrom);
-        findViewById(R.id.imageButtonBeacon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ListBeaconActivity.class);
-                intent.putExtra(ListBeaconActivity.EXTRAS_TARGET_ACTIVITY, NotifyDemoActivity.class.getName());
-                startActivity(intent);
-            }
-        });
-        myProductDB = new ProductDatabase(this, null, null, 7);
-        myOfferDB = new OfferDatabase(this, null, null, 1);
-        appDb = new AppDatabase(this, null, null, 1);
-        populateListView();
-
+        myProductDB = ProductDatabase.getInstance(this);
+        myOfferDB = OfferDatabase.getInstance(this);
+        appDb = AppDatabase.getInstance(this);
+       // populateListView();
         adapter = new BeaconListAdapter(this);
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -111,11 +112,7 @@ public class MainActivity extends Activity {
                         }
                     });
                 }
-
-
             });
-
-
 
         L.enableDebugLogging(true);
     }
@@ -127,7 +124,6 @@ public class MainActivity extends Activity {
 //    	only detect the BeaconHelper of Jaalee
 //    	if ( beacon.getProximityUUID().equalsIgnoreCase(JAALEE_BEACON_PROXIMITY_UUID) )
             {
-                Log.i("JAALEE", "JAALEE:"+beacon.getBattLevel());
                 filteredBeacons.add(beacon);
             }
         }
@@ -163,20 +159,20 @@ public class MainActivity extends Activity {
         });
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-
-        return super.onOptionsItemSelected(item);
-    }
+//
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//
+//
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item)
+//    {
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
 
     public void queryDatabase() {
@@ -186,17 +182,17 @@ public class MainActivity extends Activity {
     }
 
 
-    private void populateListView() {
-
-        Cursor cursor = myProductDB.getSomeRows();
-
-        String[] fromFieldNames = new String[]{ProductDatabase.PRODUCT_NAME,  ProductDatabase.PRODUCT_PRICE, ProductDatabase.PRODUCT_RRP, ProductDatabase.PRODUCT_SAVING};
-        int[] toViewIDs = new int[]{R.id.textViewProductDes, R.id.textViewPrice, R.id.textViewRRP, R.id.textViewSaving};
-        SimpleCursorAdapter myCursorAdapter;
-        myCursorAdapter = new SimpleCursorAdapter(getBaseContext(), R.layout.offer_list_layout, cursor, fromFieldNames, toViewIDs, 0);
-        myListView = (ListView) findViewById(R.id.listViewFromDB);
-        myListView.setAdapter(myCursorAdapter);
-    }
+//    private void populateListView() {
+//
+//        Cursor cursor = myProductDB.getSomeRows();
+//
+//        String[] fromFieldNames = new String[]{ProductDatabase.PRODUCT_NAME,  ProductDatabase.PRODUCT_PRICE, ProductDatabase.PRODUCT_RRP, ProductDatabase.PRODUCT_SAVING};
+//        int[] toViewIDs = new int[]{R.id.textViewProductDes, R.id.textViewPrice, R.id.textViewRRP, R.id.textViewSaving};
+//        SimpleCursorAdapter myCursorAdapter;
+//        myCursorAdapter = new SimpleCursorAdapter(getBaseContext(), R.layout.offer_list_layout, cursor, fromFieldNames, toViewIDs, 0);
+//        myListView = (ListView) findViewById(R.id.listViewProducts);
+//        myListView.setAdapter(myCursorAdapter);
+//    }
 
 
 
@@ -207,6 +203,24 @@ public class MainActivity extends Activity {
         } else {
             Toast.makeText(this, "Rear Facing Camera Unavailable", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void beaconButtonOnClick(View v) {
+
+        FragmentManager fragmentManager2 = getFragmentManager();
+        FragmentTransaction fragmentTransaction2 = fragmentManager2.beginTransaction();
+        PreviousOffersFragment previousOffersFragment = new PreviousOffersFragment();
+        fragmentTransaction2.replace(R.id.list_fragment_container, previousOffersFragment);
+        fragmentTransaction2.commit();
+    }
+
+    public void GPSButtonOnClick(View v) {
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        ProductListFragment productListFragment = new ProductListFragment();
+        fragmentTransaction.replace(R.id.list_fragment_container, productListFragment);
+        fragmentTransaction.commit();
     }
 
     public boolean isCameraAvailable() {
@@ -221,8 +235,15 @@ public class MainActivity extends Activity {
             case ZBAR_QR_SCANNER_REQUEST:
                 if (resultCode == RESULT_OK) {
                     String result = data.getStringExtra(ZBarConstants.SCAN_RESULT);
-                    String product = myProductDB.barcodeQueryDatabase(result);
-                    Toast.makeText(this, "Product = " + product, Toast.LENGTH_SHORT).show();
+                    //String product = myProductDB.barcodeQueryDatabase(result);
+
+                    FragmentManager fragmentManager1 = getFragmentManager();
+                    FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
+                    BarcodeProductFragment barcodeProductFragment = new BarcodeProductFragment();
+                    fragmentTransaction1.replace(R.id.list_fragment_container, barcodeProductFragment);
+                    fragmentTransaction1.commit();
+
+                    //Toast.makeText(this, "Product = " + product, Toast.LENGTH_SHORT).show();
                 } else if(resultCode == RESULT_CANCELED && data != null) {
                     String error = data.getStringExtra(ZBarConstants.ERROR_INFO);
                     if(!TextUtils.isEmpty(error)) {
@@ -281,25 +302,27 @@ public class MainActivity extends Activity {
                     long tsLong = (System.currentTimeMillis() / 1000);
                     String UUID = beacon.getProximityUUID().toString();
                     Boolean beaconFound = appDb.beaconQueryDatabase(UUID, beacon.getMajor(), beacon.getMinor());
+                    String pattern = "dd/MM/yyyy";
+                    SimpleDateFormat format = new SimpleDateFormat(pattern);
+                    String date = format.format(new Date());
 
                     if (!beaconFound) {
 
-                            Toast.makeText(getApplicationContext(), "" + myOfferDB.getOffer(UUID, beacon.getMajor(), beacon.getMinor()), Toast.LENGTH_LONG).show();
                             String distance = String.format("(%.2fm)", Utils.computeAccuracy(beacon));
-                            Log.d("DISTANCE", "DIstance: " + distance);
+                            Log.d("DISTANCE", "Distance: " + distance);
                             appDb.insertBeacon(UUID, beacon.getMajor(), beacon.getMinor(), tsLong);
+                            appDb.insertBeaconOffer(date, beacon.getMinor(), myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()), myOfferDB.getOfferStore(UUID, beacon.getMajor(), beacon.getMinor()));
                             beaconManager.stopMonitoring(beaconRegion);
                             connectToService();
 
                         if(isAppInForeground(getApplicationContext())){
-                            Toast.makeText(getApplicationContext(), "" + myOfferDB.getOffer(UUID, beacon.getMajor(), beacon.getMinor()), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "" + myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()), Toast.LENGTH_LONG).show();
                         }else{
-                            postNotification(myOfferDB.getOffer(UUID, beacon.getMajor(), beacon.getMinor()));
+                            postNotification(myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()));
                         }
 
 
                     } else if (beaconFound) {
-
 
                         long timestamp = appDb.getTimestamp(UUID, beacon.getMajor(), beacon.getMinor());
                         Log.d("TIMESTAMP", "Timestamp: " + timestamp);
@@ -307,14 +330,16 @@ public class MainActivity extends Activity {
                         Log.d("DISTANCE", "DIstance: " + distance);
                         if ((System.currentTimeMillis() / 1000) - timestamp >= 30) {
 
-                                appDb.updateTimestamp(UUID, beacon.getMajor(), beacon.getMinor());
-                                beaconManager.stopMonitoring(beaconRegion);
-                                connectToService();
+                            appDb.updateTimestamp(UUID, beacon.getMajor(), beacon.getMinor());
+                            appDb.insertBeaconOffer(date, beacon.getMinor(), myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()), myOfferDB.getOfferStore(UUID, beacon.getMajor(), beacon.getMinor()));
+                            Log.d("OFFER", "OFFER INSERTED!!!");
+                            beaconManager.stopMonitoring(beaconRegion);
+                            connectToService();
 
                             if(isAppInForeground(getApplicationContext())){
-                                Toast.makeText(getApplicationContext(), "" + myOfferDB.getOffer(UUID, beacon.getMajor(), beacon.getMinor()), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "" + myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()), Toast.LENGTH_LONG).show();
                             }else{
-                                postNotification(myOfferDB.getOffer(UUID, beacon.getMajor(), beacon.getMinor()));
+                                postNotification(myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()));
                             }
 
                         } else {
