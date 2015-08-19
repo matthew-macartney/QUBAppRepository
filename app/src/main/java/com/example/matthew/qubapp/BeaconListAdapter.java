@@ -42,6 +42,10 @@ public class BeaconListAdapter extends BaseAdapter {
         return beacons.get(position);
     }
 
+    public void clear(){
+        beacons.clear();
+    }
+
     @Override
     public long getItemId(int position) {
         return position;

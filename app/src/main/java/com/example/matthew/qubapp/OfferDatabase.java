@@ -23,7 +23,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
     public static final String OFFER_UUID = "UUID";
     public static final String OFFER_MAJOR = "MAJOR";
     public static final String OFFER_MINOR = "MINOR";
-
+    public static final String OFFER_MAX_DISTANCE = "DISTANCE";
 
     public SQLiteDatabase db;
 
@@ -47,6 +47,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues.put(OFFER_UUID,"ebefd083-70a2-47c8-9837-e7b5634df524");
         contentValues.put(OFFER_MAJOR, 1);
         contentValues.put(OFFER_MINOR, 1);
+        contentValues.put(OFFER_MAX_DISTANCE, 2);
         db.insert(TABLE_NAME_OFFER, null, contentValues);
 
         contentValues.put(OFFER_DESCRIPTION, "2 for 1 on Heineken beers in store just for you!");
@@ -54,13 +55,23 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues.put(OFFER_UUID,"ebefd083-70a2-47c8-9837-e7b5634df524");
         contentValues.put(OFFER_MAJOR, 1);
         contentValues.put(OFFER_MINOR, 2);
+        contentValues.put(OFFER_MAX_DISTANCE, 2);
+        db.insert(TABLE_NAME_OFFER, null, contentValues);
+
+        contentValues.put(OFFER_DESCRIPTION, "Half price chocolate in store just for you!");
+        contentValues.put(OFFER_STORE, "Asda");
+        contentValues.put(OFFER_UUID,"ebefd083-70a2-47c8-9837-e7b5634df524");
+        contentValues.put(OFFER_MAJOR, 1);
+        contentValues.put(OFFER_MINOR, 3);
+        contentValues.put(OFFER_MAX_DISTANCE, 2);
         db.insert(TABLE_NAME_OFFER, null, contentValues);
 
 
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE_NAME_OFFER + " (_id INTEGER PRIMARY KEY, DESCRIPTION TEXT, STORE TEXT, UUID TEXT, MAJOR TEXT, MINOR TEXT);");
+        db.execSQL("CREATE TABLE " + TABLE_NAME_OFFER + " (_id INTEGER PRIMARY KEY, DESCRIPTION TEXT, STORE TEXT, " +
+                "UUID TEXT, MAJOR TEXT, MINOR TEXT, DISTANCE TEXT);");
     }
 
     @Override
@@ -110,5 +121,20 @@ public class OfferDatabase extends SQLiteOpenHelper {
         cs.moveToFirst();
         offerStore = cs.getString(cs.getColumnIndex(OFFER_STORE));
         return offerStore;
+    }
+
+    public int getOfferDistance(String UUID, int major, int minor){
+
+        int offerDistance;
+        db = this.getReadableDatabase();
+        String query = "SELECT " + OFFER_MAX_DISTANCE + " FROM " + TABLE_NAME_OFFER + " WHERE "
+                +  OFFER_UUID + " = '" + UUID + "' AND "
+                + OFFER_MAJOR + " = '" + major + "' AND "
+                + OFFER_MINOR + "= '" + minor +"'";
+
+        Cursor cs = db.rawQuery(query, null);
+        cs.moveToFirst();
+        offerDistance = cs.getInt(cs.getColumnIndex(OFFER_MAX_DISTANCE));
+        return offerDistance;
     }
 }
