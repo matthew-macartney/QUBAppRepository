@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 /**
  * Created by Matthew on 22/07/2015.
  */
@@ -88,7 +90,7 @@ public class ProductDatabase extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_RRP, 30);
         contentValues.put(PRODUCT_PRICE, 15);
         contentValues.put(PRODUCT_SAVING, 50);
-        contentValues.put(PRODUCT_CODE, "0123456789005");
+        contentValues.put(PRODUCT_CODE, "123456789005");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
         contentValues.put(PRODUCT_NAME, "Red Herring Men's Brown Leather Shoes");
@@ -106,7 +108,7 @@ public class ProductDatabase extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_RRP, 400);
         contentValues.put(PRODUCT_PRICE, 280);
         contentValues.put(PRODUCT_SAVING, 30);
-        contentValues.put(PRODUCT_CODE, "0850006000012");
+        contentValues.put(PRODUCT_CODE, "850006000012");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
         contentValues.put(PRODUCT_NAME, "Lego Ultra Agents Stealth Patrol");
@@ -115,7 +117,7 @@ public class ProductDatabase extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_RRP, 40);
         contentValues.put(PRODUCT_PRICE, 24);
         contentValues.put(PRODUCT_SAVING, 40);
-        contentValues.put(PRODUCT_CODE, "0671860013624");
+        contentValues.put(PRODUCT_CODE, "671860013624");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
         contentValues.put(PRODUCT_NAME, "Canon Black Powershot sx610 Camera");
@@ -133,7 +135,7 @@ public class ProductDatabase extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_RRP, 269);
         contentValues.put(PRODUCT_PRICE, 209);
         contentValues.put(PRODUCT_SAVING, 22);
-        contentValues.put(PRODUCT_CODE, "0123456789012");
+        contentValues.put(PRODUCT_CODE, "123456789012");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
         contentValues.put(PRODUCT_NAME, "Jeff Banks Charcoal 2 Button Suit Jacket");
@@ -182,21 +184,21 @@ public class ProductDatabase extends SQLiteOpenHelper {
         return c;
     }
 
-    public String barcodeQueryDatabase(String barcode) {
-        String error = "Please try again!";
-        String dbString;
+    public ArrayList<String> barcodeQueryDatabase(String barcode) {
+
+        ArrayList<String> dbString = new ArrayList<>();
         db = this.getReadableDatabase();
-        String query = "SELECT " + PRODUCT_NAME + " FROM " + TABLE_NAME_PRODUCT + " WHERE " + PRODUCT_CODE + "= '" + barcode + "'";
+        String query = "SELECT " + PRODUCT_NAME + ", "+ PRODUCT_RRP + ", " + PRODUCT_PRICE + ", " + PRODUCT_SAVING + " FROM " + TABLE_NAME_PRODUCT + " WHERE " + PRODUCT_CODE + "= '" + barcode + "'";
 
         Cursor cs = db.rawQuery(query, null);
         cs.moveToFirst();
-        dbString = cs.getString(cs.getColumnIndex(PRODUCT_NAME));
+        dbString.add(0, cs.getString(cs.getColumnIndex(PRODUCT_NAME)));
+        dbString.add(1, cs.getString(cs.getColumnIndex(PRODUCT_RRP)));
+        dbString.add(2, cs.getString(cs.getColumnIndex(PRODUCT_PRICE)));
+        dbString.add(3, cs.getString(cs.getColumnIndex(PRODUCT_SAVING)));
 
-        if (dbString != null) {
-            return dbString;
-        } else {
-            return error;
-        }
+        return dbString;
     }
+
 
 }

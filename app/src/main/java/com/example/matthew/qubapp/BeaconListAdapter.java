@@ -53,8 +53,7 @@ public class BeaconListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        view = inflateIfRequired(view, position, parent);
-        bind(getItem(position), view);
+
         return view;
     }
 
@@ -68,13 +67,6 @@ public class BeaconListAdapter extends BaseAdapter {
         holder.BattTextView.setText("Batt: " + beacon.getBattLevel());
     }
 
-    private View inflateIfRequired(View view, int position, ViewGroup parent) {
-        if (view == null) {
-            view = inflater.inflate(R.layout.device_item, null);
-            view.setTag(new ViewHolder(view));
-        }
-        return view;
-    }
 
     static class ViewHolder {
         final TextView macTextView;

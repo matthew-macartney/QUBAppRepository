@@ -44,14 +44,11 @@ public class ListBeaconActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         // Configure device list.
         adapter = new BeaconListAdapter(this);
-        ListView list = (ListView) findViewById(R.id.device_list);
-        list.setAdapter(adapter);
-        list.setOnItemClickListener(createOnItemClickListener());
+
 
         // Configure verbose debug logging.
         L.enableDebugLogging(false);
@@ -92,9 +89,7 @@ public class ListBeaconActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.scan_menu, menu);
-        MenuItem refreshItem = menu.findItem(R.id.refresh);
-        refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
+
         return true;
     }
 

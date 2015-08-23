@@ -1,75 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:paddingBottom="3dp">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/textViewRRP"
-        android:textSize="14dp"
-        android:layout_below="@+id/textViewProductDes"
-        android:layout_alignStart="@+id/textViewProductDes" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/textViewPrice"
-        android:textSize="20dp"
-        android:singleLine="false"
-        android:paddingTop="3dp"
-        android:paddingBottom="3dp"
-        android:textColor="#ffee222c"
-        android:layout_below="@+id/textViewRRP"
-        android:layout_alignStart="@+id/textViewRRP" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/textViewSaving"
-        android:textSize="14dp"
-        android:layout_below="@+id/textViewPrice"
-        android:layout_alignStart="@+id/textViewPrice"
-        android:paddingBottom="3dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="View >"
-        android:id="@+id/textView4"
-        android:textSize="14dp"
-        android:layout_marginEnd="17dp"
-        android:layout_below="@+id/imageViewProduct"
-        android:layout_alignParentEnd="true"
-        android:paddingBottom="3dp" />
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
     <ImageView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/imageView4"
+        android:src="@drawable/tesco_icon"
+        android:layout_marginLeft="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageViewProduct"
-        android:src="@drawable/ic_launcher"
-        android:layout_marginStart="31dp"
-        android:layout_alignBottom="@+id/textViewPrice"
-        android:layout_alignParentStart="true" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/textViewProductDes"
+        android:layout_alignTop="@+id/imageView4"
+        android:layout_toEndOf="@+id/imageView4"
+        android:textColor="#ff000000"
+        android:paddingLeft="12dp"
+        android:paddingTop="0dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/textViewProductDes"
-        android:textSize="22dp"
-        android:paddingTop="3dp"
-        android:paddingBottom="3dp"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/imageViewProduct"
-        android:layout_marginStart="28dp" />
+        android:id="@+id/textViewPrice"
+        android:layout_below="@+id/textViewProductDes"
+        android:layout_toEndOf="@+id/imageView4"
+        android:textColor="#ffff0b12"
+        android:paddingLeft="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/textViewSaving"
+        android:layout_below="@+id/textViewPrice"
+        android:layout_toEndOf="@+id/imageView4"
+        android:singleLine="true"
+        android:textColor="#ff000000"
+        android:paddingLeft="12dp"
+        android:paddingBottom="8dp" />
 
 </RelativeLayout>

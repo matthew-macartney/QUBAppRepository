@@ -3,24 +3,40 @@
     xmlns:uses-permissionandroid="http://schemas.android.com/tools"
     package="com.example.matthew.qubapp"
     android:versionCode="1"
-    android:versionName="1.0">
-    <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="22"/>
+    android:versionName="1.0" >
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera"/>
+    <uses-sdk
+        android:minSdkVersion="18"
+        android:targetSdkVersion="22" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
     <!-- Needed permissions in order to scan for beacons. -->
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <!-- Declaration that this app is usable on phones with Bluetooth Low Energy. -->
-    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <!--
+ The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but are recommended.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
-        android:theme="@style/Theme.MyStyle">
+        android:theme="@style/Theme.MyStyle" >
         <activity
             android:name=".MainActivity"
             android:label="Bargain Buddy" >
@@ -31,23 +47,35 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="application/com.example.android.beam" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ListBeaconActivity"
-            android:label="Select Beacon"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".NotifyDemoActivity"
-            android:label="Notify Demo"
-            android:screenOrientation="portrait"/>
+            android:label="Select Beacon" />
+        <activity
+            android:name=".SimpleScannerActivity"
+            android:label="Scanning..." />
 
         <!-- Jaalee service responsible for scanning beacons. -->
-        <service android:name="com.jaalee.sdk.service.BeaconService"
-            android:exported="false"/>
+        <service
+            android:name="com.jaalee.sdk.service.BeaconService"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyA2b1Jgul6Ef1tJ8o_mp0l5tZkRnib4X6Y" />
+
+        <activity
+            android:name=".BarcodeProductActivity"
+            android:label="@string/title_activity_barcode_product" >
+        </activity>
     </application>
 
 </manifest>

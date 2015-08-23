@@ -15,8 +15,8 @@ public class OfferDatabase extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "OfferDatabase.db";
 
-     //Offer Table
-    public static final String TABLE_NAME_OFFER  = "offer_table";
+     //Beacon Offers Table
+    public static final String TABLE_NAME_BEACON_OFFER = "offer_table";
     public static final String OFFER_ID = "_id";
     public static final String OFFER_DESCRIPTION = "DESCRIPTION";
     public static final String OFFER_STORE = "STORE";
@@ -24,6 +24,13 @@ public class OfferDatabase extends SQLiteOpenHelper {
     public static final String OFFER_MAJOR = "MAJOR";
     public static final String OFFER_MINOR = "MINOR";
     public static final String OFFER_MAX_DISTANCE = "DISTANCE";
+
+    //General Offers Table
+    public static final String TABLE_NAME_GENERAL_OFFER = "general_offer_table";
+    public static final String OFFER_NAME = "NAME";
+    public static final String OFFER_SHOP = "SHOP";
+    public static final String LOCATION = "CO_ORDINATES";
+    public static final String OFFER_EXPIRY = "EXPIRY";
 
     public SQLiteDatabase db;
 
@@ -35,9 +42,8 @@ public class OfferDatabase extends SQLiteOpenHelper {
         return instance;
     }
 
-
     private OfferDatabase(Context context) {
-        super(context, DATABASE_NAME, null, 7);
+        super(context, DATABASE_NAME, null, 8);
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -48,7 +54,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues.put(OFFER_MAJOR, 1);
         contentValues.put(OFFER_MINOR, 1);
         contentValues.put(OFFER_MAX_DISTANCE, 2);
-        db.insert(TABLE_NAME_OFFER, null, contentValues);
+        db.insert(TABLE_NAME_BEACON_OFFER, null, contentValues);
 
         contentValues.put(OFFER_DESCRIPTION, "2 for 1 on Heineken beers in store just for you!");
         contentValues.put(OFFER_STORE, "Asda");
@@ -56,7 +62,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues.put(OFFER_MAJOR, 1);
         contentValues.put(OFFER_MINOR, 2);
         contentValues.put(OFFER_MAX_DISTANCE, 2);
-        db.insert(TABLE_NAME_OFFER, null, contentValues);
+        db.insert(TABLE_NAME_BEACON_OFFER, null, contentValues);
 
         contentValues.put(OFFER_DESCRIPTION, "Half price chocolate in store just for you!");
         contentValues.put(OFFER_STORE, "Asda");
@@ -64,19 +70,29 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues.put(OFFER_MAJOR, 1);
         contentValues.put(OFFER_MINOR, 3);
         contentValues.put(OFFER_MAX_DISTANCE, 2);
-        db.insert(TABLE_NAME_OFFER, null, contentValues);
+        db.insert(TABLE_NAME_BEACON_OFFER, null, contentValues);
+
+        ContentValues contentValues2 = new ContentValues();
+
+        contentValues2.put(OFFER_NAME, "2");
+        contentValues2.put(OFFER_SHOP, "2");
+        contentValues2.put(OFFER_EXPIRY, "2");
+        contentValues2.put(LOCATION, "2");
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
 
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE_NAME_OFFER + " (_id INTEGER PRIMARY KEY, DESCRIPTION TEXT, STORE TEXT, " +
+        db.execSQL("CREATE TABLE " + TABLE_NAME_BEACON_OFFER + " (_id INTEGER PRIMARY KEY, DESCRIPTION TEXT, STORE TEXT, " +
                 "UUID TEXT, MAJOR TEXT, MINOR TEXT, DISTANCE TEXT);");
+        db.execSQL("CREATE TABLE " + TABLE_NAME_GENERAL_OFFER + " (_id INTEGER PRIMARY KEY, NAME TEXT, SHOP TEXT, " +
+                "EXPIRY TEXT, CO_ORDINATES TEXT);");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_OFFER);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_BEACON_OFFER);
 
         onCreate(db);
     }
@@ -84,7 +100,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
     public String databaseToString(){
         String dbString;
         db = this.getReadableDatabase();
-        String query = "SELECT " + OFFER_DESCRIPTION + " FROM " + TABLE_NAME_OFFER + " WHERE " + OFFER_MINOR + "= '1';";
+        String query = "SELECT " + OFFER_DESCRIPTION + " FROM " + TABLE_NAME_BEACON_OFFER + " WHERE " + OFFER_MINOR + "= '1';";
 
         Cursor cs = db.rawQuery(query, null);
         cs.moveToFirst();
@@ -97,7 +113,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
 
         String offerDes = null;
         db = this.getReadableDatabase();
-        String query = "SELECT " + OFFER_DESCRIPTION + " FROM " + TABLE_NAME_OFFER + " WHERE "
+        String query = "SELECT " + OFFER_DESCRIPTION + " FROM " + TABLE_NAME_BEACON_OFFER + " WHERE "
                 +  OFFER_UUID + " = '" + UUID + "' AND "
                 + OFFER_MAJOR + " = '" + major + "' AND "
                 + OFFER_MINOR + "= '" + minor +"'";
@@ -112,7 +128,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
 
         String offerStore = null;
         db = this.getReadableDatabase();
-        String query = "SELECT " + OFFER_STORE + " FROM " + TABLE_NAME_OFFER + " WHERE "
+        String query = "SELECT " + OFFER_STORE + " FROM " + TABLE_NAME_BEACON_OFFER + " WHERE "
                 +  OFFER_UUID + " = '" + UUID + "' AND "
                 + OFFER_MAJOR + " = '" + major + "' AND "
                 + OFFER_MINOR + "= '" + minor +"'";
@@ -127,7 +143,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
 
         int offerDistance;
         db = this.getReadableDatabase();
-        String query = "SELECT " + OFFER_MAX_DISTANCE + " FROM " + TABLE_NAME_OFFER + " WHERE "
+        String query = "SELECT " + OFFER_MAX_DISTANCE + " FROM " + TABLE_NAME_BEACON_OFFER + " WHERE "
                 +  OFFER_UUID + " = '" + UUID + "' AND "
                 + OFFER_MAJOR + " = '" + major + "' AND "
                 + OFFER_MINOR + "= '" + minor +"'";

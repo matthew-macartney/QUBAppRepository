@@ -15,7 +15,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.text.TextUtils;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -24,8 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.jaalee.sdk.Utils;
 
-import com.dm.zbar.android.scanner.ZBarConstants;
-import com.dm.zbar.android.scanner.ZBarScannerActivity;
+
 import com.jaalee.sdk.*;
 import com.jaalee.sdk.Beacon;
 import com.jaalee.sdk.utils.L;
@@ -34,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends FragmentActivity {
@@ -46,6 +46,13 @@ public class MainActivity extends FragmentActivity {
     private static final int REQUEST_ENABLE_BT = 1234;
     Region openRegion = new Region("rid", null, null, null);
     private NotificationManager notificationManager;
+
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    private String code;
 
     private BeaconManager beaconManager;
 
@@ -70,8 +77,8 @@ public class MainActivity extends FragmentActivity {
         if(savedInstanceState == null) {
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            ProductListFragment productListFragment = new ProductListFragment();
-            fragmentTransaction.add(R.id.list_fragment_container, productListFragment);
+            OfferListFragment productListFragment = new OfferListFragment();
+            fragmentTransaction.add(R.id.fragment_container, productListFragment);
             fragmentTransaction.commit();
         }
 
@@ -88,7 +95,8 @@ public class MainActivity extends FragmentActivity {
 
         // Configure BeaconManager.
         beaconManager = new BeaconManager(this);
-        beaconManager.setBackgroundScanPeriod(1, 0);
+        beaconManager.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 0);
+        beaconManager.setForegroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 0);
         List<Beacon> JaaleeBeacons;
         connectToService();
 
@@ -153,13 +161,6 @@ public class MainActivity extends FragmentActivity {
 //        return super.onOptionsItemSelected(item);
 //    }
 
-
-    public void queryDatabase() {
-        String dbString = myOfferDB.databaseToString();
-        scanFrom.setText(dbString);
-
-    }
-
     public void listenForBeacons(){
         beaconManager.setRangingListener(new RangingListener() {
 
@@ -176,7 +177,7 @@ public class MainActivity extends FragmentActivity {
                         List<Beacon> JaaleeBeacons = filterBeacons(beacons);
                         adapter.replaceWith(JaaleeBeacons);
 
-                        if(adapter.getCount()>0){
+                        if(JaaleeBeacons.size()>0){
                             //beaconManager.stopRanging(openRegion);
                             final Beacon beacon = adapter.getItem(0);
                             startMonitoring(beacon);
@@ -204,12 +205,8 @@ public class MainActivity extends FragmentActivity {
 
 
     public void barcodeButtonOnClick(View v) {
-        if (isCameraAvailable()) {
-            Intent intent = new Intent(this, ZBarScannerActivity.class);
-            startActivityForResult(intent, ZBAR_SCANNER_REQUEST);
-        } else {
-            Toast.makeText(this, "Rear Facing Camera Unavailable", Toast.LENGTH_SHORT).show();
-        }
+        Intent intent = new Intent(this, SimpleScannerActivity.class);
+        startActivity(intent);
     }
 
     public void beaconButtonOnClick(View v) {
@@ -217,7 +214,7 @@ public class MainActivity extends FragmentActivity {
         FragmentManager fragmentManager2 = getFragmentManager();
         FragmentTransaction fragmentTransaction2 = fragmentManager2.beginTransaction();
         PreviousOffersFragment previousOffersFragment = new PreviousOffersFragment();
-        fragmentTransaction2.replace(R.id.list_fragment_container, previousOffersFragment);
+        fragmentTransaction2.replace(R.id.fragment_container, previousOffersFragment);
         fragmentTransaction2.commit();
     }
 
@@ -225,8 +222,8 @@ public class MainActivity extends FragmentActivity {
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        ProductListFragment productListFragment = new ProductListFragment();
-        fragmentTransaction.replace(R.id.list_fragment_container, productListFragment);
+        MapFragment mapFragment = new MapFragment();
+        fragmentTransaction.replace(R.id.fragment_container, mapFragment);
         fragmentTransaction.commit();
     }
 
@@ -237,28 +234,28 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case ZBAR_SCANNER_REQUEST:
-            case ZBAR_QR_SCANNER_REQUEST:
-                if (resultCode == RESULT_OK) {
-                    String result = data.getStringExtra(ZBarConstants.SCAN_RESULT);
-                    //String product = myProductDB.barcodeQueryDatabase(result);
-
-                    FragmentManager fragmentManager1 = getFragmentManager();
-                    FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
-                    BarcodeProductFragment barcodeProductFragment = new BarcodeProductFragment();
-                    fragmentTransaction1.replace(R.id.list_fragment_container, barcodeProductFragment);
-                    fragmentTransaction1.commit();
-
-                    //Toast.makeText(this, "Product = " + product, Toast.LENGTH_SHORT).show();
-                } else if(resultCode == RESULT_CANCELED && data != null) {
-                    String error = data.getStringExtra(ZBarConstants.ERROR_INFO);
-                    if(!TextUtils.isEmpty(error)) {
-                        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
-                    }
-                }
-                break;
-        }
+//        switch (requestCode) {
+//            case ZBAR_SCANNER_REQUEST:
+//            case ZBAR_QR_SCANNER_REQUEST:
+//                if (resultCode == RESULT_OK) {
+//                    String result = data.getStringExtra(ZBarConstants.SCAN_RESULT);
+//                    //String product = myProductDB.barcodeQueryDatabase(result);
+//
+//                    FragmentManager fragmentManager1 = getFragmentManager();
+//                    FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
+//                    BarcodeProductFragment barcodeProductFragment = new BarcodeProductFragment();
+//                    fragmentTransaction1.replace(R.id.list_fragment_container, barcodeProductFragment);
+//                    fragmentTransaction1.commit();
+//
+//                    //Toast.makeText(this, "Product = " + product, Toast.LENGTH_SHORT).show();
+//                } else if(resultCode == RESULT_CANCELED && data != null) {
+//                    String error = data.getStringExtra(ZBarConstants.ERROR_INFO);
+//                    if(!TextUtils.isEmpty(error)) {
+//                        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//                break;
+//        }
 
         if (requestCode == REQUEST_ENABLE_BT) {
             if (resultCode == Activity.RESULT_OK) {
@@ -277,22 +274,27 @@ public class MainActivity extends FragmentActivity {
 //    }
 
     private void postNotification(String msg) {
-        Intent notifyIntent = new Intent(MainActivity.this, NotifyDemoActivity.class);
-        notifyIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivities(
-                MainActivity.this,
+        Intent notifyIntent = new Intent(getApplicationContext(), MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                getApplicationContext(),
                 0,
-                new Intent[]{notifyIntent},
+                notifyIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-        Notification notification = new Notification.Builder(MainActivity.this)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+
+                builder.setTicker("New beacon offer received!")
                 .setSmallIcon(R.drawable.tag_icon)
                 .setContentTitle(msg)
                 .setContentText("Click to view offer")
                 .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-                .build();
+                .setContentIntent(pendingIntent);
+
+
+        Notification notification = builder.build();
+        notification.flags = notification.FLAG_AUTO_CANCEL;
         notification.defaults |= Notification.DEFAULT_SOUND;
         notification.defaults |= Notification.DEFAULT_LIGHTS;
+        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID, notification);
 
     }
@@ -316,10 +318,10 @@ public class MainActivity extends FragmentActivity {
 
                     if (!beaconFound) {
 
-                            double offerDistance = myOfferDB.getOfferDistance(UUID, beacon.getMajor(), beacon.getMinor());
-                            String distance = Double.toString(Utils.computeAccuracy(beacon));
-                            Log.d("DISTANCE", "Distance: " + distance);
-                        if(Utils.computeAccuracy(beacon) <= offerDistance) {
+                        double offerDistance = myOfferDB.getOfferDistance(UUID, beacon.getMajor(), beacon.getMinor());
+                        String distance = Double.toString(Utils.computeAccuracy(beacon));
+                        Log.d("DISTANCE", "Distance: " + distance);
+                        if (Utils.computeAccuracy(beacon) <= offerDistance) {
                             appDb.insertBeacon(UUID, beacon.getMajor(), beacon.getMinor(), tsLong);
                             appDb.insertBeaconOffer(date, beacon.getMinor(), myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()), myOfferDB.getOfferStore(UUID, beacon.getMajor(), beacon.getMinor()));
                             beaconManager.stopMonitoring(beaconRegion);
@@ -331,7 +333,7 @@ public class MainActivity extends FragmentActivity {
                             } else {
                                 postNotification(myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()));
                             }
-                        }else{
+                        } else {
                             beaconManager.stopMonitoring(beaconRegion);
 
                             connectToService();
@@ -352,9 +354,9 @@ public class MainActivity extends FragmentActivity {
                             beaconManager.stopMonitoring(beaconRegion);
                             connectToService();
 
-                            if(isAppInForeground(getApplicationContext())){
+                            if (isAppInForeground(getApplicationContext())) {
                                 Toast.makeText(getApplicationContext(), "" + myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()), Toast.LENGTH_LONG).show();
-                            }else{
+                            } else {
                                 postNotification(myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()));
                             }
 
@@ -395,6 +397,10 @@ public class MainActivity extends FragmentActivity {
                 .equalsIgnoreCase(
                         context.getPackageName());
     }
+
+
+
+
 
 
 }
