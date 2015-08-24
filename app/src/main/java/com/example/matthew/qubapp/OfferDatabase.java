@@ -31,10 +31,13 @@ public class OfferDatabase extends SQLiteOpenHelper {
     public static final String TABLE_NAME_GENERAL_OFFER = "general_offer_table";
     public static final String OFFER_NAME = "NAME";
     public static final String OFFER_SHOP = "SHOP";
-    public static final String LOCATION = "CO_ORDINATES";
     public static final String OFFER_EXPIRY = "EXPIRY";
+    public static final String OFFER_LAT = "LATITUDE";
+    public static final String OFFER_LON = "LONGITUDE";
 
     public SQLiteDatabase db;
+
+
 
     public static synchronized OfferDatabase getInstance(Context context){
         if (instance == null){
@@ -48,21 +51,11 @@ public class OfferDatabase extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, 8);
         SQLiteDatabase db = this.getWritableDatabase();
 
-
-    }
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-
-        db.execSQL("CREATE TABLE " + TABLE_NAME_BEACON_OFFER + " (_id INTEGER PRIMARY KEY, DESCRIPTION TEXT, STORE TEXT, " +
-                "UUID TEXT, MAJOR TEXT, MINOR TEXT, DISTANCE TEXT, EXPIRY TEXT);");
-        db.execSQL("CREATE TABLE " + TABLE_NAME_GENERAL_OFFER + " (_id INTEGER PRIMARY KEY, NAME TEXT, SHOP TEXT, " +
-                "EXPIRY TEXT, CO_ORDINATES TEXT);");
-
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(OFFER_DESCRIPTION, "2 for 1 pizzas in store just for you!");
         contentValues.put(OFFER_STORE, "Tesco");
-        contentValues.put(OFFER_UUID,"ebefd083-70a2-47c8-9837-e7b5634df524");
+        contentValues.put(OFFER_UUID, "ebefd083-70a2-47c8-9837-e7b5634df524");
         contentValues.put(OFFER_MAJOR, 1);
         contentValues.put(OFFER_MINOR, 1);
         contentValues.put(OFFER_MAX_DISTANCE, 2);
@@ -71,7 +64,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
 
         contentValues.put(OFFER_DESCRIPTION, "2 for 1 on Heineken beers in store just for you!");
         contentValues.put(OFFER_STORE, "Asda");
-        contentValues.put(OFFER_UUID,"ebefd083-70a2-47c8-9837-e7b5634df524");
+        contentValues.put(OFFER_UUID, "ebefd083-70a2-47c8-9837-e7b5634df524");
         contentValues.put(OFFER_MAJOR, 1);
         contentValues.put(OFFER_MINOR, 2);
         contentValues.put(OFFER_MAX_DISTANCE, 2);
@@ -80,7 +73,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
 
         contentValues.put(OFFER_DESCRIPTION, "Half price chocolate in store just for you!");
         contentValues.put(OFFER_STORE, "Asda");
-        contentValues.put(OFFER_UUID,"ebefd083-70a2-47c8-9837-e7b5634df524");
+        contentValues.put(OFFER_UUID, "ebefd083-70a2-47c8-9837-e7b5634df524");
         contentValues.put(OFFER_MAJOR, 1);
         contentValues.put(OFFER_MINOR, 3);
         contentValues.put(OFFER_MAX_DISTANCE, 2);
@@ -92,62 +85,82 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues2.put(OFFER_NAME, "20% off your main course");
         contentValues2.put(OFFER_SHOP, "Pizza Express");
         contentValues2.put(OFFER_EXPIRY, "21 October 2015");
-        contentValues2.put(LOCATION, "2");
+        contentValues2.put(OFFER_LAT, 54.550426);
+        contentValues2.put(OFFER_LON, -5.920730);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
         contentValues2.put(OFFER_NAME, "25% off your bill");
         contentValues2.put(OFFER_SHOP, "Nandos");
         contentValues2.put(OFFER_EXPIRY, "30 October 2015");
-        contentValues2.put(LOCATION, "2");
+        contentValues2.put(OFFER_LAT, 54.550426);
+        contentValues2.put(OFFER_LON, -5.920730);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
         contentValues2.put(OFFER_NAME, "2 for 1 on selected bestsellers");
         contentValues2.put(OFFER_SHOP, "Waterstones");
         contentValues2.put(OFFER_EXPIRY, "27 September 2015");
-        contentValues2.put(LOCATION, "2");
+        contentValues2.put(OFFER_LAT, 54.550426);
+        contentValues2.put(OFFER_LON, -5.920730);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
         contentValues2.put(OFFER_NAME, "15% off all fragrances");
         contentValues2.put(OFFER_SHOP, "Boots");
         contentValues2.put(OFFER_EXPIRY, "3 October 2015");
-        contentValues2.put(LOCATION, "2");
+        contentValues2.put(OFFER_LAT, 54.550426);
+        contentValues2.put(OFFER_LON, -5.920730);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
         contentValues2.put(OFFER_NAME, "20% off in-store");
         contentValues2.put(OFFER_SHOP, "The Body Shop");
         contentValues2.put(OFFER_EXPIRY, "21 October 2015");
-        contentValues2.put(LOCATION, "2");
+        contentValues2.put(OFFER_LAT, 54.550426);
+        contentValues2.put(OFFER_LON, -5.920730);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
         contentValues2.put(OFFER_NAME, "10% off all men's trainers");
         contentValues2.put(OFFER_SHOP, "Footlocker");
         contentValues2.put(OFFER_EXPIRY, "15 October 2015");
-        contentValues2.put(LOCATION, "2");
+        contentValues2.put(OFFER_LAT, 54.550426);
+        contentValues2.put(OFFER_LON, -5.920730);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
         contentValues2.put(OFFER_NAME, "15% off all womanswear");
         contentValues2.put(OFFER_SHOP, "Next");
         contentValues2.put(OFFER_EXPIRY, "25 September 2015");
-        contentValues2.put(LOCATION, "2");
+        contentValues2.put(OFFER_LAT, 54.550426);
+        contentValues2.put(OFFER_LON, -5.920730);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
         contentValues2.put(OFFER_NAME, "10% off all homeware");
         contentValues2.put(OFFER_SHOP, "House of Fraser");
         contentValues2.put(OFFER_EXPIRY, "5 October 2015");
-        contentValues2.put(LOCATION, "2");
+        contentValues2.put(OFFER_LAT, 54.550426);
+        contentValues2.put(OFFER_LON, -5.920730);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
         contentValues2.put(OFFER_NAME, "30% off main courses");
         contentValues2.put(OFFER_SHOP, "Frankie & Benny's");
         contentValues2.put(OFFER_EXPIRY, "10 October 2015");
-        contentValues2.put(LOCATION, "2");
+        contentValues2.put(OFFER_LAT, 54.550426);
+        contentValues2.put(OFFER_LON, -5.920730);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
         contentValues2.put(OFFER_NAME, "20% off all gift sets");
         contentValues2.put(OFFER_SHOP, "Rituals");
         contentValues2.put(OFFER_EXPIRY, "31 October 2015");
-        contentValues2.put(LOCATION, "2");
+        contentValues2.put(OFFER_LAT, 54.550426);
+        contentValues2.put(OFFER_LON, -5.920730);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
+
+
+
+    }
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+
+        db.execSQL("CREATE TABLE " + TABLE_NAME_BEACON_OFFER + " (_id INTEGER PRIMARY KEY, DESCRIPTION TEXT, STORE TEXT, " +
+                "UUID TEXT, MAJOR TEXT, MINOR TEXT, DISTANCE TEXT, EXPIRY TEXT);");
+        db.execSQL("CREATE TABLE " + TABLE_NAME_GENERAL_OFFER + " (_id INTEGER PRIMARY KEY, NAME TEXT, SHOP TEXT, EXPIRY TEXT, LATITUDE FLOAT, LONGITUDE FLOAT);");
 
     }
 
@@ -254,6 +267,22 @@ public class OfferDatabase extends SQLiteOpenHelper {
 
 
         return details;
+    }
+
+    public ArrayList<Float> getCoordinates(String offer){
+
+        ArrayList<Float> coordinates = new ArrayList<>();
+        db = this.getReadableDatabase();
+
+        String query = "SELECT " + OFFER_LAT + ", " + OFFER_LON + " FROM "+  TABLE_NAME_GENERAL_OFFER + " WHERE " + OFFER_NAME + " = '" + offer + "'";
+        Cursor cs5 = db.rawQuery(query, null);
+        cs5.moveToFirst();
+
+        coordinates.add(0, cs5.getFloat(cs5.getColumnIndex(OFFER_LAT)));
+        coordinates.add(1, cs5.getFloat(cs5.getColumnIndex(OFFER_LON)));
+
+        return coordinates;
+
     }
 
 

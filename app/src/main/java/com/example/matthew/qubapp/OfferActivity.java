@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,14 +17,14 @@ public class OfferActivity extends Activity {
     TextView offerExpiry;
     OfferDatabase myOfferDB;
 
+    public String offer;
+    public String store;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer);
-        Intent intent = getIntent();
-        String name = intent.getStringExtra("Name");
-
 
         offerName = (TextView)findViewById(R.id.textViewOfferName12);
         offerShop = (TextView)findViewById(R.id.textViewShop);
@@ -31,10 +32,14 @@ public class OfferActivity extends Activity {
 
         myOfferDB = OfferDatabase.getInstance(getApplicationContext());
 
-
-        setOfferDetails(name);
-
-
+        Intent intent = getIntent();
+        if(intent.getStringExtra("Name") != null) {
+            offer = intent.getStringExtra("Name");
+            setOfferDetails(offer);
+        }else if(intent.getStringExtra("Offer")!= null){
+            offer = intent.getStringExtra("Offer");
+            setBeaconOfferDetails(offer);
+        }
     }
 
     @Override
@@ -59,14 +64,41 @@ public class OfferActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setOfferDetails(String name){
+    public void onMapButtonClick(View v){
 
-        ArrayList<String> details = myOfferDB.getOfferDetails(name);
+        Intent intent = new Intent(this, MapsActivity.class);
 
-        offerName.setText(name);
+        intent.putExtra("Name", offerName.getText());
+        //intent.putExtra("Store", store);
+        startActivity(intent);
+
+    }
+
+    public void setOfferDetails(String offer){
+
+        ArrayList<String> details = myOfferDB.getOfferDetails(offer);
+
+        this.offer = offer;
+        offerName.setText(offer);
         //offerShop.setText(offerDetails.get(0));
+        store = details.get(0);
         offerShop.setText(details.get(0));
         offerExpiry.setText(details.get(1));
 
     }
+
+    public void setBeaconOfferDetails(String offer){
+
+        ArrayList<String> details = myOfferDB.getBeaconOfferDetails(offer);
+
+        this.offer = offer;
+        offerName.setText(offer);
+        //offerShop.setText(offerDetails.get(0));
+        store = details.get(0);
+        offerShop.setText(details.get(0));
+        offerExpiry.setText(details.get(1));
+
+    }
+
+
 }

@@ -238,11 +238,8 @@ public class MainActivity extends FragmentActivity {
 
     public void onMapButtonClick(View v){
 
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        MapFragment mapFragment = new MapFragment();
-        fragmentTransaction.replace(R.id.fragment_container, mapFragment);
-        fragmentTransaction.commit();
+        Intent intent = new Intent(this, MapsActivity.class);
+        startActivity(intent);
 
     }
 
@@ -294,6 +291,7 @@ public class MainActivity extends FragmentActivity {
 
     private void postNotification(String msg) {
         Intent notifyIntent = new Intent(getApplicationContext(), OfferActivity.class);
+        notifyIntent.putExtra("Offer", msg);
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 getApplicationContext(),
                 0,
