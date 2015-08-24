@@ -9,14 +9,27 @@
         android:text="Discounts &amp; Offers Nearby"
         android:id="@+id/textView5"
         android:textColor="#ffffffff"
-        android:textSize="20dp"
+        android:textSize="16dp"
         android:paddingLeft="10dp"
-        android:paddingTop="5dp"
+        android:paddingTop="8dp"
         android:background="#ff1666ad"
-        android:paddingBottom="5dp" />
+        android:paddingBottom="8dp" />
 
     <ListView
         android:layout_width="wrap_content"
+        android:layout_height="435dp"
+        android:id="@+id/listViewProducts"
+        android:layout_weight="1"
+        android:background="#ffffff" />
+
+    <Button
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listViewProducts" />
+        android:text="Map"
+        android:id="@+id/buttonMap"
+        android:textSize="16dp"
+        android:background="#ff1666ad"
+        android:textColor="#ffffff"
+        android:onClick="onMapButtonClick" />
+
 </LinearLayout>

@@ -53,6 +53,7 @@ public class AppDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         db.execSQL("CREATE TABLE " + TABLE_NAME_BEACON + " (_id INTEGER PRIMARY KEY, UUID TEXT, MAJOR TEXT, MINOR TEXT, TIMESTAMP TEXT);");
         db.execSQL("CREATE TABLE " + TABLE_NAME_OFFER_RECEIVED + " (_id INTEGER PRIMARY KEY, DATE TEXT, MINOR TEXT, DESCRIPTION TEXT, STORE TEXT);");
     }
@@ -149,4 +150,6 @@ public class AppDatabase extends SQLiteOpenHelper {
         }
         return c;
     }
+
+
 }

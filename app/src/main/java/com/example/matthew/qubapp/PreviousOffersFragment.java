@@ -1,11 +1,14 @@
 package com.example.matthew.qubapp;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -37,6 +40,22 @@ public class PreviousOffersFragment extends Fragment {
         myCursorAdapter = new SimpleCursorAdapter(view.getContext(), R.layout.history_list_layout, cursor, fromFieldNames, toViewIDs, 0);
         previousOffers = (ListView) view.findViewById(R.id.listViewPreviousOffers);
         previousOffers.setAdapter(myCursorAdapter);
+
+        previousOffers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Cursor item = (Cursor) previousOffers.getItemAtPosition(position);
+                String offerName = item.getString(item.getColumnIndex(AppDatabase.OFFER_DES));
+
+                Log.d("OFFER BEACON RECEIVED", offerName);
+                Intent intent = new Intent(PreviousOffersFragment.this.getActivity(), PreviousOfferActivity.class);
+                intent.putExtra("Name", offerName);
+                startActivity(intent);
+            }
+
+        });
 
         return view;
     }

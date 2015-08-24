@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -66,6 +67,7 @@ public class MainActivity extends FragmentActivity {
     AppDatabase appDb;
     ImageButton gpsButton;
     ImageButton beaconButton;
+    Button mapButton;
 
 
 
@@ -85,6 +87,7 @@ public class MainActivity extends FragmentActivity {
         gpsButton = (ImageButton) findViewById(R.id.imageButtonGPS);
         barcodeButton = (ImageButton) findViewById(R.id.imageButtonBeacon);
         beaconButton = (ImageButton)findViewById(R.id.imageButtonBeacon);
+        mapButton = (Button) findViewById(R.id.buttonMap);
 
         myProductDB = ProductDatabase.getInstance(this);
         myOfferDB = OfferDatabase.getInstance(this);
@@ -220,11 +223,27 @@ public class MainActivity extends FragmentActivity {
 
     public void GPSButtonOnClick(View v) {
 
+//        FragmentManager fragmentManager = getFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        MapFragment mapFragment = new MapFragment();
+//        fragmentTransaction.replace(R.id.fragment_container, mapFragment);
+//        fragmentTransaction.commit();
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        OfferListFragment productListFragment = new OfferListFragment();
+        fragmentTransaction.replace(R.id.fragment_container, productListFragment);
+        fragmentTransaction.commit();
+    }
+
+    public void onMapButtonClick(View v){
+
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         MapFragment mapFragment = new MapFragment();
         fragmentTransaction.replace(R.id.fragment_container, mapFragment);
         fragmentTransaction.commit();
+
     }
 
     public boolean isCameraAvailable() {
@@ -274,7 +293,7 @@ public class MainActivity extends FragmentActivity {
 //    }
 
     private void postNotification(String msg) {
-        Intent notifyIntent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent notifyIntent = new Intent(getApplicationContext(), OfferActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 getApplicationContext(),
                 0,

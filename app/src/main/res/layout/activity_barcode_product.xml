@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="ProductPrice"
-            android:id="@+id/textViewPrice"
+            android:id="@+id/textViewShop"
             android:layout_below="@+id/textViewRRP"
             android:layout_centerHorizontal="true" />
 
@@ -55,16 +55,8 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="ProductSaving"
             android:id="@+id/textViewSaving"
-            android:layout_below="@+id/textViewPrice"
+            android:layout_below="@+id/textViewShop"
             android:layout_centerHorizontal="true" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:id="@+id/textView8"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 </RelativeLayout>

@@ -74,8 +74,17 @@
 
         <activity
             android:name=".BarcodeProductActivity"
-            android:label="@string/title_activity_barcode_product" >
+            android:label="Product retrieved" >
         </activity>
+        <activity
+            android:name=".OfferActivity"
+            android:label="Current Offer" >
+        </activity>
+        <activity
+            android:name=".PreviousOfferActivity"
+            android:label="Previous iBeacon Offers" >
+        </activity>
+
     </application>
 
 </manifest>

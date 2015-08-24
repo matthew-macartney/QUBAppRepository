@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#ffffff">
 
     <ImageView
         android:layout_width="75dp"
@@ -11,42 +12,62 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        android:paddingBottom="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
-        android:id="@+id/textViewProductDes"
+        android:id="@+id/textViewOfferName12"
         android:layout_alignTop="@+id/imageView4"
         android:layout_toEndOf="@+id/imageView4"
         android:textColor="#ff000000"
         android:paddingLeft="12dp"
-        android:paddingTop="0dp" />
+        android:paddingTop="0dp"
+        android:textSize="16dp"
+        android:paddingBottom="4dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/textViewPrice"
-        android:layout_below="@+id/textViewProductDes"
-        android:layout_toEndOf="@+id/imageView4"
-        android:textColor="#ffff0b12"
-        android:paddingLeft="12dp" />
+        android:id="@+id/textViewShop"
+        android:paddingLeft="12dp"
+        android:textSize="16dp"
+        android:paddingBottom="0dp"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_marginBottom="4dp"
+        android:layout_above="@+id/textView"
+        android:layout_toEndOf="@+id/imageView4" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/textViewSaving"
-        android:layout_below="@+id/textViewPrice"
-        android:layout_toEndOf="@+id/imageView4"
+        android:text="Expires: "
+        android:id="@+id/textView"
         android:singleLine="true"
         android:textColor="#ff000000"
         android:paddingLeft="12dp"
-        android:paddingBottom="8dp" />
+        android:paddingBottom="3dp"
+        android:textSize="12dp"
+        android:layout_alignBottom="@+id/imageView4"
+        android:layout_alignStart="@+id/textViewShop"
+        android:paddingTop="4dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/textViewExpires"
+        android:layout_alignBottom="@+id/textView"
+        android:layout_toEndOf="@+id/textViewOfferName12"
+        android:textSize="12dp"
+        android:layout_toRightOf="@+id/textView"
+        android:paddingBottom="3dp" />
 
 </RelativeLayout>

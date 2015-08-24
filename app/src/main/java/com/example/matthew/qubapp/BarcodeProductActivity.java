@@ -2,7 +2,6 @@ package com.example.matthew.qubapp;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +30,7 @@ public class BarcodeProductActivity extends Activity {
 
         productName = (TextView)findViewById(R.id.textViewProductName);
         productRRP = (TextView)findViewById(R.id.textViewRRP);
-        productPrice = (TextView)findViewById(R.id.textViewPrice);
+        productPrice = (TextView)findViewById(R.id.textViewShop);
         productSaving = (TextView)findViewById(R.id.textViewSaving);
 
         setLayoutValues(code);
@@ -65,10 +64,11 @@ public class BarcodeProductActivity extends Activity {
         ArrayList<String> product = myProductDB.barcodeQueryDatabase(code);
 
             productName.setText(product.get(0));
-            productRRP.setText(product.get(1));
-            productPrice.setText(product.get(2));
-            productSaving.setText(product.get(3));
+            productRRP.setText("£"+product.get(1) + " RRP");
+            productPrice.setText("Online price: £" + product.get(2));
+            productSaving.setText("Saving: "+ product.get(3)+"%");
 
+        //.setText(String.format("MAC: %s (%.2fm)", beacon.getMacAddress(), Utils.computeAccuracy(beacon)))
 
     }
 }

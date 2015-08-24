@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 /**
  * Created by Matthew on 12/08/2015.
  */
@@ -46,6 +48,16 @@ public class OfferDatabase extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, 8);
         SQLiteDatabase db = this.getWritableDatabase();
 
+
+    }
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+
+        db.execSQL("CREATE TABLE " + TABLE_NAME_BEACON_OFFER + " (_id INTEGER PRIMARY KEY, DESCRIPTION TEXT, STORE TEXT, " +
+                "UUID TEXT, MAJOR TEXT, MINOR TEXT, DISTANCE TEXT, EXPIRY TEXT);");
+        db.execSQL("CREATE TABLE " + TABLE_NAME_GENERAL_OFFER + " (_id INTEGER PRIMARY KEY, NAME TEXT, SHOP TEXT, " +
+                "EXPIRY TEXT, CO_ORDINATES TEXT);");
+
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(OFFER_DESCRIPTION, "2 for 1 pizzas in store just for you!");
@@ -54,6 +66,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues.put(OFFER_MAJOR, 1);
         contentValues.put(OFFER_MINOR, 1);
         contentValues.put(OFFER_MAX_DISTANCE, 2);
+        contentValues.put(OFFER_EXPIRY, "21 November 2015");
         db.insert(TABLE_NAME_BEACON_OFFER, null, contentValues);
 
         contentValues.put(OFFER_DESCRIPTION, "2 for 1 on Heineken beers in store just for you!");
@@ -62,6 +75,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues.put(OFFER_MAJOR, 1);
         contentValues.put(OFFER_MINOR, 2);
         contentValues.put(OFFER_MAX_DISTANCE, 2);
+        contentValues.put(OFFER_EXPIRY, "30 October 2015");
         db.insert(TABLE_NAME_BEACON_OFFER, null, contentValues);
 
         contentValues.put(OFFER_DESCRIPTION, "Half price chocolate in store just for you!");
@@ -70,24 +84,71 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues.put(OFFER_MAJOR, 1);
         contentValues.put(OFFER_MINOR, 3);
         contentValues.put(OFFER_MAX_DISTANCE, 2);
+        contentValues.put(OFFER_EXPIRY, "25 November 2015");
         db.insert(TABLE_NAME_BEACON_OFFER, null, contentValues);
 
         ContentValues contentValues2 = new ContentValues();
 
-        contentValues2.put(OFFER_NAME, "2");
-        contentValues2.put(OFFER_SHOP, "2");
-        contentValues2.put(OFFER_EXPIRY, "2");
+        contentValues2.put(OFFER_NAME, "20% off your main course");
+        contentValues2.put(OFFER_SHOP, "Pizza Express");
+        contentValues2.put(OFFER_EXPIRY, "21 October 2015");
         contentValues2.put(LOCATION, "2");
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
+        contentValues2.put(OFFER_NAME, "25% off your bill");
+        contentValues2.put(OFFER_SHOP, "Nandos");
+        contentValues2.put(OFFER_EXPIRY, "30 October 2015");
+        contentValues2.put(LOCATION, "2");
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
-    }
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE_NAME_BEACON_OFFER + " (_id INTEGER PRIMARY KEY, DESCRIPTION TEXT, STORE TEXT, " +
-                "UUID TEXT, MAJOR TEXT, MINOR TEXT, DISTANCE TEXT);");
-        db.execSQL("CREATE TABLE " + TABLE_NAME_GENERAL_OFFER + " (_id INTEGER PRIMARY KEY, NAME TEXT, SHOP TEXT, " +
-                "EXPIRY TEXT, CO_ORDINATES TEXT);");
+        contentValues2.put(OFFER_NAME, "2 for 1 on selected bestsellers");
+        contentValues2.put(OFFER_SHOP, "Waterstones");
+        contentValues2.put(OFFER_EXPIRY, "27 September 2015");
+        contentValues2.put(LOCATION, "2");
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
+
+        contentValues2.put(OFFER_NAME, "15% off all fragrances");
+        contentValues2.put(OFFER_SHOP, "Boots");
+        contentValues2.put(OFFER_EXPIRY, "3 October 2015");
+        contentValues2.put(LOCATION, "2");
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
+
+        contentValues2.put(OFFER_NAME, "20% off in-store");
+        contentValues2.put(OFFER_SHOP, "The Body Shop");
+        contentValues2.put(OFFER_EXPIRY, "21 October 2015");
+        contentValues2.put(LOCATION, "2");
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
+
+        contentValues2.put(OFFER_NAME, "10% off all men's trainers");
+        contentValues2.put(OFFER_SHOP, "Footlocker");
+        contentValues2.put(OFFER_EXPIRY, "15 October 2015");
+        contentValues2.put(LOCATION, "2");
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
+
+        contentValues2.put(OFFER_NAME, "15% off all womanswear");
+        contentValues2.put(OFFER_SHOP, "Next");
+        contentValues2.put(OFFER_EXPIRY, "25 September 2015");
+        contentValues2.put(LOCATION, "2");
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
+
+        contentValues2.put(OFFER_NAME, "10% off all homeware");
+        contentValues2.put(OFFER_SHOP, "House of Fraser");
+        contentValues2.put(OFFER_EXPIRY, "5 October 2015");
+        contentValues2.put(LOCATION, "2");
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
+
+        contentValues2.put(OFFER_NAME, "30% off main courses");
+        contentValues2.put(OFFER_SHOP, "Frankie & Benny's");
+        contentValues2.put(OFFER_EXPIRY, "10 October 2015");
+        contentValues2.put(LOCATION, "2");
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
+
+        contentValues2.put(OFFER_NAME, "20% off all gift sets");
+        contentValues2.put(OFFER_SHOP, "Rituals");
+        contentValues2.put(OFFER_EXPIRY, "31 October 2015");
+        contentValues2.put(LOCATION, "2");
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
+
     }
 
     @Override
@@ -153,4 +214,47 @@ public class OfferDatabase extends SQLiteOpenHelper {
         offerDistance = cs.getInt(cs.getColumnIndex(OFFER_MAX_DISTANCE));
         return offerDistance;
     }
+
+    public Cursor getAllRows() {
+        db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("Select distinct " + OFFER_ID + " as _id, " + OFFER_NAME + ", " + OFFER_SHOP + ", " + OFFER_EXPIRY + " from " + TABLE_NAME_GENERAL_OFFER, null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
+
+    public ArrayList<String> getOfferDetails(String name){
+
+        ArrayList<String> details = new ArrayList<>();
+        db = this.getReadableDatabase();
+
+        String query = "SELECT " + OFFER_SHOP + ", " + OFFER_EXPIRY + " FROM "+  TABLE_NAME_GENERAL_OFFER + " WHERE " + OFFER_NAME + " = '" +name + "'";
+
+        Cursor cs = db.rawQuery(query, null);
+        cs.moveToFirst();
+        details.add(0, cs.getString(cs.getColumnIndex(OFFER_SHOP)));
+        details.add(1, cs.getString(cs.getColumnIndex(OFFER_EXPIRY)));
+
+
+        return details;
+    }
+
+    public ArrayList<String> getBeaconOfferDetails(String name){
+
+        ArrayList<String> details = new ArrayList<>();
+        db = this.getReadableDatabase();
+
+        String query = "SELECT " + OFFER_STORE + ", " + OFFER_EXPIRY + " FROM "+  TABLE_NAME_BEACON_OFFER + " WHERE " + OFFER_DESCRIPTION + " = '" +name + "'";
+
+        Cursor cs4 = db.rawQuery(query, null);
+        cs4.moveToFirst();
+        details.add(0, cs4.getString(cs4.getColumnIndex(OFFER_STORE)));
+        details.add(1, cs4.getString(cs4.getColumnIndex(OFFER_EXPIRY)));
+
+
+        return details;
+    }
+
+
 }

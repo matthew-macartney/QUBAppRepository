@@ -78,9 +78,7 @@ public class ListBeaconActivity extends Activity {
         for (Beacon beacon : beacons)
         {
 //    	only detect the BeaconHelper of Jaalee
-//    	if ( beacon.getProximityUUID().equalsIgnoreCase(JAALEE_BEACON_PROXIMITY_UUID) )
             {
-                Log.i("JAALEE", "JAALEE:"+beacon.getBattLevel());
                 filteredBeacons.add(beacon);
             }
         }
