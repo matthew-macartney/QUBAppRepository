@@ -45,16 +45,10 @@ public class MainActivity extends FragmentActivity {
     private static final int ZBAR_QR_SCANNER_REQUEST = 1;
     private static final int NOTIFICATION_ID = 123;
     private static final int REQUEST_ENABLE_BT = 1234;
+
     Region openRegion = new Region("rid", null, null, null);
+
     private NotificationManager notificationManager;
-
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    private String code;
-
     private BeaconManager beaconManager;
 
     ProductDatabase myProductDB;
@@ -68,8 +62,6 @@ public class MainActivity extends FragmentActivity {
     ImageButton gpsButton;
     ImageButton beaconButton;
     Button mapButton;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +92,7 @@ public class MainActivity extends FragmentActivity {
         beaconManager = new BeaconManager(this);
         beaconManager.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 0);
         beaconManager.setForegroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 0);
-        List<Beacon> JaaleeBeacons;
+        List<Beacon> foundBeacons;
         connectToService();
 
         L.enableDebugLogging(true);
@@ -110,8 +102,7 @@ public class MainActivity extends FragmentActivity {
         List<Beacon> filteredBeacons = new ArrayList<Beacon>(beacons.size());
         for (Beacon beacon : beacons)
         {
-//    	only detect the BeaconHelper of Jaalee
-//    	if ( beacon.getProximityUUID().equalsIgnoreCase(JAALEE_BEACON_PROXIMITY_UUID) )
+//    	only detect the BeaconHelper of certain types
             {
                 filteredBeacons.add(beacon);
             }
@@ -149,32 +140,16 @@ public class MainActivity extends FragmentActivity {
         });
     }
 
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//
-//
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item)
-//    {
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-
     public void listenForBeacons(){
         beaconManager.setRangingListener(new RangingListener() {
 
             @Override
             public void onBeaconsDiscovered(final Region region, final List beacons) {
-                // Note that results are not delivered on UI thread.
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
 
-                        // Note that beacons reported here are already sorted by estimated
+                        // beacons listed here are already sorted by estimated
                         // distance between device and beacon.
                         adapter.clear();
                         List<Beacon> JaaleeBeacons = filterBeacons(beacons);
@@ -193,20 +168,6 @@ public class MainActivity extends FragmentActivity {
         });
     }
 
-//    private void populateListView() {
-//
-//        Cursor cursor = myProductDB.getSomeRows();
-//
-//        String[] fromFieldNames = new String[]{ProductDatabase.PRODUCT_NAME,  ProductDatabase.PRODUCT_PRICE, ProductDatabase.PRODUCT_RRP, ProductDatabase.PRODUCT_SAVING};
-//        int[] toViewIDs = new int[]{R.id.textViewProductDes, R.id.textViewPrice, R.id.textViewRRP, R.id.textViewSaving};
-//        SimpleCursorAdapter myCursorAdapter;
-//        myCursorAdapter = new SimpleCursorAdapter(getBaseContext(), R.layout.offer_list_layout, cursor, fromFieldNames, toViewIDs, 0);
-//        myListView = (ListView) findViewById(R.id.listViewProducts);
-//        myListView.setAdapter(myCursorAdapter);
-//    }
-
-
-
     public void barcodeButtonOnClick(View v) {
         Intent intent = new Intent(this, SimpleScannerActivity.class);
         startActivity(intent);
@@ -222,12 +183,6 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void GPSButtonOnClick(View v) {
-
-//        FragmentManager fragmentManager = getFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        MapFragment mapFragment = new MapFragment();
-//        fragmentTransaction.replace(R.id.fragment_container, mapFragment);
-//        fragmentTransaction.commit();
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -250,28 +205,6 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        switch (requestCode) {
-//            case ZBAR_SCANNER_REQUEST:
-//            case ZBAR_QR_SCANNER_REQUEST:
-//                if (resultCode == RESULT_OK) {
-//                    String result = data.getStringExtra(ZBarConstants.SCAN_RESULT);
-//                    //String product = myProductDB.barcodeQueryDatabase(result);
-//
-//                    FragmentManager fragmentManager1 = getFragmentManager();
-//                    FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
-//                    BarcodeProductFragment barcodeProductFragment = new BarcodeProductFragment();
-//                    fragmentTransaction1.replace(R.id.list_fragment_container, barcodeProductFragment);
-//                    fragmentTransaction1.commit();
-//
-//                    //Toast.makeText(this, "Product = " + product, Toast.LENGTH_SHORT).show();
-//                } else if(resultCode == RESULT_CANCELED && data != null) {
-//                    String error = data.getStringExtra(ZBarConstants.ERROR_INFO);
-//                    if(!TextUtils.isEmpty(error)) {
-//                        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//                break;
-//        }
 
         if (requestCode == REQUEST_ENABLE_BT) {
             if (resultCode == Activity.RESULT_OK) {
@@ -283,11 +216,6 @@ public class MainActivity extends FragmentActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-//    public void iBeaconButtonOnClick(View v){
-//        Intent intent = new Intent(this, NotifyDemoActivity.class);
-//        startActivity(intent);
-//    }
 
     private void postNotification(String msg) {
         Intent notifyIntent = new Intent(getApplicationContext(), OfferActivity.class);
@@ -306,21 +234,18 @@ public class MainActivity extends FragmentActivity {
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
 
-
         Notification notification = builder.build();
         notification.flags = notification.FLAG_AUTO_CANCEL;
         notification.defaults |= Notification.DEFAULT_SOUND;
         notification.defaults |= Notification.DEFAULT_LIGHTS;
         NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID, notification);
-
     }
 
     public void startMonitoring(final Beacon beacon){
 
             final Region beaconRegion= new Region("regionId", beacon.getProximityUUID(), beacon.getMajor(), beacon.getMinor());
             beaconManager.startMonitoring(beaconRegion);
-
 
             beaconManager.setMonitoringListener(new MonitoringListener() {
                 @Override
@@ -342,17 +267,13 @@ public class MainActivity extends FragmentActivity {
                             appDb.insertBeacon(UUID, beacon.getMajor(), beacon.getMinor(), tsLong);
                             appDb.insertBeaconOffer(date, beacon.getMinor(), myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()), myOfferDB.getOfferStore(UUID, beacon.getMajor(), beacon.getMinor()));
                             beaconManager.stopMonitoring(beaconRegion);
-
                             connectToService();
 
-                            if (isAppInForeground(getApplicationContext())) {
-                                Toast.makeText(getApplicationContext(), "" + myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()), Toast.LENGTH_LONG).show();
-                            } else {
-                                postNotification(myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()));
-                            }
-                        } else {
-                            beaconManager.stopMonitoring(beaconRegion);
+                            postNotification(myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()));
 
+                        } else {
+
+                            beaconManager.stopMonitoring(beaconRegion);
                             connectToService();
                         }
 
@@ -371,11 +292,7 @@ public class MainActivity extends FragmentActivity {
                             beaconManager.stopMonitoring(beaconRegion);
                             connectToService();
 
-                            if (isAppInForeground(getApplicationContext())) {
-                                Toast.makeText(getApplicationContext(), "" + myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()), Toast.LENGTH_LONG).show();
-                            } else {
-                                postNotification(myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()));
-                            }
+                            postNotification(myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()));
 
                         } else {
                             beaconManager.stopMonitoring(beaconRegion);
@@ -392,32 +309,24 @@ public class MainActivity extends FragmentActivity {
                 public void onExitedRegion(Region region) {
                 }
             });
-
-
     }
 
-    //---helper method to determine if the app is in
-    // the foreground---
-    public static boolean isAppInForeground(
-            Context context) {
-        List<ActivityManager.RunningTaskInfo> task = ((ActivityManager)
-                context.getSystemService(
-                        Context.ACTIVITY_SERVICE))
-                .getRunningTasks(1);
-        if (task.isEmpty()) {
-            return false;
-        }
-        return task
-                .get(0)
-                .topActivity
-                .getPackageName()
-                .equalsIgnoreCase(
-                        context.getPackageName());
-    }
-
-
-
-
-
-
+//    //---helper method to determine if the app is in
+//    // the foreground---
+//    public static boolean isAppInForeground(
+//            Context context) {
+//        List<ActivityManager.RunningTaskInfo> task = ((ActivityManager)
+//                context.getSystemService(
+//                        Context.ACTIVITY_SERVICE))
+//                .getRunningTasks(1);
+//        if (task.isEmpty()) {
+//            return false;
+//        }
+//        return task
+//                .get(0)
+//                .topActivity
+//                .getPackageName()
+//                .equalsIgnoreCase(
+//                        context.getPackageName());
+//    }
 }

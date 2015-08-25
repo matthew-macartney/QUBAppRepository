@@ -34,6 +34,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
     public static final String OFFER_EXPIRY = "EXPIRY";
     public static final String OFFER_LAT = "LATITUDE";
     public static final String OFFER_LON = "LONGITUDE";
+    public static final String OFFER_ICON = "ICON";
 
     public SQLiteDatabase db;
 
@@ -60,24 +61,27 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues.put(OFFER_MINOR, 1);
         contentValues.put(OFFER_MAX_DISTANCE, 2);
         contentValues.put(OFFER_EXPIRY, "21 November 2015");
+        contentValues.put(OFFER_ICON, R.drawable.tesco_icon);
         db.insert(TABLE_NAME_BEACON_OFFER, null, contentValues);
 
-        contentValues.put(OFFER_DESCRIPTION, "2 for 1 on Heineken beers in store just for you!");
+        contentValues.put(OFFER_DESCRIPTION, "2 for 1 beers in store just for you!");
         contentValues.put(OFFER_STORE, "Asda");
         contentValues.put(OFFER_UUID, "ebefd083-70a2-47c8-9837-e7b5634df524");
         contentValues.put(OFFER_MAJOR, 1);
         contentValues.put(OFFER_MINOR, 2);
         contentValues.put(OFFER_MAX_DISTANCE, 2);
         contentValues.put(OFFER_EXPIRY, "30 October 2015");
+        contentValues.put(OFFER_ICON, R.drawable.asda);
         db.insert(TABLE_NAME_BEACON_OFFER, null, contentValues);
 
         contentValues.put(OFFER_DESCRIPTION, "Half price chocolate in store just for you!");
-        contentValues.put(OFFER_STORE, "Asda");
+        contentValues.put(OFFER_STORE, "Sainsburys");
         contentValues.put(OFFER_UUID, "ebefd083-70a2-47c8-9837-e7b5634df524");
         contentValues.put(OFFER_MAJOR, 1);
         contentValues.put(OFFER_MINOR, 3);
         contentValues.put(OFFER_MAX_DISTANCE, 2);
         contentValues.put(OFFER_EXPIRY, "25 November 2015");
+        contentValues.put(OFFER_ICON, R.drawable.sainsburys);
         db.insert(TABLE_NAME_BEACON_OFFER, null, contentValues);
 
         ContentValues contentValues2 = new ContentValues();
@@ -87,6 +91,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues2.put(OFFER_EXPIRY, "21 October 2015");
         contentValues2.put(OFFER_LAT, 54.550426);
         contentValues2.put(OFFER_LON, -5.920730);
+        contentValues2.put(OFFER_ICON, R.drawable.pizzaexpress);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
         contentValues2.put(OFFER_NAME, "25% off your bill");
@@ -94,6 +99,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues2.put(OFFER_EXPIRY, "30 October 2015");
         contentValues2.put(OFFER_LAT, 54.550426);
         contentValues2.put(OFFER_LON, -5.920730);
+        contentValues2.put(OFFER_ICON, R.drawable.nandos);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
         contentValues2.put(OFFER_NAME, "2 for 1 on selected bestsellers");
@@ -101,13 +107,15 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues2.put(OFFER_EXPIRY, "27 September 2015");
         contentValues2.put(OFFER_LAT, 54.550426);
         contentValues2.put(OFFER_LON, -5.920730);
+        contentValues2.put(OFFER_ICON, R.drawable.waterstones);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
         contentValues2.put(OFFER_NAME, "15% off all fragrances");
-        contentValues2.put(OFFER_SHOP, "Boots");
+        contentValues2.put(OFFER_SHOP, "The Perfume Shop");
         contentValues2.put(OFFER_EXPIRY, "3 October 2015");
         contentValues2.put(OFFER_LAT, 54.550426);
         contentValues2.put(OFFER_LON, -5.920730);
+        contentValues2.put(OFFER_ICON, R.drawable.perfumeshop);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
         contentValues2.put(OFFER_NAME, "20% off in-store");
@@ -115,6 +123,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues2.put(OFFER_EXPIRY, "21 October 2015");
         contentValues2.put(OFFER_LAT, 54.550426);
         contentValues2.put(OFFER_LON, -5.920730);
+        contentValues2.put(OFFER_ICON, R.drawable.bodyshop);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
         contentValues2.put(OFFER_NAME, "10% off all men's trainers");
@@ -122,6 +131,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues2.put(OFFER_EXPIRY, "15 October 2015");
         contentValues2.put(OFFER_LAT, 54.550426);
         contentValues2.put(OFFER_LON, -5.920730);
+        contentValues2.put(OFFER_ICON, R.drawable.footlocker);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
         contentValues2.put(OFFER_NAME, "15% off all womanswear");
@@ -129,6 +139,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues2.put(OFFER_EXPIRY, "25 September 2015");
         contentValues2.put(OFFER_LAT, 54.550426);
         contentValues2.put(OFFER_LON, -5.920730);
+        contentValues2.put(OFFER_ICON, R.drawable.nextlogo);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
         contentValues2.put(OFFER_NAME, "10% off all homeware");
@@ -136,6 +147,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues2.put(OFFER_EXPIRY, "5 October 2015");
         contentValues2.put(OFFER_LAT, 54.550426);
         contentValues2.put(OFFER_LON, -5.920730);
+        contentValues2.put(OFFER_ICON, R.drawable.houseoffraser);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
         contentValues2.put(OFFER_NAME, "30% off main courses");
@@ -143,6 +155,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues2.put(OFFER_EXPIRY, "10 October 2015");
         contentValues2.put(OFFER_LAT, 54.550426);
         contentValues2.put(OFFER_LON, -5.920730);
+        contentValues2.put(OFFER_ICON, R.drawable.frankieandbenny);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
         contentValues2.put(OFFER_NAME, "20% off all gift sets");
@@ -150,6 +163,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
         contentValues2.put(OFFER_EXPIRY, "31 October 2015");
         contentValues2.put(OFFER_LAT, 54.550426);
         contentValues2.put(OFFER_LON, -5.920730);
+        contentValues2.put(OFFER_ICON, R.drawable.rituals);
         db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues2);
 
 
@@ -159,8 +173,8 @@ public class OfferDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL("CREATE TABLE " + TABLE_NAME_BEACON_OFFER + " (_id INTEGER PRIMARY KEY, DESCRIPTION TEXT, STORE TEXT, " +
-                "UUID TEXT, MAJOR TEXT, MINOR TEXT, DISTANCE TEXT, EXPIRY TEXT);");
-        db.execSQL("CREATE TABLE " + TABLE_NAME_GENERAL_OFFER + " (_id INTEGER PRIMARY KEY, NAME TEXT, SHOP TEXT, EXPIRY TEXT, LATITUDE FLOAT, LONGITUDE FLOAT);");
+                "UUID TEXT, MAJOR TEXT, MINOR TEXT, DISTANCE TEXT, EXPIRY TEXT, ICON TEXT);");
+        db.execSQL("CREATE TABLE " + TABLE_NAME_GENERAL_OFFER + " (_id INTEGER PRIMARY KEY, NAME TEXT, SHOP TEXT, EXPIRY TEXT, LATITUDE FLOAT, LONGITUDE FLOAT, ICON TEXT);");
 
     }
 
@@ -230,7 +244,7 @@ public class OfferDatabase extends SQLiteOpenHelper {
 
     public Cursor getAllRows() {
         db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("Select distinct " + OFFER_ID + " as _id, " + OFFER_NAME + ", " + OFFER_SHOP + ", " + OFFER_EXPIRY + " from " + TABLE_NAME_GENERAL_OFFER, null);
+        Cursor c = db.rawQuery("Select distinct " + OFFER_ID + " as _id, " + OFFER_NAME + ", " + OFFER_SHOP + ", " + OFFER_EXPIRY + ", " + OFFER_ICON + " from " + TABLE_NAME_GENERAL_OFFER, null);
         if (c != null) {
             c.moveToFirst();
         }

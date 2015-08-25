@@ -29,10 +29,9 @@ public class OfferListFragment extends Fragment {
         myOfferDB = OfferDatabase.getInstance(OfferListFragment.this.getActivity());
         Cursor cursor = myOfferDB.getAllRows();
 
-        String[] fromFieldNames = new String[]{OfferDatabase.OFFER_NAME,  OfferDatabase.OFFER_SHOP, OfferDatabase.OFFER_EXPIRY};
-        int[] toViewIDs = new int[]{R.id.textViewOfferName12, R.id.textViewShop, R.id.textViewExpires};
-        SimpleCursorAdapter myCursorAdapter;
-        myCursorAdapter = new SimpleCursorAdapter(view.getContext(), R.layout.offer_list_layout, cursor, fromFieldNames, toViewIDs, 0);
+        String[] fromFieldNames = new String[]{OfferDatabase.OFFER_NAME,  OfferDatabase.OFFER_SHOP, OfferDatabase.OFFER_EXPIRY, OfferDatabase.OFFER_ICON};
+        int[] toViewIDs = new int[]{R.id.textViewOfferName12, R.id.textViewShop, R.id.textViewExpires, R.id.imageViewIcon};
+        SimpleCursorAdapter myCursorAdapter = new SimpleCursorAdapter(view.getContext(), R.layout.offer_list_layout, cursor, fromFieldNames, toViewIDs, 0);
         myListView = (ListView) view.findViewById(R.id.listViewProducts);
         myListView.setAdapter(myCursorAdapter);
 
