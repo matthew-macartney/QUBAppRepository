@@ -1,7 +1,6 @@
 package com.example.matthew.qubapp;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.Notification;
@@ -51,8 +50,9 @@ public class MainActivity extends FragmentActivity {
     private NotificationManager notificationManager;
     private BeaconManager beaconManager;
 
+    GeneralOfferTable myGeneralOfferTable;
     ProductDatabase myProductDB;
-    OfferDatabase myOfferDB;
+    BeaconOfferTable myBeaconOfferDB;
     SQLiteDatabase db;
     ListView myListView;
     ImageButton barcodeButton;
@@ -68,6 +68,16 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        // Enable Local Datastore.
+//        Parse.enableLocalDatastore(this);
+//
+//        Parse.initialize(this, "VBr7oIaP5TWs1wvGQBYtQDPU8oQekbQ73zisQ5mu", "YZS70M6HOAhNSFQ4LtM5pE9l8CGPSxNHunvmvkoi");
+//
+//        ParseObject testObject = new ParseObject("TestObject");
+//        testObject.put("foo", "bar");
+//        testObject.saveInBackground();
+
+
         if(savedInstanceState == null) {
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -81,8 +91,10 @@ public class MainActivity extends FragmentActivity {
         beaconButton = (ImageButton)findViewById(R.id.imageButtonBeacon);
         mapButton = (Button) findViewById(R.id.buttonMap);
 
+        myGeneralOfferTable = GeneralOfferTable.getInstance(this);
+        myBeaconOfferDB = BeaconOfferTable.getInstance(this);
+
         myProductDB = ProductDatabase.getInstance(this);
-        myOfferDB = OfferDatabase.getInstance(this);
         appDb = AppDatabase.getInstance(this);
        // populateListView();
         adapter = new BeaconListAdapter(this);
@@ -260,16 +272,16 @@ public class MainActivity extends FragmentActivity {
 
                     if (!beaconFound) {
 
-                        double offerDistance = myOfferDB.getOfferDistance(UUID, beacon.getMajor(), beacon.getMinor());
+                        double offerDistance = myBeaconOfferDB.getOfferDistance(UUID, beacon.getMajor(), beacon.getMinor());
                         String distance = Double.toString(Utils.computeAccuracy(beacon));
                         Log.d("DISTANCE", "Distance: " + distance);
                         if (Utils.computeAccuracy(beacon) <= offerDistance) {
                             appDb.insertBeacon(UUID, beacon.getMajor(), beacon.getMinor(), tsLong);
-                            appDb.insertBeaconOffer(date, beacon.getMinor(), myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()), myOfferDB.getOfferStore(UUID, beacon.getMajor(), beacon.getMinor()));
+                            appDb.insertBeaconOffer(date, beacon.getMinor(), myBeaconOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()), myBeaconOfferDB.getOfferStore(UUID, beacon.getMajor(), beacon.getMinor()));
                             beaconManager.stopMonitoring(beaconRegion);
                             connectToService();
 
-                            postNotification(myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()));
+                            postNotification(myBeaconOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()));
 
                         } else {
 
@@ -279,7 +291,7 @@ public class MainActivity extends FragmentActivity {
 
                     } else if (beaconFound) {
 
-                        double offerDistance = myOfferDB.getOfferDistance(UUID, beacon.getMajor(), beacon.getMinor());
+                        double offerDistance = myBeaconOfferDB.getOfferDistance(UUID, beacon.getMajor(), beacon.getMinor());
                         long timestamp = appDb.getTimestamp(UUID, beacon.getMajor(), beacon.getMinor());
                         Log.d("TIMESTAMP", "Timestamp: " + timestamp);
                         String distance = String.format("(%.2fm)", Utils.computeAccuracy(beacon));
@@ -287,12 +299,12 @@ public class MainActivity extends FragmentActivity {
                         if ((System.currentTimeMillis() / 1000) - timestamp >= BEACON_DELAY_TIME && Utils.computeAccuracy(beacon) <= offerDistance) {
 
                             appDb.updateTimestamp(UUID, beacon.getMajor(), beacon.getMinor());
-                            appDb.insertBeaconOffer(date, beacon.getMinor(), myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()), myOfferDB.getOfferStore(UUID, beacon.getMajor(), beacon.getMinor()));
+                            appDb.insertBeaconOffer(date, beacon.getMinor(), myBeaconOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()), myBeaconOfferDB.getOfferStore(UUID, beacon.getMajor(), beacon.getMinor()));
                             Log.d("OFFER", "OFFER INSERTED!!!");
                             beaconManager.stopMonitoring(beaconRegion);
                             connectToService();
 
-                            postNotification(myOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()));
+                            postNotification(myBeaconOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()));
 
                         } else {
                             beaconManager.stopMonitoring(beaconRegion);

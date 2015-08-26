@@ -1,14 +1,11 @@
 package com.example.matthew.qubapp;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,13 +14,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
-
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     Float latitude;
     Float longitude;
-    OfferDatabase myOfferDB;
+    GeneralOfferTable myOfferDB;
     String store;
     GoogleMap googleMap;
     LatLng myPosition;
@@ -75,9 +70,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 //        Log.d("OFFER YEAH!", offer);
-//        myOfferDB = OfferDatabase.getInstance(getApplicationContext());
+//        myBeaconOfferDB = GeneralOfferTable.getInstance(getApplicationContext());
 //
-//        ArrayList<Float> coordinates = myOfferDB.getCoordinates(offer);
+//        ArrayList<Float> coordinates = myBeaconOfferDB.getCoordinates(offer);
 //
 //        latitude = coordinates.get(0);
 //        longitude = coordinates.get(1);
@@ -93,7 +88,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 //    public ArrayList<Float> getLocation(String offer){
 //
-//        myOfferDB = OfferDatabase.getInstance(getApplicationContext());
+//        myBeaconOfferDB = GeneralOfferTable.getInstance(getApplicationContext());
 //
 //
 //

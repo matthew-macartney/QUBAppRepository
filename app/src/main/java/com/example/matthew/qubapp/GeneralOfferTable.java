@@ -11,9 +11,9 @@ import java.util.ArrayList;
 /**
  * Created by Matthew on 12/08/2015.
  */
-public class OfferDatabase extends SQLiteOpenHelper {
+public class GeneralOfferTable extends SQLiteOpenHelper {
 
-    private static OfferDatabase instance = null;
+    private static GeneralOfferTable instance = null;
 
     public static final String DATABASE_NAME = "OfferDatabase.db";
 
@@ -40,15 +40,15 @@ public class OfferDatabase extends SQLiteOpenHelper {
 
 
 
-    public static synchronized OfferDatabase getInstance(Context context){
+    public static synchronized GeneralOfferTable getInstance(Context context){
         if (instance == null){
-            instance = new OfferDatabase(context.getApplicationContext());
+            instance = new GeneralOfferTable(context.getApplicationContext());
         }
 
         return instance;
     }
 
-    private OfferDatabase(Context context) {
+    public GeneralOfferTable(Context context) {
         super(context, DATABASE_NAME, null, 8);
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -172,8 +172,6 @@ public class OfferDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL("CREATE TABLE " + TABLE_NAME_BEACON_OFFER + " (_id INTEGER PRIMARY KEY, DESCRIPTION TEXT, STORE TEXT, " +
-                "UUID TEXT, MAJOR TEXT, MINOR TEXT, DISTANCE TEXT, EXPIRY TEXT, ICON TEXT);");
         db.execSQL("CREATE TABLE " + TABLE_NAME_GENERAL_OFFER + " (_id INTEGER PRIMARY KEY, NAME TEXT, SHOP TEXT, EXPIRY TEXT, LATITUDE FLOAT, LONGITUDE FLOAT, ICON TEXT);");
 
     }

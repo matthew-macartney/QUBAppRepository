@@ -144,7 +144,8 @@ public class AppDatabase extends SQLiteOpenHelper {
     public Cursor getAllRows() {
 
         db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("Select distinct " + OFFER_ID + " as _id, " + OFFER_DES + ", " + OFFER_DATE_RECEIVED + ", " + OFFER_STORE + " from " + TABLE_NAME_OFFER_RECEIVED, null);
+        Cursor c = db.rawQuery("Select distinct " + OFFER_ID + " as _id, " + OFFER_DES + ", "
+                + OFFER_DATE_RECEIVED + ", " + OFFER_STORE + " from " + TABLE_NAME_OFFER_RECEIVED + " ORDER BY " + OFFER_ID + " DESC", null);
         if (c != null) {
             c.moveToFirst();
         }

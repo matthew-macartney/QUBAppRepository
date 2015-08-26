@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:background="#ffffff">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="90dp"
+        android:id="@+id/imageView"
+        android:src="@drawable/tesco_icon"
+        android:layout_marginLeft="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="0dp"
+        android:layout_weight="0.04" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout3"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Please present this QR code to a member of staff to redeem your offer"
+            android:id="@+id/textView3"
+            android:textSize="15dp"
+            android:textAlignment="center"
+            android:textColor="#4b4b4b"
+            android:background="#ffffff"
+            android:layout_above="@+id/imageView3"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="center_horizontal" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView3"
+            android:src="@drawable/qrcode"
+            android:background="#ffffff"
+            android:layout_above="@+id/button"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_toRightOf="@+id/imageView"
+        android:layout_alignBottom="@+id/imageView">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/textViewOfferName12"
+            android:paddingLeft="12dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_weight="1"
+            android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/textViewShop"
+            android:paddingLeft="12dp"
+            android:layout_above="@+id/textViewExpires"
+            android:layout_alignParentStart="true"
+            android:layout_weight="1"
+            android:textSize="16dp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Expires: "
+                android:id="@+id/textViewExpires"
+                android:paddingLeft="12dp"
+                android:textSize="16dp"
+                android:layout_below="@+id/imageView"
+                android:layout_alignStart="@+id/imageView"
+                android:textColor="#4b4b4b" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Medium Text"
+                android:id="@+id/textViewExpiry"
+                android:textSize="16dp"
+                android:layout_below="@+id/imageView"
+                android:layout_toEndOf="@+id/textViewExpires"
+                android:textColor="#4b4b4b" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/linearLayout3">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View on Map"
+            android:id="@+id/button"
+            android:textSize="16dp"
+            android:background="#ff1666ad"
+            android:textColor="#ffffff"
+            android:onClick="onMapButtonClick"
+            android:layout_weight="1"
+            android:layout_alignParentBottom="true"
+            android:layout_alignEnd="@+id/textViewExpiry"
+            android:longClickable="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Delete Offer"
+            android:id="@+id/buttonDelete"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/button"
+            android:background="#c51d0a"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</RelativeLayout>

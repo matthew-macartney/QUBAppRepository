@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,7 +16,8 @@ public class OfferActivity extends Activity {
     TextView offerName;
     TextView offerShop;
     TextView offerExpiry;
-    OfferDatabase myOfferDB;
+    GeneralOfferTable myOfferDB;
+    Button button;
 
     public String offer;
     public String store;
@@ -30,7 +32,7 @@ public class OfferActivity extends Activity {
         offerShop = (TextView)findViewById(R.id.textViewShop);
         offerExpiry = (TextView)findViewById(R.id.textViewExpiry);
 
-        myOfferDB = OfferDatabase.getInstance(getApplicationContext());
+        myOfferDB = GeneralOfferTable.getInstance(getApplicationContext());
 
         Intent intent = getIntent();
         if(intent.getStringExtra("Name") != null) {

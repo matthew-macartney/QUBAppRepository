@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,25 +18,23 @@ public class PreviousOfferActivity extends Activity {
     TextView offerName;
     TextView offerShop;
     TextView offerExpiry;
-    OfferDatabase myOfferDB;
+    GeneralOfferTable myOfferDB;
+    Button delete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_offer);
+        setContentView(R.layout.activity_previous_offer);
         Intent intent = getIntent();
         String name = intent.getStringExtra("Name");
-
 
         offerName = (TextView)findViewById(R.id.textViewOfferName12);
         offerShop = (TextView)findViewById(R.id.textViewShop);
         offerExpiry = (TextView)findViewById(R.id.textViewExpiry);
 
-        myOfferDB = OfferDatabase.getInstance(getApplicationContext());
+        myOfferDB = GeneralOfferTable.getInstance(getApplicationContext());
 
         setOfferDetails(name);
-
-
     }
 
     @Override
