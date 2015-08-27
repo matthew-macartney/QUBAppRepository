@@ -10,11 +10,11 @@ import android.util.Log;
 /**
  * Created by Matthew on 12/08/2015.
  */
-public class AppDatabase extends SQLiteOpenHelper {
+public class BeaconTable extends SQLiteOpenHelper {
 
-    private static AppDatabase instance = null;
+    private static BeaconTable instance = null;
 
-    public static final String DATABASE_NAME = "AppDatabase.db";
+    public static final String DATABASE_NAME = "BeaconTable.db";
 
     //Beacon Table
     public static final String TABLE_NAME_BEACON = "beacon_table";
@@ -23,29 +23,22 @@ public class AppDatabase extends SQLiteOpenHelper {
     public static final String BEACON_MAJOR = "MAJOR";
     public static final String BEACON_MINOR = "MINOR";
     public static final String BEACON_TIMESTAMP = "TIMESTAMP";
-    public static final long BEACON_TIME_PERIOD = System.currentTimeMillis()/1000 - 30;
+    //public static final long BEACON_TIME_PERIOD = System.currentTimeMillis()/1000 - 30;
 
-    //offer received table
-    public static final String TABLE_NAME_OFFER_RECEIVED = "offer_received_table";
-    public static final String OFFER_ID = "_id";
-    public static final String OFFER_DATE_RECEIVED = "DATE";
-    public static final String OFFER_MINOR = "MINOR";
-    public static final String OFFER_DES = "DESCRIPTION";
-    public static final String OFFER_STORE = "STORE";
 
-    private static final String TAG = AppDatabase.class.getSimpleName();
+    private static final String TAG = BeaconTable.class.getSimpleName();
 
     public SQLiteDatabase db;
 
-    public static synchronized AppDatabase getInstance(Context context){
+    public static synchronized BeaconTable getInstance(Context context){
         if (instance == null){
-            instance = new AppDatabase(context.getApplicationContext());
+            instance = new BeaconTable(context.getApplicationContext());
         }
 
         return instance;
     }
 
-    private AppDatabase(Context context) {
+    private BeaconTable(Context context) {
         super(context, DATABASE_NAME, null, 2);
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -55,11 +48,14 @@ public class AppDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL("CREATE TABLE " + TABLE_NAME_BEACON + " (_id INTEGER PRIMARY KEY, UUID TEXT, MAJOR TEXT, MINOR TEXT, TIMESTAMP TEXT);");
-        db.execSQL("CREATE TABLE " + TABLE_NAME_OFFER_RECEIVED + " (_id INTEGER PRIMARY KEY, DATE TEXT, MINOR TEXT, DESCRIPTION TEXT, STORE TEXT);");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_BEACON);
+
+        onCreate(db);
 
     }
 
@@ -128,29 +124,29 @@ public class AppDatabase extends SQLiteOpenHelper {
 
     }
 
-    public void insertBeaconOffer(String date, int minor, String description, String store){
-
-        db = this.getWritableDatabase();
-
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(OFFER_DES, description);
-        contentValues.put(OFFER_MINOR, minor);
-        contentValues.put(OFFER_DATE_RECEIVED, date);
-        contentValues.put(OFFER_STORE, store);
-        db.insert(TABLE_NAME_OFFER_RECEIVED, null, contentValues);
-    }
-
-    public Cursor getAllRows() {
-
-        db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("Select distinct " + OFFER_ID + " as _id, " + OFFER_DES + ", "
-                + OFFER_DATE_RECEIVED + ", " + OFFER_STORE + " from " + TABLE_NAME_OFFER_RECEIVED + " ORDER BY " + OFFER_ID + " DESC", null);
-        if (c != null) {
-            c.moveToFirst();
-        }
-        return c;
-    }
+//    public void insertBeaconOffer(String date, int minor, String description, String store){
+//
+//        db = this.getWritableDatabase();
+//
+//        ContentValues contentValues = new ContentValues();
+//
+//        contentValues.put(OFFER_DESCRIPTION, description);
+//        contentValues.put(OFFER_MINOR, minor);
+//        contentValues.put(OFFER_DATE_RECEIVED, date);
+//        contentValues.put(OFFER_STORE, store);
+//        db.insert(TABLE_NAME_OFFER_RECEIVED, null, contentValues);
+//    }
+//
+//    public Cursor getAllRows() {
+//
+//        db = this.getReadableDatabase();
+//        Cursor c = db.rawQuery("Select distinct " + OFFER_ID + " as _id, " + OFFER_DESCRIPTION + ", "
+//                + OFFER_DATE_RECEIVED + ", " + OFFER_STORE + " from " + TABLE_NAME_OFFER_RECEIVED + " ORDER BY " + OFFER_ID + " DESC", null);
+//        if (c != null) {
+//            c.moveToFirst();
+//        }
+//        return c;
+//    }
 
 
 }

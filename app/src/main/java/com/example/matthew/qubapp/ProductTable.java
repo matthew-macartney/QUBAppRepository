@@ -1,22 +1,18 @@
 package com.example.matthew.qubapp;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import java.util.ArrayList;
 
 /**
  * Created by Matthew on 22/07/2015.
  */
-public class ProductDatabase extends SQLiteOpenHelper {
+public class ProductTable extends SQLiteOpenHelper {
 
-    private static ProductDatabase instance = null;
+    private static ProductTable instance = null;
 
-    public static final String DATABASE_NAME = "ProductDatabase.db";
+    public static final String DATABASE_NAME = "ProductTable.db";
 
     //Product Table
     public static final String TABLE_NAME_PRODUCT = "product_table";
@@ -29,29 +25,19 @@ public class ProductDatabase extends SQLiteOpenHelper {
     public static final String PRODUCT_SAVING = "SAVING";
     public static final String PRODUCT_CODE = "BARCODE";
 
-
-    //Offer Table
-    public static final String TABLE_NAME_OFFER = "offer_table";
-    public static final String OFFER_ID = "_id";
-    public static final String OFFER_DESCRIPTION = "DESCRIPTION";
-    public static final String OFFER_UUID = "UUID";
-    public static final String OFFER_MAJOR = "MAJOR";
-    public static final String OFFER_MINOR = "MINOR";
-
-
     public static final String[] SOME_KEYS = new String[]{PRODUCT_ID, PRODUCT_NAME,};
 
     public SQLiteDatabase db;
 
-    public static synchronized ProductDatabase getInstance(Context context){
+    public static synchronized ProductTable getInstance(Context context){
         if (instance == null){
-            instance = new ProductDatabase(context.getApplicationContext());
+            instance = new ProductTable(context.getApplicationContext());
         }
 
         return instance;
     }
 
-    private ProductDatabase(Context context) {
+    private ProductTable(Context context) {
         super(context, DATABASE_NAME, null, 7);
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -163,42 +149,42 @@ public class ProductDatabase extends SQLiteOpenHelper {
     }
 
 
-    public String databaseToString() {
-        String dbString;
-        db = this.getReadableDatabase();
-        String query = "SELECT " + OFFER_DESCRIPTION + " FROM " + TABLE_NAME_OFFER + " WHERE " + OFFER_MAJOR + "= '1';";
-
-        Cursor cs = db.rawQuery(query, null);
-        cs.moveToFirst();
-        dbString = cs.getString(cs.getColumnIndex(OFFER_DESCRIPTION));
-
-        return dbString;
-    }
-
-    public Cursor getAllRows() {
-        db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("Select distinct " + PRODUCT_ID + " as _id, " + PRODUCT_NAME + ", " + PRODUCT_BRAND + ", " + PRODUCT_PRICE + ", " + PRODUCT_RRP + ", " + PRODUCT_SAVING + " from " + TABLE_NAME_PRODUCT, null);
-        if (c != null) {
-            c.moveToFirst();
-        }
-        return c;
-    }
-
-    public ArrayList<String> barcodeQueryDatabase(String barcode) {
-
-        ArrayList<String> dbString = new ArrayList<>();
-        db = this.getReadableDatabase();
-        String query = "SELECT " + PRODUCT_NAME + ", "+ PRODUCT_RRP + ", " + PRODUCT_PRICE + ", " + PRODUCT_SAVING + " FROM " + TABLE_NAME_PRODUCT + " WHERE " + PRODUCT_CODE + "= '" + barcode + "'";
-
-        Cursor cs = db.rawQuery(query, null);
-        cs.moveToFirst();
-        dbString.add(0, cs.getString(cs.getColumnIndex(PRODUCT_NAME)));
-        dbString.add(1, String.format("%.2f", cs.getDouble(cs.getColumnIndex(PRODUCT_RRP))));
-        dbString.add(2, String.format("%.2f",cs.getDouble(cs.getColumnIndex(PRODUCT_PRICE))));
-        dbString.add(3, (cs.getString(cs.getColumnIndex(PRODUCT_SAVING))));
-
-        return dbString;
-    }
+//    public String databaseToString() {
+//        String dbString;
+//        db = this.getReadableDatabase();
+//        String query = "SELECT " + OFFER_DESCRIPTION + " FROM " + TABLE_NAME_OFFER + " WHERE " + OFFER_MAJOR + "= '1';";
+//
+//        Cursor cs = db.rawQuery(query, null);
+//        cs.moveToFirst();
+//        dbString = cs.getString(cs.getColumnIndex(OFFER_DESCRIPTION));
+//
+//        return dbString;
+//    }
+//
+//    public Cursor getAllRows() {
+//        db = this.getReadableDatabase();
+//        Cursor c = db.rawQuery("Select distinct " + PRODUCT_ID + " as _id, " + PRODUCT_NAME + ", " + PRODUCT_BRAND + ", " + PRODUCT_PRICE + ", " + PRODUCT_RRP + ", " + PRODUCT_SAVING + " from " + TABLE_NAME_PRODUCT, null);
+//        if (c != null) {
+//            c.moveToFirst();
+//        }
+//        return c;
+//    }
+//
+//    public ArrayList<String> barcodeQueryDatabase(String barcode) {
+//
+//        ArrayList<String> dbString = new ArrayList<>();
+//        db = this.getReadableDatabase();
+//        String query = "SELECT " + PRODUCT_NAME + ", "+ PRODUCT_RRP + ", " + PRODUCT_PRICE + ", " + PRODUCT_SAVING + " FROM " + TABLE_NAME_PRODUCT + " WHERE " + PRODUCT_CODE + "= '" + barcode + "'";
+//
+//        Cursor cs = db.rawQuery(query, null);
+//        cs.moveToFirst();
+//        dbString.add(0, cs.getString(cs.getColumnIndex(PRODUCT_NAME)));
+//        dbString.add(1, String.format("%.2f", cs.getDouble(cs.getColumnIndex(PRODUCT_RRP))));
+//        dbString.add(2, String.format("%.2f",cs.getDouble(cs.getColumnIndex(PRODUCT_PRICE))));
+//        dbString.add(3, (cs.getString(cs.getColumnIndex(PRODUCT_SAVING))));
+//
+//        return dbString;
+//    }
 
 
 }

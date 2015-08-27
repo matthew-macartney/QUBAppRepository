@@ -47,6 +47,17 @@ public class GeneralOfferDataSource {
         return offers;
     }
 
+    public Offer getSelectedOffer(Cursor cursor){
+
+
+
+
+        cursor.moveToFirst();
+        Offer offer = cursorToOffer(cursor);
+        cursor.close();
+        return offer;
+    }
+
     private Offer cursorToOffer(Cursor cursor) {
 
         Offer offer = new Offer();

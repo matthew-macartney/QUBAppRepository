@@ -38,7 +38,7 @@
         android:allowBackup="true"
         android:theme="@style/Theme.MyStyle" >
         <activity
-            android:name=".MainActivity"
+            android:name=".GUI.MainActivity"
             android:label="Bargain Buddy" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -6,7 +6,7 @@
     <ImageView
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:id="@+id/imageViewIcon"
+        android:id="@+id/imageViewPreviousIcon"
         android:src="@drawable/tesco_icon"
         android:layout_marginLeft="20dp"
         android:layout_alignParentTop="true"
@@ -20,9 +20,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout"
-        android:layout_alignTop="@+id/imageViewIcon"
-        android:layout_toRightOf="@+id/imageViewIcon"
-        android:layout_alignBottom="@+id/imageViewIcon"
+        android:layout_alignTop="@+id/imageViewPreviousIcon"
+        android:layout_toRightOf="@+id/imageViewPreviousIcon"
+        android:layout_alignBottom="@+id/imageViewPreviousIcon"
         android:paddingLeft="12dp">
 
         <TextView
@@ -31,8 +31,8 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
             android:id="@+id/textViewOfferName12"
-            android:layout_alignTop="@+id/imageViewIcon"
-            android:layout_toEndOf="@+id/imageViewIcon"
+            android:layout_alignTop="@+id/imageViewPreviousIcon"
+            android:layout_toEndOf="@+id/imageViewPreviousIcon"
             android:textColor="#ff000000"
             android:textSize="16dp"
             android:layout_weight="1" />
@@ -42,11 +42,11 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Medium Text"
-            android:id="@+id/textViewShop"
+            android:id="@+id/textViewPreviousShop"
             android:textSize="16dp"
             android:layout_alignWithParentIfMissing="false"
             android:layout_above="@+id/textView"
-            android:layout_toEndOf="@+id/imageViewIcon"
+            android:layout_toEndOf="@+id/imageViewPreviousIcon"
             android:layout_weight="1" />
 
         <RelativeLayout
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/relativeLayout2"
             android:layout_below="@+id/linearLayout"
-            android:layout_alignStart="@+id/imageViewIcon">
+            android:layout_alignStart="@+id/imageViewPreviousIcon">
 
             <TextView
                 android:layout_width="wrap_content"

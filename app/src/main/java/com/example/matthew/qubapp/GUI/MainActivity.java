@@ -1,4 +1,4 @@
-package com.example.matthew.qubapp;
+package com.example.matthew.qubapp.GUI;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -15,23 +15,30 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.jaalee.sdk.Utils;
 
 
+import com.example.matthew.qubapp.BeaconListAdapter;
+import com.example.matthew.qubapp.BeaconOfferTable;
+import com.example.matthew.qubapp.BeaconTable;
+import com.example.matthew.qubapp.GeneralOfferTable;
+import com.example.matthew.qubapp.MapsActivity;
+import com.example.matthew.qubapp.OfferActivity;
+import com.example.matthew.qubapp.OfferListFragment;
+import com.example.matthew.qubapp.PreviousOffersListFragment;
+import com.example.matthew.qubapp.ProductTable;
+import com.example.matthew.qubapp.R;
+import com.example.matthew.qubapp.SimpleScannerActivity;
 import com.jaalee.sdk.*;
 import com.jaalee.sdk.Beacon;
 import com.jaalee.sdk.utils.L;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -51,14 +58,14 @@ public class MainActivity extends FragmentActivity {
     private BeaconManager beaconManager;
 
     GeneralOfferTable myGeneralOfferTable;
-    ProductDatabase myProductDB;
+    ProductTable myProductDB;
     BeaconOfferTable myBeaconOfferDB;
     SQLiteDatabase db;
     ListView myListView;
     ImageButton barcodeButton;
     TextView scanFrom;
     private BeaconListAdapter adapter;
-    AppDatabase appDb;
+    BeaconTable appDb;
     ImageButton gpsButton;
     ImageButton beaconButton;
     Button mapButton;
@@ -94,8 +101,8 @@ public class MainActivity extends FragmentActivity {
         myGeneralOfferTable = GeneralOfferTable.getInstance(this);
         myBeaconOfferDB = BeaconOfferTable.getInstance(this);
 
-        myProductDB = ProductDatabase.getInstance(this);
-        appDb = AppDatabase.getInstance(this);
+        myProductDB = ProductTable.getInstance(this);
+        appDb = BeaconTable.getInstance(this);
        // populateListView();
         adapter = new BeaconListAdapter(this);
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -189,7 +196,7 @@ public class MainActivity extends FragmentActivity {
 
         FragmentManager fragmentManager2 = getFragmentManager();
         FragmentTransaction fragmentTransaction2 = fragmentManager2.beginTransaction();
-        PreviousOffersFragment previousOffersFragment = new PreviousOffersFragment();
+        PreviousOffersListFragment previousOffersFragment = new PreviousOffersListFragment();
         fragmentTransaction2.replace(R.id.fragment_container, previousOffersFragment);
         fragmentTransaction2.commit();
     }
@@ -256,71 +263,71 @@ public class MainActivity extends FragmentActivity {
 
     public void startMonitoring(final Beacon beacon){
 
-            final Region beaconRegion= new Region("regionId", beacon.getProximityUUID(), beacon.getMajor(), beacon.getMinor());
-            beaconManager.startMonitoring(beaconRegion);
-
-            beaconManager.setMonitoringListener(new MonitoringListener() {
-                @Override
-                public void onEnteredRegion(Region region) {
-
-                    long tsLong = (System.currentTimeMillis() / 1000);
-                    String UUID = beacon.getProximityUUID().toString();
-                    Boolean beaconFound = appDb.beaconQueryDatabase(UUID, beacon.getMajor(), beacon.getMinor());
-                    String pattern = "dd/MM/yyyy";
-                    SimpleDateFormat format = new SimpleDateFormat(pattern);
-                    String date = format.format(new Date());
-
-                    if (!beaconFound) {
-
-                        double offerDistance = myBeaconOfferDB.getOfferDistance(UUID, beacon.getMajor(), beacon.getMinor());
-                        String distance = Double.toString(Utils.computeAccuracy(beacon));
-                        Log.d("DISTANCE", "Distance: " + distance);
-                        if (Utils.computeAccuracy(beacon) <= offerDistance) {
-                            appDb.insertBeacon(UUID, beacon.getMajor(), beacon.getMinor(), tsLong);
-                            appDb.insertBeaconOffer(date, beacon.getMinor(), myBeaconOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()), myBeaconOfferDB.getOfferStore(UUID, beacon.getMajor(), beacon.getMinor()));
-                            beaconManager.stopMonitoring(beaconRegion);
-                            connectToService();
-
-                            postNotification(myBeaconOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()));
-
-                        } else {
-
-                            beaconManager.stopMonitoring(beaconRegion);
-                            connectToService();
-                        }
-
-                    } else if (beaconFound) {
-
-                        double offerDistance = myBeaconOfferDB.getOfferDistance(UUID, beacon.getMajor(), beacon.getMinor());
-                        long timestamp = appDb.getTimestamp(UUID, beacon.getMajor(), beacon.getMinor());
-                        Log.d("TIMESTAMP", "Timestamp: " + timestamp);
-                        String distance = String.format("(%.2fm)", Utils.computeAccuracy(beacon));
-                        Log.d("DISTANCE", "DIstance: " + distance);
-                        if ((System.currentTimeMillis() / 1000) - timestamp >= BEACON_DELAY_TIME && Utils.computeAccuracy(beacon) <= offerDistance) {
-
-                            appDb.updateTimestamp(UUID, beacon.getMajor(), beacon.getMinor());
-                            appDb.insertBeaconOffer(date, beacon.getMinor(), myBeaconOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()), myBeaconOfferDB.getOfferStore(UUID, beacon.getMajor(), beacon.getMinor()));
-                            Log.d("OFFER", "OFFER INSERTED!!!");
-                            beaconManager.stopMonitoring(beaconRegion);
-                            connectToService();
-
-                            postNotification(myBeaconOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()));
-
-                        } else {
-                            beaconManager.stopMonitoring(beaconRegion);
-                            connectToService();
-                        }
-
-                    } else {
-                        beaconManager.stopMonitoring(beaconRegion);
-                        connectToService();
-                    }
-                }
-
-                @Override
-                public void onExitedRegion(Region region) {
-                }
-            });
+//            final Region beaconRegion= new Region("regionId", beacon.getProximityUUID(), beacon.getMajor(), beacon.getMinor());
+//            beaconManager.startMonitoring(beaconRegion);
+//
+//            beaconManager.setMonitoringListener(new MonitoringListener() {
+//                @Override
+//                public void onEnteredRegion(Region region) {
+//
+//                    long tsLong = (System.currentTimeMillis() / 1000);
+//                    String UUID = beacon.getProximityUUID().toString();
+//                    Boolean beaconFound = appDb.beaconQueryDatabase(UUID, beacon.getMajor(), beacon.getMinor());
+//                    String pattern = "dd/MM/yyyy";
+//                    SimpleDateFormat format = new SimpleDateFormat(pattern);
+//                    String date = format.format(new Date());
+//
+//                    if (!beaconFound) {
+//
+//                        double offerDistance = myBeaconOfferDB.getOfferDistance(UUID, beacon.getMajor(), beacon.getMinor());
+//                        String distance = Double.toString(Utils.computeAccuracy(beacon));
+//                        Log.d("DISTANCE", "Distance: " + distance);
+//                        if (Utils.computeAccuracy(beacon) <= offerDistance) {
+//                            appDb.insertBeacon(UUID, beacon.getMajor(), beacon.getMinor(), tsLong);
+//                            appDb.insertBeaconOffer(date, beacon.getMinor(), myBeaconOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()), myBeaconOfferDB.getOfferStore(UUID, beacon.getMajor(), beacon.getMinor()));
+//                            beaconManager.stopMonitoring(beaconRegion);
+//                            connectToService();
+//
+//                            postNotification(myBeaconOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()));
+//
+//                        } else {
+//
+//                            beaconManager.stopMonitoring(beaconRegion);
+//                            connectToService();
+//                        }
+//
+//                    } else if (beaconFound) {
+//
+//                        double offerDistance = myBeaconOfferDB.getOfferDistance(UUID, beacon.getMajor(), beacon.getMinor());
+//                        long timestamp = appDb.getTimestamp(UUID, beacon.getMajor(), beacon.getMinor());
+//                        Log.d("TIMESTAMP", "Timestamp: " + timestamp);
+//                        String distance = String.format("(%.2fm)", Utils.computeAccuracy(beacon));
+//                        Log.d("DISTANCE", "DIstance: " + distance);
+//                        if ((System.currentTimeMillis() / 1000) - timestamp >= BEACON_DELAY_TIME && Utils.computeAccuracy(beacon) <= offerDistance) {
+//
+//                            appDb.updateTimestamp(UUID, beacon.getMajor(), beacon.getMinor());
+//                            appDb.insertBeaconOffer(date, beacon.getMinor(), myBeaconOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()), myBeaconOfferDB.getOfferStore(UUID, beacon.getMajor(), beacon.getMinor()));
+//                            Log.d("OFFER", "OFFER INSERTED!!!");
+//                            beaconManager.stopMonitoring(beaconRegion);
+//                            connectToService();
+//
+//                            postNotification(myBeaconOfferDB.getOfferDes(UUID, beacon.getMajor(), beacon.getMinor()));
+//
+//                        } else {
+//                            beaconManager.stopMonitoring(beaconRegion);
+//                            connectToService();
+//                        }
+//
+//                    } else {
+//                        beaconManager.stopMonitoring(beaconRegion);
+//                        connectToService();
+//                    }
+//                }
+//
+//                @Override
+//                public void onExitedRegion(Region region) {
+//                }
+//            });
     }
 
 //    //---helper method to determine if the app is in

@@ -6,12 +6,15 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -22,6 +25,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String store;
     GoogleMap googleMap;
     LatLng myPosition;
+    TextView offerName;
+    TextView offerShop;
+    TextView offerExpiry;
+    ImageView offerIcon;
+
+    public Offer offer;
+
 
 
     @Override
@@ -29,14 +39,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         Intent intent = getIntent();
-        String offer = intent.getStringExtra("Name");
-        //store = intent.getStringExtra("Store");
+
+
+        offer = (Offer)intent.getSerializableExtra("Offer");
+
+
+
+        offerName = (TextView)findViewById(R.id.offerNameMap);
+        offerShop = (TextView)findViewById(R.id.offerShopMap);
+        offerExpiry = (TextView)findViewById(R.id.offerExpiryMap);
+        offerIcon = (ImageView)findViewById(R.id.offerIconMap);
+
+        setOfferDetails(offer);
+
+//        setOfferDetails(offer);
 
         // Getting reference to the SupportMapFragment of activity_main.xml
         SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         // Getting GoogleMap object from the fragment
         googleMap = fm.getMap();
+
+
 
         // Enabling MyLocation Layer of Google Map
         googleMap.setMyLocationEnabled(true);
@@ -50,7 +74,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Getting the name of the best provider
         String provider = locationManager.getBestProvider(criteria, true);
 
-        Location location = locationManager.getLastKnownLocation(provider);
+
+        //if(gpsIsNotOn) {
+            Location location = locationManager.getLastKnownLocation(provider);
+        //}
+
 
         if (location != null) {
             // Getting latitude of the current location
@@ -60,16 +88,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             double longitude = location.getLongitude();
 
             // Creating a LatLng object for the current location
-            LatLng latLng = new LatLng(latitude, longitude);
+            LatLng latLng = new LatLng(offer.getLatitude(), offer.getLongitude());
 
             myPosition = new LatLng(latitude, longitude);
 
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 15));
-            googleMap.addMarker(new MarkerOptions().position(myPosition).title("Start"));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 13));
+
+            googleMap.addMarker(new MarkerOptions().position(latLng).title(offer.getShop()));
+
+            LatLngBounds bounds = googleMap.getProjection().getVisibleRegion().latLngBounds;
+
+            //future work
+//            googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
+//            LatLng poiSelectedLatLng = new LatLng(myPosition.latitude
+//                    + 20, myPosition.longitude);
+//
+//            googleMap.animateCamera(CameraUpdateFactory.newLatLng(poiSelectedLatLng));
         }
     }
 
-//        Log.d("OFFER YEAH!", offer);
+
 //        myBeaconOfferDB = GeneralOfferTable.getInstance(getApplicationContext());
 //
 //        ArrayList<Float> coordinates = myBeaconOfferDB.getCoordinates(offer);
@@ -101,4 +139,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        map.addMarker(new MarkerOptions().position(marker).title(store));
 //        map.animateCamera(CameraUpdateFactory.newLatLngZoom(marker, 15));
     }
+
+    public void setOfferDetails(Offer offer){
+
+        offerName.setText(offer.getName());
+        offerShop.setText(offer.getShop());
+        offerExpiry.setText(offer.getExpiry());
+        offerIcon.setImageResource(Integer.valueOf(offer.getIcon()));
+
+    }
+
+//    public void setBeaconOfferDetails(BeaconOffer beaconOffer){
+//
+//        offerName.setText(beaconOffer.getDescription());
+//        offerShop.setText(beaconOffer.getStore());
+//        offerExpiry.setText(beaconOffer.getExpiry());
+//        offerIcon.setImageResource(Integer.valueOf(beaconOffer.getIcon()));
+//
+//    }
 }

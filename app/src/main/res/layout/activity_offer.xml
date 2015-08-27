@@ -7,15 +7,16 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="90dp"
-        android:id="@+id/imageView"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageViewPreviousIcon"
         android:src="@drawable/tesco_icon"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="12dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="12dp"
         android:paddingBottom="0dp"
-        android:layout_weight="0.04" />
+        android:layout_weight="0.04"
+        android:layout_marginBottom="10dp" />
 
     <Button
         android:layout_width="match_parent"
@@ -56,9 +57,9 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imageView"
-        android:layout_toRightOf="@+id/imageView"
-        android:layout_alignBottom="@+id/imageView"
+        android:layout_alignTop="@+id/imageViewPreviousIcon"
+        android:layout_toRightOf="@+id/imageViewPreviousIcon"
+        android:layout_alignBottom="@+id/imageViewPreviousIcon"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp">
 
@@ -79,7 +80,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Medium Text"
-            android:id="@+id/textViewShop"
+            android:id="@+id/textViewPreviousShop"
             android:paddingLeft="12dp"
             android:layout_above="@+id/textViewExpires"
             android:layout_alignParentStart="true"
@@ -101,9 +102,9 @@
         android:text="Expires: "
         android:id="@+id/textViewExpires"
         android:paddingLeft="12dp"
-        android:textSize="16dp"
-        android:layout_below="@+id/imageView"
-        android:layout_alignStart="@+id/imageView"
+        android:textSize="18dp"
+        android:layout_below="@+id/imageViewPreviousIcon"
+        android:layout_alignStart="@+id/imageViewPreviousIcon"
         android:textColor="#4b4b4b" />
 
     <TextView
@@ -111,9 +112,9 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/textViewExpiry"
-        android:textSize="16dp"
-        android:layout_below="@+id/imageView"
+        android:id="@+id/textViewPreviousExpiry"
+        android:textSize="18dp"
+        android:layout_below="@+id/imageViewPreviousIcon"
         android:layout_toEndOf="@+id/textViewExpires"
         android:textColor="#4b4b4b" />
 

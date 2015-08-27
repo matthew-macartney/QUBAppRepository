@@ -6,9 +6,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 /**
  * Created by Matthew on 24/08/2015.
@@ -17,8 +16,10 @@ public class PreviousOfferActivity extends Activity {
 
     TextView offerName;
     TextView offerShop;
+    TextView offerDateReceived;
     TextView offerExpiry;
-    GeneralOfferTable myOfferDB;
+    ImageView icon;
+    PreviousOfferDataSource myPreviousOfferDB;
     Button delete;
 
     @Override
@@ -28,13 +29,12 @@ public class PreviousOfferActivity extends Activity {
         Intent intent = getIntent();
         String name = intent.getStringExtra("Name");
 
-        offerName = (TextView)findViewById(R.id.textViewOfferName12);
-        offerShop = (TextView)findViewById(R.id.textViewShop);
-        offerExpiry = (TextView)findViewById(R.id.textViewExpiry);
+        offerName = (TextView)findViewById(R.id.previousOfferName2);
+        offerShop = (TextView)findViewById(R.id.textViewPreviousShop);
+        offerExpiry = (TextView)findViewById(R.id.textViewPreviousExpiry);
+        icon = (ImageView)findViewById(R.id.imageViewPreviousIcon);
 
-        myOfferDB = GeneralOfferTable.getInstance(getApplicationContext());
-
-        setOfferDetails(name);
+//        setOfferDetails(name);
     }
 
     @Override
@@ -59,14 +59,12 @@ public class PreviousOfferActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setOfferDetails(String name){
+    public void setBeaconOfferDetails(BeaconOffer beaconOffer){
 
-        ArrayList<String> details = myOfferDB.getBeaconOfferDetails(name);
-
-        offerName.setText(name);
-        //offerShop.setText(offerDetails.get(0));
-        offerShop.setText(details.get(0));
-        offerExpiry.setText(details.get(1));
+        offerName.setText(beaconOffer.getDescription());
+        offerShop.setText(beaconOffer.getStore());
+        offerExpiry.setText(beaconOffer.getExpiry());
+        icon.setImageResource(Integer.valueOf(beaconOffer.getIcon()));
 
     }
 }

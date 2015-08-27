@@ -15,34 +15,36 @@ import android.widget.TextView;
 /**
  * Created by Matthew on 26/08/2015.
  */
-public class OfferListAdapter extends BaseAdapter {
+public class PreviousOfferListAdapter extends BaseAdapter {
 
-    private ArrayList<Offer> offers;
+    private ArrayList<BeaconOffer> beaconOffers;
     private LayoutInflater inflater;
 
-    public OfferListAdapter(Context context) {
+    public PreviousOfferListAdapter(Context context) {
         this.inflater = LayoutInflater.from(context);
-        this.offers = new ArrayList<Offer>();
+        this.beaconOffers = new ArrayList<BeaconOffer>();
     }
 
-    public void replaceWith(Collection<Offer> newOffers) {
-        this.offers.clear();
-        this.offers.addAll(newOffers);
+    public void replaceWith(Collection<BeaconOffer> newBeaconOffers) {
+        this.beaconOffers.clear();
+        this.beaconOffers.addAll(newBeaconOffers);
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return offers.size();
+        return beaconOffers.size();
     }
 
     @Override
-    public Offer getItem(int position) {
-        return offers.get(position);
+    public BeaconOffer getItem(int position) {
+
+        return beaconOffers.get(position);
     }
 
     @Override
     public long getItemId(int position) {
+
         return position;
     }
 
@@ -53,18 +55,18 @@ public class OfferListAdapter extends BaseAdapter {
         return view;
     }
 
-    private void bind(Offer offer, View view) {
+    private void bind(BeaconOffer beaconOffer, View view) {
         ViewHolder holder = (ViewHolder) view.getTag();
-        holder.name.setText(offer.getName());
-        holder.shop.setText(offer.getShop());
-        holder.expiry.setText(offer.getExpiry());
-        holder.icon.setImageResource(Integer.valueOf(offer.getIcon()));
+        holder.name.setText(beaconOffer.getDescription());
+        holder.store.setText(beaconOffer.getStore());
+        holder.receieved.setText(beaconOffer.getExpiry());
+        holder.icon.setImageResource(Integer.valueOf(beaconOffer.getIcon()));
 
     }
 
     private View inflateIfRequired(View view, int position, ViewGroup parent) {
         if (view == null) {
-            view = inflater.inflate(R.layout.offer_list_layout, null);
+            view = inflater.inflate(R.layout.history_list_layout, null);
             view.setTag(new ViewHolder(view));
         }
         return view;
@@ -72,17 +74,18 @@ public class OfferListAdapter extends BaseAdapter {
 
     static class ViewHolder {
         final TextView name;
-        final TextView shop;
-        final TextView expiry;
+        final TextView store;
+        final TextView receieved;
         final ImageView icon;
 
 
         ViewHolder(View view) {
-            name = (TextView)view.findViewById(R.id.textViewOfferName12);
-            shop = (TextView)view.findViewById(R.id.textViewPreviousShop);
-            expiry = (TextView)view.findViewById(R.id.textViewExpires);
+            name = (TextView)view.findViewById(R.id.previousOfferName2);
+            store = (TextView)view.findViewById(R.id.previousOfferStore);
+            receieved = (TextView)view.findViewById(R.id.previousOfferDateReceived);
             icon = (ImageView)view.findViewById(R.id.imageViewPreviousIcon);
         }
     }
 
 }
+

@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="OfferDescription"
-            android:id="@+id/textViewHistoryDes"
+            android:id="@+id/previousOfferName2"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
             android:layout_weight="1"
@@ -27,9 +27,9 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Store"
-            android:id="@+id/textViewStore"
-            android:layout_below="@+id/textViewHistoryDes"
-            android:layout_alignStart="@+id/textViewHistoryDes"
+            android:id="@+id/previousOfferStore"
+            android:layout_below="@+id/previousOfferName2"
+            android:layout_alignStart="@+id/previousOfferName2"
             android:layout_weight="1"
             android:layout_marginLeft="12dp"
             android:textSize="16dp" />
@@ -37,8 +37,8 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewStore"
-            android:layout_toEndOf="@+id/textViewStore"
+            android:layout_below="@+id/previousOfferStore"
+            android:layout_toEndOf="@+id/previousOfferStore"
             android:id="@+id/relativeLayout">
 
             <TextView
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Date"
-                android:id="@+id/textViewDate"
+                android:id="@+id/previousOfferDateReceived"
                 android:layout_alignParentTop="true"
                 android:layout_toEndOf="@+id/textView"
                 android:textSize="12dp" />

@@ -7,9 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 public class OfferActivity extends Activity {
 
@@ -18,10 +17,13 @@ public class OfferActivity extends Activity {
     TextView offerExpiry;
     GeneralOfferTable myOfferDB;
     Button button;
+    GeneralOfferDataSource datasource;
+    ImageView icon;
 
-    public String offer;
+
     public String store;
 
+    public Offer offer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,19 +31,17 @@ public class OfferActivity extends Activity {
         setContentView(R.layout.activity_offer);
 
         offerName = (TextView)findViewById(R.id.textViewOfferName12);
-        offerShop = (TextView)findViewById(R.id.textViewShop);
-        offerExpiry = (TextView)findViewById(R.id.textViewExpiry);
+        offerShop = (TextView)findViewById(R.id.textViewPreviousShop);
+        offerExpiry = (TextView)findViewById(R.id.textViewPreviousExpiry);
 
+        icon = (ImageView)findViewById(R.id.imageViewPreviousIcon);
         myOfferDB = GeneralOfferTable.getInstance(getApplicationContext());
 
         Intent intent = getIntent();
-        if(intent.getStringExtra("Name") != null) {
-            offer = intent.getStringExtra("Name");
-            setOfferDetails(offer);
-        }else if(intent.getStringExtra("Offer")!= null){
-            offer = intent.getStringExtra("Offer");
-            setBeaconOfferDetails(offer);
-        }
+        offer = (Offer) intent.getSerializableExtra("Offer");
+        setOfferDetails(offer);
+
+
     }
 
     @Override
@@ -68,37 +68,20 @@ public class OfferActivity extends Activity {
 
     public void onMapButtonClick(View v){
 
-        Intent intent = new Intent(this, MapsActivity.class);
+        Intent mapIntent = new Intent(this, MapsActivity.class);
 
-        intent.putExtra("Name", offerName.getText());
-        //intent.putExtra("Store", store);
-        startActivity(intent);
-
-    }
-
-    public void setOfferDetails(String offer){
-
-        ArrayList<String> details = myOfferDB.getOfferDetails(offer);
-
-        this.offer = offer;
-        offerName.setText(offer);
-        //offerShop.setText(offerDetails.get(0));
-        store = details.get(0);
-        offerShop.setText(details.get(0));
-        offerExpiry.setText(details.get(1));
+            mapIntent.putExtra("Offer", offer);
+            startActivity(mapIntent);
 
     }
 
-    public void setBeaconOfferDetails(String offer){
+    public void setOfferDetails(Offer offer){
 
-        ArrayList<String> details = myOfferDB.getBeaconOfferDetails(offer);
+        offerName.setText(offer.getName());
+        offerShop.setText(offer.getShop());
+        offerExpiry.setText(offer.getExpiry());
+        icon.setImageResource(Integer.valueOf(offer.getIcon()));
 
-        this.offer = offer;
-        offerName.setText(offer);
-        //offerShop.setText(offerDetails.get(0));
-        store = details.get(0);
-        offerShop.setText(details.get(0));
-        offerExpiry.setText(details.get(1));
 
     }
 

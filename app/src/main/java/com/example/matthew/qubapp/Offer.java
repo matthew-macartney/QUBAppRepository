@@ -1,9 +1,11 @@
 package com.example.matthew.qubapp;
 
+import java.io.Serializable;
+
 /**
  * Created by Matthew on 26/08/2015.
  */
-public class Offer {
+public class Offer implements Serializable{
 
     private int id;
     private String name;

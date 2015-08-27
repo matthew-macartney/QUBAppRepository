@@ -7,11 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 public class BarcodeProductActivity extends Activity {
 
-    ProductDatabase myProductDB;
+    ProductTable myProductDB;
     TextView productName;
     TextView productRRP;
     TextView productPrice;
@@ -26,14 +24,14 @@ public class BarcodeProductActivity extends Activity {
         Intent intent = getIntent();
         code = intent.getStringExtra("Code");
 
-        myProductDB = ProductDatabase.getInstance(this);
+        myProductDB = ProductTable.getInstance(this);
 
         productName = (TextView)findViewById(R.id.textViewProductName);
         productRRP = (TextView)findViewById(R.id.textViewRRP);
-        productPrice = (TextView)findViewById(R.id.textViewShop);
+        productPrice = (TextView)findViewById(R.id.textViewPreviousShop);
         productSaving = (TextView)findViewById(R.id.textViewSaving);
 
-        setLayoutValues(code);
+//        setLayoutValues(code);
 
     }
 
@@ -59,16 +57,16 @@ public class BarcodeProductActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setLayoutValues(String code){
-
-        ArrayList<String> product = myProductDB.barcodeQueryDatabase(code);
-
-            productName.setText(product.get(0));
-            productRRP.setText("£"+product.get(1) + " RRP");
-            productPrice.setText("Online price: £" + product.get(2));
-            productSaving.setText("Saving: "+ product.get(3)+"%");
-
-        //.setText(String.format("MAC: %s (%.2fm)", beacon.getMacAddress(), Utils.computeAccuracy(beacon)))
-
-    }
+//    public void setLayoutValues(String code){
+//
+//        ArrayList<String> product = myProductDB.barcodeQueryDatabase(code);
+//
+//            productName.setText(product.get(0));
+//            productRRP.setText("£"+product.get(1) + " RRP");
+//            productPrice.setText("Online price: £" + product.get(2));
+//            productSaving.setText("Saving: "+ product.get(3)+"%");
+//
+//        //.setText(String.format("MAC: %s (%.2fm)", beacon.getMacAddress(), Utils.computeAccuracy(beacon)))
+//
+//    }
 }
