@@ -1,4 +1,4 @@
-package com.example.matthew.qubapp;
+package com.example.matthew.qubapp.GUI;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.matthew.qubapp.Database.GeneralOfferDataSource;
+import com.example.matthew.qubapp.Database.GeneralOfferTable;
+import com.example.matthew.qubapp.Model.Offer;
+import com.example.matthew.qubapp.R;
 
 public class OfferActivity extends Activity {
 
@@ -31,11 +36,11 @@ public class OfferActivity extends Activity {
         setContentView(R.layout.activity_offer);
 
         offerName = (TextView)findViewById(R.id.textViewOfferName12);
-        offerShop = (TextView)findViewById(R.id.textViewPreviousShop);
+        offerShop = (TextView)findViewById(R.id.textViewProductPrice);
         offerExpiry = (TextView)findViewById(R.id.textViewPreviousExpiry);
 
         icon = (ImageView)findViewById(R.id.imageViewPreviousIcon);
-        myOfferDB = GeneralOfferTable.getInstance(getApplicationContext());
+
 
         Intent intent = getIntent();
         offer = (Offer) intent.getSerializableExtra("Offer");

@@ -6,9 +6,9 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageView4"
-        android:layout_toEndOf="@+id/imageView4"
-        android:layout_alignTop="@+id/imageView4">
+        android:layout_alignBottom="@+id/imageViewPreviousOfferIcon"
+        android:layout_toEndOf="@+id/imageViewPreviousOfferIcon"
+        android:layout_alignTop="@+id/imageViewPreviousOfferIcon">
 
         <TextView
             android:layout_width="wrap_content"
@@ -67,7 +67,7 @@
     <ImageView
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:id="@+id/imageView4"
+        android:id="@+id/imageViewPreviousOfferIcon"
         android:src="@drawable/tesco_icon"
         android:layout_marginLeft="20dp"
         android:layout_alignParentTop="true"

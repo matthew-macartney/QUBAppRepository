@@ -1,11 +1,8 @@
-package com.example.matthew.qubapp;
+package com.example.matthew.qubapp.GUI;
 
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.zxing.Result;
 
@@ -40,9 +37,6 @@ public class SimpleScannerActivity extends Activity implements ZXingScannerView.
 
     @Override
     public void handleResult(Result rawResult) {
-        // Do something with the result here
-        Log.v(TAG, rawResult.getText()); // Prints scan results
-        Log.v(TAG, rawResult.getBarcodeFormat().toString()); // Prints the scan format (qrcode, pdf417 etc.)
 
         String code = rawResult.getText();
         Intent intent = new Intent(this, BarcodeProductActivity.class);

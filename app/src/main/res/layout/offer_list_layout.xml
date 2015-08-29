@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Medium Text"
-            android:id="@+id/textViewPreviousShop"
+            android:id="@+id/textViewProductPrice"
             android:textSize="16dp"
             android:layout_alignWithParentIfMissing="false"
             android:layout_above="@+id/textView"

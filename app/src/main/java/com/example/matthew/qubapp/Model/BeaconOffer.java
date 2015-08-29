@@ -1,4 +1,4 @@
-package com.example.matthew.qubapp;
+package com.example.matthew.qubapp.Model;
 
 import java.io.Serializable;
 

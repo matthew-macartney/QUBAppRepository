@@ -1,12 +1,11 @@
-package com.example.matthew.qubapp;
+package com.example.matthew.qubapp.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.ArrayList;
+import com.example.matthew.qubapp.R;
 
 /**
  * Created by Matthew on 26/08/2015.
@@ -42,7 +41,7 @@ public class BeaconOfferTable extends SQLiteOpenHelper {
         return instance;
     }
 
-    public BeaconOfferTable(Context context) {
+    private BeaconOfferTable(Context context) {
         super(context, DATABASE_NAME, null, 8);
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -52,8 +51,9 @@ public class BeaconOfferTable extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL("CREATE TABLE " + TABLE_NAME_BEACON_OFFER + " (_id INTEGER PRIMARY KEY, DESCRIPTION TEXT, STORE TEXT, " +
-                "UUID TEXT, MAJOR TEXT, MINOR TEXT, DISTANCE TEXT, LATITUDE FLOAT, LONGITUDE FLOAT, EXPIRY TEXT, ICON TEXT);");
+        db.execSQL("CREATE TABLE " + TABLE_NAME_BEACON_OFFER + " (_id INTEGER PRIMARY KEY, " + OFFER_DESCRIPTION + " TEXT, " + OFFER_STORE + " TEXT, " +
+                OFFER_UUID + " TEXT, " + OFFER_MAJOR + " TEXT, " + OFFER_MINOR + " TEXT, " + OFFER_MAX_DISTANCE + " TEXT, "+ OFFER_LAT +" FLOAT, " + OFFER_LON +
+                " FLOAT, " + OFFER_EXPIRY +" TEXT, " + OFFER_ICON +" TEXT);");
 
         ContentValues contentValues = new ContentValues();
 

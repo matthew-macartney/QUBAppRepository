@@ -1,4 +1,4 @@
-package com.example.matthew.qubapp;
+package com.example.matthew.qubapp.GUI;
 
 import android.content.Intent;
 import android.location.Criteria;
@@ -6,15 +6,18 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.matthew.qubapp.Database.GeneralOfferTable;
+import com.example.matthew.qubapp.Model.Offer;
+import com.example.matthew.qubapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -31,8 +34,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     ImageView offerIcon;
 
     public Offer offer;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,21 +53,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         setOfferDetails(offer);
 
-//        setOfferDetails(offer);
+        Log.d("CO_ORDINATES", offer.getLatitude() + " " + offer.getLongitude());
 
         // Getting reference to the SupportMapFragment of activity_main.xml
         SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         // Getting GoogleMap object from the fragment
         googleMap = fm.getMap();
-
-
-
+        
         // Enabling MyLocation Layer of Google Map
         googleMap.setMyLocationEnabled(true);
 
         // Getting LocationManager object from System Service LOCATION_SERVICE
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager)this.getSystemService(LOCATION_SERVICE);
 
         // Creating a criteria object to retrieve provider
         Criteria criteria = new Criteria();
@@ -74,37 +73,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Getting the name of the best provider
         String provider = locationManager.getBestProvider(criteria, true);
 
+        Location location = locationManager.getLastKnownLocation(provider);
 
-        //if(gpsIsNotOn) {
-            Location location = locationManager.getLastKnownLocation(provider);
-        //}
+        onMapReady(googleMap);
 
 
-        if (location != null) {
-            // Getting latitude of the current location
-            double latitude = location.getLatitude();
-
-            // Getting longitude of the current location
-            double longitude = location.getLongitude();
-
-            // Creating a LatLng object for the current location
-            LatLng latLng = new LatLng(offer.getLatitude(), offer.getLongitude());
-
-            myPosition = new LatLng(latitude, longitude);
-
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 13));
-
-            googleMap.addMarker(new MarkerOptions().position(latLng).title(offer.getShop()));
-
-            LatLngBounds bounds = googleMap.getProjection().getVisibleRegion().latLngBounds;
-
-            //future work
-//            googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
-//            LatLng poiSelectedLatLng = new LatLng(myPosition.latitude
-//                    + 20, myPosition.longitude);
+//            // Getting latitude of the current location
+//            double latitude = location.getLatitude();
 //
-//            googleMap.animateCamera(CameraUpdateFactory.newLatLng(poiSelectedLatLng));
-        }
+//            // Getting longitude of the current location
+//            double longitude = location.getLongitude();
+//
+//            LatLng latLng = new LatLng(offer.getLatitude(), offer.getLongitude());
+//
+//            // Creating a LatLng object for the current location
+//
+//            myPosition = new LatLng(latitude, longitude);
+//
+//            googleMap.addMarker(new MarkerOptions().position(latLng).title(offer.getShop()));
+//
+//            LatLngBounds bounds = googleMap.getProjection().getVisibleRegion().latLngBounds;
+////
+//          googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+
     }
 
 
@@ -134,10 +125,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap map) {
-//        // Add a marker in Sydney, Australia, and move the camera.
-//        LatLng marker = new LatLng(latitude, longitude);
-//        map.addMarker(new MarkerOptions().position(marker).title(store));
-//        map.animateCamera(CameraUpdateFactory.newLatLngZoom(marker, 15));
+
+
+
+
+        LatLng latLng = new LatLng(offer.getLatitude(), offer.getLongitude());
+
+//        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng ).zoom(13).build();
+//        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        googleMap.addMarker(new MarkerOptions().position(latLng).title(offer.getShop()));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+
+
     }
 
     public void setOfferDetails(Offer offer){

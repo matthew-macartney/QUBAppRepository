@@ -1,4 +1,4 @@
-package com.example.matthew.qubapp;
+package com.example.matthew.qubapp.GUI;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,9 @@ import java.util.Collection;
 
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.matthew.qubapp.Model.BeaconOffer;
+import com.example.matthew.qubapp.R;
 
 /**
  * Created by Matthew on 26/08/2015.
@@ -33,6 +36,7 @@ public class PreviousOfferListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+
         return beaconOffers.size();
     }
 
@@ -59,7 +63,7 @@ public class PreviousOfferListAdapter extends BaseAdapter {
         ViewHolder holder = (ViewHolder) view.getTag();
         holder.name.setText(beaconOffer.getDescription());
         holder.store.setText(beaconOffer.getStore());
-        holder.receieved.setText(beaconOffer.getExpiry());
+        holder.received.setText(beaconOffer.getDateReceived());
         holder.icon.setImageResource(Integer.valueOf(beaconOffer.getIcon()));
 
     }
@@ -75,15 +79,15 @@ public class PreviousOfferListAdapter extends BaseAdapter {
     static class ViewHolder {
         final TextView name;
         final TextView store;
-        final TextView receieved;
+        final TextView received;
         final ImageView icon;
 
 
         ViewHolder(View view) {
             name = (TextView)view.findViewById(R.id.previousOfferName2);
             store = (TextView)view.findViewById(R.id.previousOfferStore);
-            receieved = (TextView)view.findViewById(R.id.previousOfferDateReceived);
-            icon = (ImageView)view.findViewById(R.id.imageViewPreviousIcon);
+            received = (TextView)view.findViewById(R.id.previousOfferDateReceived);
+            icon = (ImageView)view.findViewById(R.id.imageViewPreviousOfferIcon);
         }
     }
 

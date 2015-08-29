@@ -1,4 +1,4 @@
-package com.example.matthew.qubapp;
+package com.example.matthew.qubapp.Model;
 
 /**
  * Created by Matthew on 26/08/2015.

@@ -1,12 +1,11 @@
-package com.example.matthew.qubapp;
+package com.example.matthew.qubapp.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.ArrayList;
+import com.example.matthew.qubapp.R;
 
 /**
  * Created by Matthew on 12/08/2015.
@@ -27,7 +26,7 @@ public class GeneralOfferTable extends SQLiteOpenHelper {
     public static final String OFFER_LON = "LONGITUDE";
     public static final String OFFER_ICON = "ICON";
 
-    public SQLiteDatabase db;
+    public SQLiteDatabase db = getWritableDatabase();
 
     public static synchronized GeneralOfferTable getInstance(Context context){
         if (instance == null){
@@ -37,91 +36,9 @@ public class GeneralOfferTable extends SQLiteOpenHelper {
         return instance;
     }
 
-    public GeneralOfferTable(Context context) {
+    private GeneralOfferTable(Context context) {
         super(context, DATABASE_NAME, null, 1);
-        SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(OFFER_NAME, "20% off your main course");
-        contentValues.put(OFFER_SHOP, "Pizza Express");
-        contentValues.put(OFFER_EXPIRY, "21 October 2015");
-        contentValues.put(OFFER_LAT, 54.550426);
-        contentValues.put(OFFER_LON, -5.920730);
-        contentValues.put(OFFER_ICON, R.drawable.pizzaexpress);
-        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
-
-        contentValues.put(OFFER_NAME, "25% off your bill");
-        contentValues.put(OFFER_SHOP, "Nandos");
-        contentValues.put(OFFER_EXPIRY, "30 October 2015");
-        contentValues.put(OFFER_LAT, 54.550426);
-        contentValues.put(OFFER_LON, -5.920730);
-        contentValues.put(OFFER_ICON, R.drawable.nandos);
-        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
-
-        contentValues.put(OFFER_NAME, "2 for 1 on selected bestsellers");
-        contentValues.put(OFFER_SHOP, "Waterstones");
-        contentValues.put(OFFER_EXPIRY, "27 September 2015");
-        contentValues.put(OFFER_LAT, 54.550426);
-        contentValues.put(OFFER_LON, -5.920730);
-        contentValues.put(OFFER_ICON, R.drawable.waterstones);
-        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
-
-        contentValues.put(OFFER_NAME, "15% off all fragrances");
-        contentValues.put(OFFER_SHOP, "The Perfume Shop");
-        contentValues.put(OFFER_EXPIRY, "3 October 2015");
-        contentValues.put(OFFER_LAT, 54.550426);
-        contentValues.put(OFFER_LON, -5.920730);
-        contentValues.put(OFFER_ICON, R.drawable.perfumeshop);
-        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
-
-        contentValues.put(OFFER_NAME, "20% off in-store");
-        contentValues.put(OFFER_SHOP, "The Body Shop");
-        contentValues.put(OFFER_EXPIRY, "21 October 2015");
-        contentValues.put(OFFER_LAT, 54.550426);
-        contentValues.put(OFFER_LON, -5.920730);
-        contentValues.put(OFFER_ICON, R.drawable.bodyshop);
-        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
-
-        contentValues.put(OFFER_NAME, "10% off all men's trainers");
-        contentValues.put(OFFER_SHOP, "Footlocker");
-        contentValues.put(OFFER_EXPIRY, "15 October 2015");
-        contentValues.put(OFFER_LAT, 54.550426);
-        contentValues.put(OFFER_LON, -5.920730);
-        contentValues.put(OFFER_ICON, R.drawable.footlocker);
-        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
-
-        contentValues.put(OFFER_NAME, "15% off all womanswear");
-        contentValues.put(OFFER_SHOP, "Next");
-        contentValues.put(OFFER_EXPIRY, "25 September 2015");
-        contentValues.put(OFFER_LAT, 54.550426);
-        contentValues.put(OFFER_LON, -5.920730);
-        contentValues.put(OFFER_ICON, R.drawable.nextlogo);
-        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
-
-        contentValues.put(OFFER_NAME, "10% off all homeware");
-        contentValues.put(OFFER_SHOP, "House of Fraser");
-        contentValues.put(OFFER_EXPIRY, "5 October 2015");
-        contentValues.put(OFFER_LAT, 54.550426);
-        contentValues.put(OFFER_LON, -5.920730);
-        contentValues.put(OFFER_ICON, R.drawable.houseoffraser);
-        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
-
-        contentValues.put(OFFER_NAME, "30% off main courses");
-        contentValues.put(OFFER_SHOP, "Frankie & Benny's");
-        contentValues.put(OFFER_EXPIRY, "10 October 2015");
-        contentValues.put(OFFER_LAT, 54.550426);
-        contentValues.put(OFFER_LON, -5.920730);
-        contentValues.put(OFFER_ICON, R.drawable.frankieandbenny);
-        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
-
-        contentValues.put(OFFER_NAME, "20% off all gift sets");
-        contentValues.put(OFFER_SHOP, "Rituals");
-        contentValues.put(OFFER_EXPIRY, "31 October 2015");
-        contentValues.put(OFFER_LAT, 54.550426);
-        contentValues.put(OFFER_LON, -5.920730);
-        contentValues.put(OFFER_ICON, R.drawable.rituals);
-        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
 
 
     }
@@ -130,6 +47,87 @@ public class GeneralOfferTable extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE " + TABLE_NAME_GENERAL_OFFER + " (_id INTEGER PRIMARY KEY, NAME TEXT, SHOP TEXT, EXPIRY TEXT, LATITUDE FLOAT, LONGITUDE FLOAT, ICON TEXT);");
 
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(OFFER_NAME, "20% off your main course");
+        contentValues.put(OFFER_SHOP, "Pizza Express");
+        contentValues.put(OFFER_EXPIRY, "21 October 2015");
+        contentValues.put(OFFER_LAT, 54.576272);
+        contentValues.put(OFFER_LON, -5.956503);
+        contentValues.put(OFFER_ICON, R.drawable.pizzaexpress);
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
+
+        contentValues.put(OFFER_NAME, "25% off your bill");
+        contentValues.put(OFFER_SHOP, "Nandos");
+        contentValues.put(OFFER_EXPIRY, "30 October 2015");
+        contentValues.put(OFFER_LAT, 54.593053);
+        contentValues.put(OFFER_LON, -5.931334);
+        contentValues.put(OFFER_ICON, R.drawable.nandos);
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
+
+        contentValues.put(OFFER_NAME, "2 for 1 on selected bestsellers");
+        contentValues.put(OFFER_SHOP, "Waterstones");
+        contentValues.put(OFFER_EXPIRY, "27 September 2015");
+        contentValues.put(OFFER_LAT, 54.597583);
+        contentValues.put(OFFER_LON, -5.931892);
+        contentValues.put(OFFER_ICON, R.drawable.waterstones);
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
+
+        contentValues.put(OFFER_NAME, "15% off all fragrances");
+        contentValues.put(OFFER_SHOP, "The Perfume Shop");
+        contentValues.put(OFFER_EXPIRY, "3 October 2015");
+        contentValues.put(OFFER_LAT, 54.600442);
+        contentValues.put(OFFER_LON, -5.933211);
+        contentValues.put(OFFER_ICON, R.drawable.perfumeshop);
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
+
+        contentValues.put(OFFER_NAME, "20% off in-store");
+        contentValues.put(OFFER_SHOP, "The Body Shop");
+        contentValues.put(OFFER_EXPIRY, "21 October 2015");
+        contentValues.put(OFFER_LAT, 54.598847);
+        contentValues.put(OFFER_LON, -5.930088);
+        contentValues.put(OFFER_ICON, R.drawable.bodyshop);
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
+
+        contentValues.put(OFFER_NAME, "10% off all men's trainers");
+        contentValues.put(OFFER_SHOP, "Footlocker");
+        contentValues.put(OFFER_EXPIRY, "15 October 2015");
+        contentValues.put(OFFER_LAT, 54.597649);
+        contentValues.put(OFFER_LON, -5.930041);
+        contentValues.put(OFFER_ICON, R.drawable.footlocker);
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
+
+        contentValues.put(OFFER_NAME, "15% off all womanswear");
+        contentValues.put(OFFER_SHOP, "Next");
+        contentValues.put(OFFER_EXPIRY, "25 September 2015");
+        contentValues.put(OFFER_LAT, 54.579813);
+        contentValues.put(OFFER_LON, -5.967181);
+        contentValues.put(OFFER_ICON, R.drawable.nextlogo);
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
+
+        contentValues.put(OFFER_NAME, "10% off all homeware");
+        contentValues.put(OFFER_SHOP, "House of Fraser");
+        contentValues.put(OFFER_EXPIRY, "5 October 2015");
+        contentValues.put(OFFER_LAT, 54.597957);
+        contentValues.put(OFFER_LON, -5.924549);
+        contentValues.put(OFFER_ICON, R.drawable.houseoffraser);
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
+
+        contentValues.put(OFFER_NAME, "30% off main courses");
+        contentValues.put(OFFER_SHOP, "Frankie & Benny's");
+        contentValues.put(OFFER_EXPIRY, "10 October 2015");
+        contentValues.put(OFFER_LAT, 54.597887);
+        contentValues.put(OFFER_LON, -5.925568);
+        contentValues.put(OFFER_ICON, R.drawable.frankieandbenny);
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
+
+        contentValues.put(OFFER_NAME, "20% off all gift sets");
+        contentValues.put(OFFER_SHOP, "Rituals");
+        contentValues.put(OFFER_EXPIRY, "31 October 2015");
+        contentValues.put(OFFER_LAT, 54.598515);
+        contentValues.put(OFFER_LON, -5.924847);
+        contentValues.put(OFFER_ICON, R.drawable.rituals);
+        db.insert(TABLE_NAME_GENERAL_OFFER, null, contentValues);
     }
 
     @Override

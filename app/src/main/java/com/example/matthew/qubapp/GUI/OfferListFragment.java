@@ -1,19 +1,20 @@
-package com.example.matthew.qubapp;
+package com.example.matthew.qubapp.GUI;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-import java.io.Serializable;
+import com.example.matthew.qubapp.Database.GeneralOfferDataSource;
+import com.example.matthew.qubapp.Database.GeneralOfferTable;
+import com.example.matthew.qubapp.Model.Offer;
+import com.example.matthew.qubapp.R;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -21,9 +22,7 @@ import java.util.List;
  * Created by Matthew on 18/08/2015.
  */
 public class OfferListFragment extends Fragment {
-    TextView title;
-    public ListView myListView;
-    GeneralOfferTable myOfferDB;
+
     private GeneralOfferDataSource datasource;
     private OfferListAdapter adapter;
 

@@ -45,8 +45,7 @@
             android:src="@drawable/qrcode"
             android:background="#ffffff"
             android:layout_above="@+id/button"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal" />
+            android:layout_centerHorizontal="true" />
     </LinearLayout>
 
     <LinearLayout
@@ -74,7 +73,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Medium Text"
-            android:id="@+id/textViewPreviousShop"
+            android:id="@+id/textViewProductPrice"
             android:paddingLeft="12dp"
             android:layout_above="@+id/textViewExpires"
             android:layout_alignParentStart="true"
@@ -126,7 +125,6 @@
             android:textSize="16dp"
             android:background="#ff1666ad"
             android:textColor="#ffffff"
-            android:onClick="onMapButtonClick"
             android:layout_weight="1"
             android:layout_alignParentBottom="true"
             android:layout_alignEnd="@+id/textViewPreviousExpiry"
@@ -141,7 +139,9 @@
             android:layout_alignParentEnd="true"
             android:layout_toEndOf="@+id/button"
             android:background="#c51d0a"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textSize="16dp"
+            android:textColor="#ffffff" />
     </LinearLayout>
 
 </RelativeLayout>

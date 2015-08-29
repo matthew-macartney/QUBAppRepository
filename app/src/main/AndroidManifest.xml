@@ -39,7 +39,8 @@
         android:theme="@style/Theme.MyStyle" >
         <activity
             android:name=".GUI.MainActivity"
-            android:label="Bargain Buddy" >
+            android:label="Bargain Buddy"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -54,10 +55,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ListBeaconActivity"
+            android:name=".GUI.ListBeaconActivity"
             android:label="Select Beacon" />
         <activity
-            android:name=".SimpleScannerActivity"
+            android:name=".GUI.SimpleScannerActivity"
             android:label="Scanning..." />
 
         <!-- Jaalee service responsible for scanning beacons. -->
@@ -73,20 +74,24 @@
             android:value="AIzaSyA2b1Jgul6Ef1tJ8o_mp0l5tZkRnib4X6Y" />
 
         <activity
-            android:name=".BarcodeProductActivity"
-            android:label="Product retrieved" >
+            android:name=".GUI.BarcodeProductActivity"
+            android:label="Product Retrieved"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".OfferActivity"
-            android:label="Current Offer" >
+            android:name=".GUI.OfferActivity"
+            android:label="Current Offer"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".PreviousOfferActivity"
-            android:label="Previous iBeacon Offers" >
+            android:name=".GUI.PreviousOfferActivity"
+            android:label="Previous iBeacon Offers"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name="com.example.matthew.qubapp.MapsActivity"
-            android:label="@string/title_activity_maps">
+            android:name=".GUI.MapsActivity"
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait">
             <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
             <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
         </activity>

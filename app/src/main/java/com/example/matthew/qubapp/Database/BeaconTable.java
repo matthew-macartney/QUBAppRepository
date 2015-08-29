@@ -1,4 +1,4 @@
-package com.example.matthew.qubapp;
+package com.example.matthew.qubapp.Database;
 
 import android.content.ContentValues;
 import android.content.Context;

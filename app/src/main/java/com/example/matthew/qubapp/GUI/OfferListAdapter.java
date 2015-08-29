@@ -1,4 +1,4 @@
-package com.example.matthew.qubapp;
+package com.example.matthew.qubapp.GUI;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,9 @@ import java.util.Collection;
 
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.matthew.qubapp.Model.Offer;
+import com.example.matthew.qubapp.R;
 
 /**
  * Created by Matthew on 26/08/2015.
@@ -79,7 +82,7 @@ public class OfferListAdapter extends BaseAdapter {
 
         ViewHolder(View view) {
             name = (TextView)view.findViewById(R.id.textViewOfferName12);
-            shop = (TextView)view.findViewById(R.id.textViewPreviousShop);
+            shop = (TextView)view.findViewById(R.id.textViewProductPrice);
             expiry = (TextView)view.findViewById(R.id.textViewExpires);
             icon = (ImageView)view.findViewById(R.id.imageViewPreviousIcon);
         }

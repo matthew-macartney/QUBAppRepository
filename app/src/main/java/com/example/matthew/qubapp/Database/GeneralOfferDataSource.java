@@ -1,8 +1,10 @@
-package com.example.matthew.qubapp;
+package com.example.matthew.qubapp.Database;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.example.matthew.qubapp.Model.Offer;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,13 +15,23 @@ import java.util.List;
  */
 public class GeneralOfferDataSource {
 
+    public static final String TABLE_NAME_GENERAL_OFFER = "general_offer_table";
+    public static final String OFFER_ID = "_id";
+    public static final String OFFER_NAME = "NAME";
+    public static final String OFFER_SHOP = "SHOP";
+    public static final String OFFER_EXPIRY = "EXPIRY";
+    public static final String OFFER_LAT = "LATITUDE";
+    public static final String OFFER_LON = "LONGITUDE";
+    public static final String OFFER_ICON = "ICON";
+
     private SQLiteDatabase database;
     private GeneralOfferTable myGeneralOfferDB;
+
     private String[] allRows = { GeneralOfferTable.OFFER_ID, GeneralOfferTable.OFFER_NAME, GeneralOfferTable.OFFER_SHOP, GeneralOfferTable.OFFER_EXPIRY, GeneralOfferTable.OFFER_LAT, GeneralOfferTable.OFFER_LON };
 
     public GeneralOfferDataSource(Context context){
 
-        myGeneralOfferDB = new GeneralOfferTable(context);
+        myGeneralOfferDB = GeneralOfferTable.getInstance(context);
     }
 
     public void open()throws SQLException{
@@ -45,17 +57,6 @@ public class GeneralOfferDataSource {
 
         cursor.close();
         return offers;
-    }
-
-    public Offer getSelectedOffer(Cursor cursor){
-
-
-
-
-        cursor.moveToFirst();
-        Offer offer = cursorToOffer(cursor);
-        cursor.close();
-        return offer;
     }
 
     private Offer cursorToOffer(Cursor cursor) {
