@@ -6,7 +6,7 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Previous Offers"
+        android:text="Your Beacon Offers"
         android:id="@+id/textViewPreviousOffers"
         android:textColor="#ffffffff"
         android:textSize="16dp"

@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.matthew.qubapp.Database.ProductDataSource;
 import com.example.matthew.qubapp.Model.Product;
@@ -76,15 +77,22 @@ public class BarcodeProductActivity extends Activity {
 
     public void setLayoutValues(String code){
 
-        Product product = myProductDB.getProduct(code);
+        try {
+
+            Product product = myProductDB.getProduct(code);
 
             productName.setText(product.getDescription());
-            productRRP.setText("£"+ product.getRRP() + " RRP");
-            productPrice.setText("Online price: £" + product.getPrice());
-            productSaving.setText("Saving: "+ product.getSaving()+" B");
+            productRRP.setText(String.format("£%.2f RRP", product.getRRP()));
+            productPrice.setText(String.format("Online price: £%.2f", product.getPrice()));
+            productSaving.setText("Saving: " + product.getSaving() + "%");
             productImage.setImageResource(Integer.valueOf(product.getImage()));
 
-        //.setText(String.format("MAC: %s (%.2fm)", beacon.getMacAddress(), Utils.computeAccuracy(beacon)))
+        }catch(Exception ex){
+            Log.d("SQL Error", "Cannot retrieve product");
+            Toast.makeText(this, "Product not found", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
 
     }
 }

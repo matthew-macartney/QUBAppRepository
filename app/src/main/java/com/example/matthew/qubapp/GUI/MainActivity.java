@@ -62,12 +62,7 @@ public class MainActivity extends FragmentActivity {
 
     public BeaconOffer beaconOffer;
 
-    GeneralOfferTable myGeneralOfferTable;
-    ProductTable myProductDB;
-    SQLiteDatabase db;
-    ListView myListView;
     ImageButton barcodeButton;
-    TextView scanFrom;
     private BeaconListAdapter adapter;
     ImageButton gpsButton;
     ImageButton beaconButton;
@@ -120,7 +115,6 @@ public class MainActivity extends FragmentActivity {
         beaconManager = new BeaconManager(this);
         beaconManager.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 0);
         beaconManager.setForegroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 0);
-        List<Beacon> foundBeacons;
         connectToService();
 
         L.enableDebugLogging(true);
@@ -130,7 +124,7 @@ public class MainActivity extends FragmentActivity {
         List<Beacon> filteredBeacons = new ArrayList<Beacon>(beacons.size());
         for (Beacon beacon : beacons)
         {
-//    	only detect the BeaconHelper of certain types
+        // only detect the BeaconHelper of certain types
             {
                 filteredBeacons.add(beacon);
             }
@@ -160,42 +154,52 @@ public class MainActivity extends FragmentActivity {
 
     public void connectToService() {
 
-        beaconManager.connect(new ServiceReadyCallback() {
-            @Override
-            public void onServiceReady() {
-                beaconManager.startRanging(openRegion);
-                listenForBeacons();
-            }
-        });
+        try {
+
+            beaconManager.connect(new ServiceReadyCallback() {
+                @Override
+                public void onServiceReady() {
+                    beaconManager.startRanging(openRegion);
+                    listenForBeacons();
+                }
+            });
+        }catch(Exception beaconRangingException){
+            Log.d("Beacon ranging error", "Unable to begin ranging for beacons");
+        }
     }
 
     public void listenForBeacons(){
-        beaconManager.setRangingListener(new RangingListener() {
+        try {
+            beaconManager.setRangingListener(new RangingListener() {
 
-            @Override
-            public void onBeaconsDiscovered(final Region region, final List beacons) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+                @Override
+                public void onBeaconsDiscovered(final Region region, final List beacons) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
 
-                        // beacons in this list are sorted by distance between device and beacon
-                        adapter.clear();
-                        List<Beacon> JaaleeBeacons = filterBeacons(beacons);
-                        adapter.replaceWith(JaaleeBeacons);
+                            // beacons in this list are sorted by distance between device and beacon
+                            adapter.clear();
+                            List<Beacon> JaaleeBeacons = filterBeacons(beacons);
+                            adapter.replaceWith(JaaleeBeacons);
 
-                        if(JaaleeBeacons.size()>0){
+                            if (JaaleeBeacons.size() > 0) {
 
-                            //get the closest beacon and start monitoring
-                            final Beacon beacon = adapter.getItem(0);
-                            startMonitoring(beacon);
-                            //stop ranging for new beacons while monitoring
-                            beaconManager.stopRanging(openRegion);
+                                //get the closest beacon and start monitoring
+                                final Beacon beacon = adapter.getItem(0);
+                                startMonitoring(beacon);
+                                //stop ranging for new beacons while monitoring
+                                beaconManager.stopRanging(openRegion);
 
+                            }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        }catch(Exception beaconRangingException){
+            Log.d("Beacon ranging error", "Unable to look for beacons");
+            beaconRangingException.printStackTrace();
+        }
     }
 
     public void barcodeButtonOnClick(View v) {
@@ -274,7 +278,9 @@ public class MainActivity extends FragmentActivity {
 
     public void startMonitoring(final Beacon beacon){
 
-            final Region beaconRegion= new Region("regionId", beacon.getProximityUUID(), beacon.getMajor(), beacon.getMinor());
+        try {
+
+            final Region beaconRegion = new Region("regionId", beacon.getProximityUUID(), beacon.getMajor(), beacon.getMinor());
             beaconManager.startMonitoring(beaconRegion);
 
             beaconManager.setMonitoringListener(new MonitoringListener() {
@@ -290,7 +296,7 @@ public class MainActivity extends FragmentActivity {
 
                     beaconOffer = myBeaconOfferDB.getBeaconOffer(UUID, beacon.getMajor(), beacon.getMinor());
 
-                    Log.d("BEACON RETURNED", beaconOffer.getDescription() + beaconOffer.getExpiry()+ beaconOffer.getStore());
+                    Log.d("BEACON RETURNED", beaconOffer.getDescription() + beaconOffer.getExpiry() + beaconOffer.getStore());
 
                     if (!beaconFound) {
 
@@ -303,6 +309,7 @@ public class MainActivity extends FragmentActivity {
                             myPreviousOffersDB.insertBeaconOffer(beaconOffer.getDescription(), beaconOffer.getStore(), beaconOffer.getUUID(), beaconOffer.getMajor(), beaconOffer.getMinor(), beaconOffer.getDistance(), beaconOffer.getExpiry(), beaconOffer.getLatitude(), beaconOffer.getLongitude(), date, beaconOffer.getIcon());
                             Log.d("OFFER EXPIRY 1", beaconOffer.getExpiry());
                             beaconManager.stopMonitoring(beaconRegion);
+                            beaconManager.stopRanging(openRegion);
                             connectToService();
 
                             postNotification(beaconOffer);
@@ -326,6 +333,9 @@ public class MainActivity extends FragmentActivity {
 
                             postNotification(beaconOffer);
 
+                        }else{
+                            beaconManager.stopMonitoring(beaconRegion);
+                            connectToService();
                         }
 
                     } else {
@@ -336,8 +346,15 @@ public class MainActivity extends FragmentActivity {
 
                 @Override
                 public void onExitedRegion(Region region) {
+
                 }
             });
+
+        }catch(Exception beaconMonitorError){
+            Log.d("Beacon Monitoring Error", "Unable to monitor beacon region");
+            connectToService();
+            beaconMonitorError.printStackTrace();
+        }
     }
 
 }

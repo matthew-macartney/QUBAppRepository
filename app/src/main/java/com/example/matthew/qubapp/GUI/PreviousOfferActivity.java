@@ -15,6 +15,8 @@ import com.example.matthew.qubapp.Model.BeaconOffer;
 import com.example.matthew.qubapp.Database.PreviousOfferDataSource;
 import com.example.matthew.qubapp.R;
 
+import java.sql.SQLException;
+
 /**
  * Created by Matthew on 24/08/2015.
  */
@@ -22,7 +24,6 @@ public class PreviousOfferActivity extends Activity {
 
     TextView offerName;
     TextView offerShop;
-    TextView offerDateReceived;
     TextView offerExpiry;
     ImageView icon;
     PreviousOfferDataSource myPreviousOfferDB;
@@ -37,6 +38,13 @@ public class PreviousOfferActivity extends Activity {
         Intent intent = getIntent();
         beaconOffer = (BeaconOffer)intent.getSerializableExtra("BeaconOffer");
 
+        myPreviousOfferDB = new PreviousOfferDataSource(this);
+        try {
+            myPreviousOfferDB.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
 
         offerName = (TextView)findViewById(R.id.previousOfferName2);
         offerShop = (TextView)findViewById(R.id.textViewProductPrice);
@@ -50,8 +58,10 @@ public class PreviousOfferActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                onDeleteButtonClick();
-                Toast.makeText(PreviousOfferActivity.this, "Sorry! Your device does not have bluetooth!", Toast.LENGTH_LONG).show();
+                onDeleteButtonClick(beaconOffer);
+                Intent intent = new Intent(PreviousOfferActivity.this, MainActivity.class);
+                Toast.makeText(PreviousOfferActivity.this, "Offer deleted", Toast.LENGTH_LONG).show();
+                startActivity(intent);
 
             }
         });
@@ -89,7 +99,7 @@ public class PreviousOfferActivity extends Activity {
 
     }
 
-    public void onDeleteButtonClick() {
+    public void onDeleteButtonClick(BeaconOffer beaconOffer) {
 
         String description = beaconOffer.getDescription();
         String UUID = beaconOffer.getUUID();

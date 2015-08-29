@@ -112,11 +112,12 @@ public class BeaconDataSource {
         contentValues.put(BEACON_MINOR, minor);
         contentValues.put(BEACON_TIMESTAMP, timestamp);
         database.insert(TABLE_NAME_BEACON, null, contentValues);
+        Log.d("INSERTED", "timestamp: " + timestamp);
     }
 
     public long getTimestamp(String UUID, int major, int minor){
 
-        long timestamps;
+        long timestamp;
 
         String query = "SELECT " + BEACON_TIMESTAMP + " FROM " + TABLE_NAME_BEACON + " WHERE "
                 + BEACON_UUID + "= '" + UUID + "' AND "
@@ -125,10 +126,10 @@ public class BeaconDataSource {
 
         Cursor cs = database.rawQuery(query, null);
         cs.moveToFirst();
-        timestamps =  cs.getLong(cs.getColumnIndex(BEACON_TIMESTAMP));
-        Log.d(TAG, "Timestamp count: " + cs.getCount());
+        timestamp =  cs.getLong(cs.getColumnIndex(BEACON_TIMESTAMP));
+        Log.d(TAG, "Timestamp retrieved: " + timestamp);
 
-        return timestamps;
+        return timestamp;
     }
 
     public void updateTimestamp(String UUID, int major, int minor){
@@ -138,7 +139,7 @@ public class BeaconDataSource {
                 + BEACON_MAJOR + "= '" + major + "' AND "
                 + BEACON_MINOR + "= '" + minor + "'");
 
-        Log.d(TAG, "Timestamp updated ");
+        Log.d(TAG, "" + minor+ "Timestamp updated to " + System.currentTimeMillis() / 1000);
 
     }
 
