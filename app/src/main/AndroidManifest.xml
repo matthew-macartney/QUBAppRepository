@@ -38,6 +38,7 @@
         android:allowBackup="true"
         android:theme="@style/Theme.MyStyle" >
         <activity
+            android:icon="@drawable/tag_icon3"
             android:name=".GUI.MainActivity"
             android:label="Bargain Buddy"
             android:screenOrientation="portrait">
@@ -75,7 +76,7 @@
 
         <activity
             android:name=".GUI.BarcodeProductActivity"
-            android:label="Product Retrieved"
+            android:label="Product Found"
             android:screenOrientation="portrait">
         </activity>
         <activity

@@ -15,6 +15,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -73,6 +74,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getActionBar().setTitle(Html.fromHtml("<font color=\"#ffffff\">" + getString(R.string.app_name) + "</font>"));
         if(savedInstanceState == null) {
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -84,7 +86,6 @@ public class MainActivity extends FragmentActivity {
         gpsButton = (ImageButton) findViewById(R.id.imageButtonGPS);
         barcodeButton = (ImageButton) findViewById(R.id.imageButtonBeacon);
         beaconButton = (ImageButton)findViewById(R.id.imageButtonBeacon);
-        mapButton = (Button) findViewById(R.id.buttonMap);
 
         myBeaconDB = new BeaconDataSource(this);
         try {
@@ -305,13 +306,11 @@ public class MainActivity extends FragmentActivity {
                         Log.d("DISTANCE", "Distance: " + distance);
                         if (Utils.computeAccuracy(beacon) <= offerDistance) {
                             myBeaconDB.insertBeacon(UUID, beacon.getMajor(), beacon.getMinor(), tsLong);
-                            //String description, String store, String UUID, int major, int minor, int distance, String expiry, float latitude, float longitude, String dateReceived, String icon
                             myPreviousOffersDB.insertBeaconOffer(beaconOffer.getDescription(), beaconOffer.getStore(), beaconOffer.getUUID(), beaconOffer.getMajor(), beaconOffer.getMinor(), beaconOffer.getDistance(), beaconOffer.getExpiry(), beaconOffer.getLatitude(), beaconOffer.getLongitude(), date, beaconOffer.getIcon());
                             Log.d("OFFER EXPIRY 1", beaconOffer.getExpiry());
                             beaconManager.stopMonitoring(beaconRegion);
                             beaconManager.stopRanging(openRegion);
                             connectToService();
-
                             postNotification(beaconOffer);
 
                         } else {

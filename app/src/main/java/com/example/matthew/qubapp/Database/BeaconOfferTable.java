@@ -52,8 +52,8 @@ public class BeaconOfferTable extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL("CREATE TABLE " + TABLE_NAME_BEACON_OFFER + " (_id INTEGER PRIMARY KEY, " + OFFER_DESCRIPTION + " TEXT, " + OFFER_STORE + " TEXT, " +
-                OFFER_UUID + " TEXT, " + OFFER_MAJOR + " TEXT, " + OFFER_MINOR + " TEXT, " + OFFER_MAX_DISTANCE + " TEXT, "+ OFFER_LAT +" FLOAT, " + OFFER_LON +
-                " FLOAT, " + OFFER_EXPIRY +" TEXT, " + OFFER_ICON +" TEXT);");
+                OFFER_UUID + " TEXT, " + OFFER_MAJOR + " TEXT, " + OFFER_MINOR + " TEXT, " + OFFER_MAX_DISTANCE + " TEXT, " + OFFER_LAT + " FLOAT, " + OFFER_LON +
+                " FLOAT, " + OFFER_EXPIRY + " TEXT, " + OFFER_ICON + " TEXT);");
 
         ContentValues contentValues = new ContentValues();
 
@@ -65,26 +65,32 @@ public class BeaconOfferTable extends SQLiteOpenHelper {
         contentValues.put(OFFER_MAX_DISTANCE, 2);
         contentValues.put(OFFER_EXPIRY, "21 November 2015");
         contentValues.put(OFFER_ICON, R.drawable.tesco_icon);
+        contentValues.put(OFFER_LAT, 54.550295);
+        contentValues.put(OFFER_LON, -5.920678);
         db.insert(TABLE_NAME_BEACON_OFFER, null, contentValues);
 
         contentValues.put(OFFER_DESCRIPTION, "2 for 1 beers in store just for you!");
-        contentValues.put(OFFER_STORE, "Asda");
+        contentValues.put(OFFER_STORE, "Tesco");
         contentValues.put(OFFER_UUID, "ebefd083-70a2-47c8-9837-e7b5634df524");
         contentValues.put(OFFER_MAJOR, 1);
         contentValues.put(OFFER_MINOR, 2);
         contentValues.put(OFFER_MAX_DISTANCE, 2);
         contentValues.put(OFFER_EXPIRY, "30 October 2015");
-        contentValues.put(OFFER_ICON, R.drawable.asda);
+        contentValues.put(OFFER_ICON, R.drawable.tesco_icon);
+        contentValues.put(OFFER_LAT, 54.550295);
+        contentValues.put(OFFER_LON, -5.920678);
         db.insert(TABLE_NAME_BEACON_OFFER, null, contentValues);
 
         contentValues.put(OFFER_DESCRIPTION, "Half price chocolate in store just for you!");
-        contentValues.put(OFFER_STORE, "Sainsburys");
+        contentValues.put(OFFER_STORE, "Tesco");
         contentValues.put(OFFER_UUID, "ebefd083-70a2-47c8-9837-e7b5634df524");
         contentValues.put(OFFER_MAJOR, 1);
         contentValues.put(OFFER_MINOR, 3);
         contentValues.put(OFFER_MAX_DISTANCE, 2);
         contentValues.put(OFFER_EXPIRY, "25 November 2015");
-        contentValues.put(OFFER_ICON, R.drawable.sainsburys);
+        contentValues.put(OFFER_ICON, R.drawable.tesco_icon);
+        contentValues.put(OFFER_LAT, 54.550295);
+        contentValues.put(OFFER_LON, -5.920678);
         db.insert(TABLE_NAME_BEACON_OFFER, null, contentValues);
     }
 

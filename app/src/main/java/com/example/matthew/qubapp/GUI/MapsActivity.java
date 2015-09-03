@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.matthew.qubapp.Database.GeneralOfferTable;
+import com.example.matthew.qubapp.Model.BeaconOffer;
 import com.example.matthew.qubapp.Model.Offer;
 import com.example.matthew.qubapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,6 +35,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     ImageView offerIcon;
 
     public Offer offer;
+    public BeaconOffer beaconOffer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,41 +43,69 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         Intent intent = getIntent();
 
-
-        offer = (Offer)intent.getSerializableExtra("Offer");
-
-
-
         offerName = (TextView)findViewById(R.id.offerNameMap);
         offerShop = (TextView)findViewById(R.id.offerShopMap);
         offerExpiry = (TextView)findViewById(R.id.offerExpiryMap);
         offerIcon = (ImageView)findViewById(R.id.offerIconMap);
 
-        setOfferDetails(offer);
+        if(intent.getSerializableExtra("Offer") !=null) {
+            offer = (Offer) intent.getSerializableExtra("Offer");
+            setOfferDetails(offer);
 
-        Log.d("CO_ORDINATES", offer.getLatitude() + " " + offer.getLongitude());
 
-        // Getting reference to the SupportMapFragment of activity_main.xml
-        SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+            Log.d("CO_ORDINATES", offer.getLatitude() + " " + offer.getLongitude());
 
-        // Getting GoogleMap object from the fragment
-        googleMap = fm.getMap();
-        
-        // Enabling MyLocation Layer of Google Map
-        googleMap.setMyLocationEnabled(true);
+            // Getting reference to the SupportMapFragment of activity_main.xml
+            SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
-        // Getting LocationManager object from System Service LOCATION_SERVICE
-        LocationManager locationManager = (LocationManager)this.getSystemService(LOCATION_SERVICE);
+            // Getting GoogleMap object from the fragment
+            googleMap = fm.getMap();
 
-        // Creating a criteria object to retrieve provider
-        Criteria criteria = new Criteria();
+            // Enabling MyLocation Layer of Google Map
+            googleMap.setMyLocationEnabled(true);
 
-        // Getting the name of the best provider
-        String provider = locationManager.getBestProvider(criteria, true);
+            // Getting LocationManager object from System Service LOCATION_SERVICE
+            LocationManager locationManager = (LocationManager)this.getSystemService(LOCATION_SERVICE);
 
-        Location location = locationManager.getLastKnownLocation(provider);
+            // Creating a criteria object to retrieve provider
+            Criteria criteria = new Criteria();
 
-        onMapReady(googleMap);
+            // Getting the name of the best provider
+            String provider = locationManager.getBestProvider(criteria, true);
+
+            Location location = locationManager.getLastKnownLocation(provider);
+
+            onMapReady(googleMap);
+
+        }else{
+
+            beaconOffer = (BeaconOffer)intent.getSerializableExtra("BeaconOffer");
+            setBeaconOfferDetails(beaconOffer);
+
+            Log.d("CO_ORDINATES", beaconOffer.getLatitude() + " " + beaconOffer.getLongitude());
+
+            // Getting reference to the SupportMapFragment of activity_main.xml
+            SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
+            // Getting GoogleMap object from the fragment
+            googleMap = fm.getMap();
+
+            // Enabling MyLocation Layer of Google Map
+            googleMap.setMyLocationEnabled(true);
+
+            // Getting LocationManager object from System Service LOCATION_SERVICE
+            LocationManager locationManager = (LocationManager)this.getSystemService(LOCATION_SERVICE);
+
+            // Creating a criteria object to retrieve provider
+            Criteria criteria = new Criteria();
+
+            // Getting the name of the best provider
+            String provider = locationManager.getBestProvider(criteria, true);
+
+            Location location = locationManager.getLastKnownLocation(provider);
+
+            onBeaconOfferMapReady(googleMap);
+        }
 
 
 //            // Getting latitude of the current location
@@ -139,6 +169,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+
+    public void onBeaconOfferMapReady(GoogleMap map) {
+
+
+
+
+        LatLng latLng = new LatLng(beaconOffer.getLatitude(), beaconOffer.getLongitude());
+
+//        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng ).zoom(13).build();
+//        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        googleMap.addMarker(new MarkerOptions().position(latLng).title(beaconOffer.getStore()));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+
+
+    }
+
+
     public void setOfferDetails(Offer offer){
 
         offerName.setText(offer.getName());
@@ -148,12 +195,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-//    public void setBeaconOfferDetails(BeaconOffer beaconOffer){
-//
-//        offerName.setText(beaconOffer.getDescription());
-//        offerShop.setText(beaconOffer.getStore());
-//        offerExpiry.setText(beaconOffer.getExpiry());
-//        offerIcon.setImageResource(Integer.valueOf(beaconOffer.getIcon()));
-//
-//    }
+    public void setBeaconOfferDetails(BeaconOffer beaconOffer){
+
+        offerName.setText(beaconOffer.getDescription());
+        offerShop.setText(beaconOffer.getStore());
+        offerExpiry.setText(beaconOffer.getExpiry());
+        offerIcon.setImageResource(Integer.valueOf(beaconOffer.getIcon()));
+
+    }
 }

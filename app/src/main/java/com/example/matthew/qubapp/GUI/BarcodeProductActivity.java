@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +27,7 @@ public class BarcodeProductActivity extends Activity {
     TextView productPrice;
     TextView productSaving;
     ImageView productImage;
+    TextView productLink;
 
     public String code;
 
@@ -32,6 +35,8 @@ public class BarcodeProductActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barcode_product);
+        getActionBar().setTitle(Html.fromHtml("<font color=\"#ffffff\"> Product found! </font>"));
+
         Intent intent = getIntent();
         code = intent.getStringExtra("Code");
         Log.d("BARCODE", code);
@@ -48,44 +53,30 @@ public class BarcodeProductActivity extends Activity {
         productPrice = (TextView)findViewById(R.id.textViewProductPrice);
         productSaving = (TextView)findViewById(R.id.textViewProductSaving);
         productImage = (ImageView)findViewById(R.id.imageViewProduct);
+        productLink = (TextView)findViewById(R.id.textViewProductLink);
+
+        productLink.setClickable(true);
+        productLink.setMovementMethod(LinkMovementMethod.getInstance());
 
         setLayoutValues(code);
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_barcode_product, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     public void setLayoutValues(String code){
 
         try {
 
-            Product product = myProductDB.getProduct(code);
+                Product product = myProductDB.getProduct(code);
 
-            productName.setText(product.getDescription());
-            productRRP.setText(String.format("£%.2f RRP", product.getRRP()));
-            productPrice.setText(String.format("Online price: £%.2f", product.getPrice()));
-            productSaving.setText("Saving: " + product.getSaving() + "%");
-            productImage.setImageResource(Integer.valueOf(product.getImage()));
+                productName.setText(product.getDescription());
+                productRRP.setText(String.format("£%.2f RRP", product.getRRP()));
+                productPrice.setText(String.format("Online price: £%.2f", product.getPrice()));
+                productSaving.setText("Saving: " + product.getSaving() + "%");
+                productImage.setImageResource(Integer.valueOf(product.getImage()));
+                String text = "<a href='" + product.getLink()+ "'>" + product.getLinkName() + "</a>";
+                productLink.setText(Html.fromHtml(text));
+
 
         }catch(Exception ex){
             Log.d("SQL Error", "Cannot retrieve product");

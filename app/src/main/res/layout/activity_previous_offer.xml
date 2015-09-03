@@ -44,7 +44,7 @@
             android:id="@+id/imageView3"
             android:src="@drawable/qrcode"
             android:background="#ffffff"
-            android:layout_above="@+id/button"
+            android:layout_above="@+id/buttonPreviousMap"
             android:layout_centerHorizontal="true" />
     </LinearLayout>
 
@@ -121,7 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="View on Map"
-            android:id="@+id/button"
+            android:id="@+id/buttonPreviousMap"
             android:textSize="16dp"
             android:background="#ff1666ad"
             android:textColor="#ffffff"
@@ -137,7 +137,7 @@
             android:id="@+id/buttonDelete"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/button"
+            android:layout_toEndOf="@+id/buttonPreviousMap"
             android:background="#c51d0a"
             android:layout_weight="1"
             android:textSize="16dp"

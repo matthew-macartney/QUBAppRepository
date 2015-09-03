@@ -3,6 +3,7 @@ package com.example.matthew.qubapp.Database;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.matthew.qubapp.Model.BeaconOffer;
 
@@ -100,16 +101,21 @@ public class BeaconOfferDataSource {
 
     public int getOfferDistance(String UUID, int major, int minor){
 
-        int offerDistance;
+        int offerDistance = 0;
 
-        String query = "SELECT " + OFFER_MAX_DISTANCE + " FROM " + TABLE_NAME_BEACON_OFFER + " WHERE "
-                +  OFFER_UUID + " = '" + UUID + "' AND "
-                + OFFER_MAJOR + " = '" + major + "' AND "
-                + OFFER_MINOR + "= '" + minor +"'";
+        try {
 
-        Cursor cs = database.rawQuery(query, null);
-        cs.moveToFirst();
-        offerDistance = cs.getInt(cs.getColumnIndex(OFFER_MAX_DISTANCE));
+            String query = "SELECT " + OFFER_MAX_DISTANCE + " FROM " + TABLE_NAME_BEACON_OFFER + " WHERE "
+                    + OFFER_UUID + " = '" + UUID + "' AND "
+                    + OFFER_MAJOR + " = '" + major + "' AND "
+                    + OFFER_MINOR + "= '" + minor + "'";
+
+            Cursor cs = database.rawQuery(query, null);
+            cs.moveToFirst();
+            offerDistance = cs.getInt(cs.getColumnIndex(OFFER_MAX_DISTANCE));
+        }catch(Exception ex){
+            Log.d("DISTANCE RETRIEVE ERROR", "Unable to retrieve distance");
+        }
         return offerDistance;
     }
 

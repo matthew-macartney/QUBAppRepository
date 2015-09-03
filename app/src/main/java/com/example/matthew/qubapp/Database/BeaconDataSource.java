@@ -83,64 +83,88 @@ public class BeaconDataSource {
         return beacon;
     }
 
-    public boolean beaconQueryDatabase(String UUID, int major, int minor) {
+    public boolean beaconQueryDatabase(String UUID, int major, int minor){
 
         database = myBeaconDB.getReadableDatabase();
 
-        String query = "SELECT " + BEACON_UUID + " FROM " + TABLE_NAME_BEACON + " WHERE "
-                + BEACON_UUID + " = '" + UUID + "' AND "
-                + BEACON_MAJOR + " = '" + major + "' AND "
-                + BEACON_MINOR + " = '" + minor + "'";
+        try {
+            String query = "SELECT " + BEACON_UUID + " FROM " + TABLE_NAME_BEACON + " WHERE "
+                    + BEACON_UUID + " = '" + UUID + "' AND "
+                    + BEACON_MAJOR + " = '" + major + "' AND "
+                    + BEACON_MINOR + " = '" + minor + "'";
 
-        Cursor cs = database.rawQuery(query, null);
-        cs.moveToFirst();
-        Log.d(TAG, "Cursor count: " + cs.getCount());
+            Cursor cs = database.rawQuery(query, null);
+            cs.moveToFirst();
+            Log.d(TAG, "Cursor count: " + cs.getCount());
 
         if (cs.getCount() > 0) {
             return true;
         } else {
             return false;
         }
+        }catch(Exception ex){
+
+            Log.d("QUERY ERROR", "Unable to query database");
+        }
+        return false;
     }
 
     public void insertBeacon(String UUID, int major, int minor, long timestamp){
 
-        ContentValues contentValues = new ContentValues();
+        try {
 
-        contentValues.put(BEACON_UUID, UUID);
-        contentValues.put(BEACON_MAJOR, major);
-        contentValues.put(BEACON_MINOR, minor);
-        contentValues.put(BEACON_TIMESTAMP, timestamp);
-        database.insert(TABLE_NAME_BEACON, null, contentValues);
-        Log.d("INSERTED", "timestamp: " + timestamp);
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(BEACON_UUID, UUID);
+            contentValues.put(BEACON_MAJOR, major);
+            contentValues.put(BEACON_MINOR, minor);
+            contentValues.put(BEACON_TIMESTAMP, timestamp);
+            database.insert(TABLE_NAME_BEACON, null, contentValues);
+            Log.d("INSERTED", "timestamp: " + timestamp);
+        }catch(Exception ex){
+            Log.d("INSERTION ERROR", "Unable to insert beacon into database");
+        }
     }
 
     public long getTimestamp(String UUID, int major, int minor){
 
-        long timestamp;
 
-        String query = "SELECT " + BEACON_TIMESTAMP + " FROM " + TABLE_NAME_BEACON + " WHERE "
-                + BEACON_UUID + "= '" + UUID + "' AND "
-                + BEACON_MAJOR + "= '" + major + "' AND "
-                + BEACON_MINOR + "= '" + minor + "'";
 
-        Cursor cs = database.rawQuery(query, null);
-        cs.moveToFirst();
-        timestamp =  cs.getLong(cs.getColumnIndex(BEACON_TIMESTAMP));
-        Log.d(TAG, "Timestamp retrieved: " + timestamp);
+        long timestamp = 0;
+
+        try {
+
+            String query = "SELECT " + BEACON_TIMESTAMP + " FROM " + TABLE_NAME_BEACON + " WHERE "
+                    + BEACON_UUID + "= '" + UUID + "' AND "
+                    + BEACON_MAJOR + "= '" + major + "' AND "
+                    + BEACON_MINOR + "= '" + minor + "'";
+
+            Cursor cs = database.rawQuery(query, null);
+            cs.moveToFirst();
+            timestamp = cs.getLong(cs.getColumnIndex(BEACON_TIMESTAMP));
+            Log.d(TAG, "Timestamp retrieved: " + timestamp);
+        }catch(Exception ex){
+
+            Log.d("TIMESTAMP ERROR", "Unable to retrieve timestamp");
+        }
 
         return timestamp;
     }
 
     public void updateTimestamp(String UUID, int major, int minor){
 
-        database.execSQL("UPDATE " + TABLE_NAME_BEACON + " SET " + BEACON_TIMESTAMP + " = " + System.currentTimeMillis() / 1000 + " WHERE "
-                + BEACON_UUID + "= '" + UUID + "' AND "
-                + BEACON_MAJOR + "= '" + major + "' AND "
-                + BEACON_MINOR + "= '" + minor + "'");
+        try {
 
-        Log.d(TAG, "" + minor+ "Timestamp updated to " + System.currentTimeMillis() / 1000);
+            database.execSQL("UPDATE " + TABLE_NAME_BEACON + " SET " + BEACON_TIMESTAMP + " = " + System.currentTimeMillis() / 1000 + " WHERE "
+                    + BEACON_UUID + "= '" + UUID + "' AND "
+                    + BEACON_MAJOR + "= '" + major + "' AND "
+                    + BEACON_MINOR + "= '" + minor + "'");
 
+            Log.d(TAG, "" + minor + "Timestamp updated to " + System.currentTimeMillis() / 1000);
+
+        }catch(Exception ex){
+            Log.d("TIMESTAMP ERROR", "Unable to update timestamp");
+        }
     }
 
 

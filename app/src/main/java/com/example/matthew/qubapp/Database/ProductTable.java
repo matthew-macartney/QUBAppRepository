@@ -27,6 +27,8 @@ public class ProductTable extends SQLiteOpenHelper {
     public static final String PRODUCT_SAVING = "SAVING";
     public static final String PRODUCT_CODE = "BARCODE";
     public static final String PRODUCT_IMAGE = "IMAGE";
+    public static final String PRODUCT_LINK = "LINK";
+    public static final String PRODUCT_LINK_NAME = "LINKNAME";
 
     public static synchronized ProductTable getInstance(Context context){
         if (instance == null){
@@ -44,7 +46,7 @@ public class ProductTable extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_NAME_PRODUCT + " (" + PRODUCT_ID + " INTEGER PRIMARY KEY, " + PRODUCT_NAME
                 + " TEXT, " + PRODUCT_BRAND + " TEXT, " + PRODUCT_CAT + " TEXT, " + PRODUCT_RRP + " TEXT, "
-                + PRODUCT_PRICE + " TEXT, " + PRODUCT_SAVING + " TEXT, " + PRODUCT_CODE + " TEXT, " + PRODUCT_IMAGE + " TEXT);");
+                + PRODUCT_PRICE + " TEXT, " + PRODUCT_SAVING + " TEXT, " + PRODUCT_CODE + " TEXT, " + PRODUCT_IMAGE + " TEXT, " + PRODUCT_LINK + " TEXT ," + PRODUCT_LINK_NAME + " TEXT);");
 
         ContentValues contentValues = new ContentValues();
 
@@ -56,6 +58,8 @@ public class ProductTable extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_SAVING, 33);
         contentValues.put(PRODUCT_CODE, "9771234567003");
         contentValues.put(PRODUCT_IMAGE, R.drawable.wilson_racket);
+        contentValues.put(PRODUCT_LINK, "http://www.decathlon.co.uk/pro-staff-95-adult-tennis-racket-id_8328074.html");
+        contentValues.put(PRODUCT_LINK_NAME, "www.decathlon.co.uk");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
         contentValues.put(PRODUCT_NAME, "Levis Men's Jeans");
@@ -66,8 +70,10 @@ public class ProductTable extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_SAVING, 20);
         contentValues.put(PRODUCT_CODE, "5060249470113");
         contentValues.put(PRODUCT_IMAGE, R.drawable.levisjeans);
+        contentValues.put(PRODUCT_LINK, "http://www.levi.com/GB/en_GB/mens-jeans/p/045110763");
+        contentValues.put(PRODUCT_LINK_NAME, "www.levi.com/GB");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
-        //fix
+
         contentValues.put(PRODUCT_NAME, "Adidas Men's Running Trainers");
         contentValues.put(PRODUCT_BRAND, "Adidas");
         contentValues.put(PRODUCT_CAT, "Sports");
@@ -76,6 +82,8 @@ public class ProductTable extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_SAVING, 30);
         contentValues.put(PRODUCT_CODE, "9780735623873");
         contentValues.put(PRODUCT_IMAGE, R.drawable.adidastrainers);
+        contentValues.put(PRODUCT_LINK, "http://www.adidas.co.uk/run9tis-shoes/F98281.html");
+        contentValues.put(PRODUCT_LINK_NAME, "www.adidas.co.uk");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
         contentValues.put(PRODUCT_NAME, "Next Women's Black Cardigan");
@@ -86,6 +94,8 @@ public class ProductTable extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_SAVING, 50);
         contentValues.put(PRODUCT_CODE, "123456789005");
         contentValues.put(PRODUCT_IMAGE, R.drawable.blackcardigan);
+        contentValues.put(PRODUCT_LINK, "http://www.next.co.uk/x6d96s7#879335x56");
+        contentValues.put(PRODUCT_LINK_NAME, "www.next.co.uk");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
         contentValues.put(PRODUCT_NAME, "Red Herring Men's Brown Leather Shoes");
@@ -96,16 +106,20 @@ public class ProductTable extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_SAVING, 70);
         contentValues.put(PRODUCT_CODE, "5014016150821");
         contentValues.put(PRODUCT_IMAGE, R.drawable.brownshoes);
+        contentValues.put(PRODUCT_LINK, "http://www.debenhams.com/webapp/wcs/stores/servlet/prod_10701_10001_084010481970_-1");
+        contentValues.put(PRODUCT_LINK_NAME, "www.debenhams.com");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
         contentValues.put(PRODUCT_NAME, "Debenhams Leather Recliner Chair & Stool");
         contentValues.put(PRODUCT_BRAND, "Debenhams");
         contentValues.put(PRODUCT_CAT, "Furniture");
-        contentValues.put(PRODUCT_RRP, 400.00);
-        contentValues.put(PRODUCT_PRICE, 280.00);
-        contentValues.put(PRODUCT_SAVING, 30);
+        contentValues.put(PRODUCT_RRP, 750.00);
+        contentValues.put(PRODUCT_PRICE, 375.00);
+        contentValues.put(PRODUCT_SAVING, 50);
         contentValues.put(PRODUCT_CODE, "850006000012");
         contentValues.put(PRODUCT_IMAGE, R.drawable.leatherrecliner);
+        contentValues.put(PRODUCT_LINK, "http://www.debenhams.com/webapp/wcs/stores/servlet/prod_10701_10001_320007101660_-1?pdpsku=7100301");
+        contentValues.put(PRODUCT_LINK_NAME, "www.debenhams.com");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
         contentValues.put(PRODUCT_NAME, "Lego Ultra Agents Stealth Patrol");
@@ -116,36 +130,44 @@ public class ProductTable extends SQLiteOpenHelper {
         contentValues.put(PRODUCT_SAVING, 40);
         contentValues.put(PRODUCT_CODE, "671860013624");
         contentValues.put(PRODUCT_IMAGE, R.drawable.lego);
+        contentValues.put(PRODUCT_LINK, "http://www.lego.com/en-gb/ultraagents/products/70169-agent-stealth-patrol");
+        contentValues.put(PRODUCT_LINK_NAME, "www.lego.com");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
         contentValues.put(PRODUCT_NAME, "Canon Black Powershot sx610 Camera");
         contentValues.put(PRODUCT_BRAND, "Canon");
         contentValues.put(PRODUCT_CAT, "Cameras & camcorders");
-        contentValues.put(PRODUCT_RRP, 180.00);
-        contentValues.put(PRODUCT_PRICE, 126.00);
-        contentValues.put(PRODUCT_SAVING, 30.00);
+        contentValues.put(PRODUCT_RRP, 192.85);
+        contentValues.put(PRODUCT_PRICE, 135.00);
+        contentValues.put(PRODUCT_SAVING, 30);
         contentValues.put(PRODUCT_CODE, "9781234567897");
         contentValues.put(PRODUCT_IMAGE, R.drawable.canoncamera);
+        contentValues.put(PRODUCT_LINK, "http://www.johnlewis.com/canon-powershot-sx610-hs-digital-camera-hd-1080p-20-2mp-18x-optical-zoom-wi-fi-nfc-gps-3-screen/p1875398?sku=234251088&kpid=234251088&s_kenid=47151112-e915-4352-8884-90fe993bd369&s_kwcid=402x25438&tmad=c&tmcampid=73&kpid=234251088");
+        contentValues.put(PRODUCT_LINK_NAME, "www.johnlewis.com");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
         contentValues.put(PRODUCT_NAME, "Dyson DC44 Origin Cordless Vacuum Cleaner");
         contentValues.put(PRODUCT_BRAND, "Dyson");
         contentValues.put(PRODUCT_CAT, "Vacuum cleaners");
-        contentValues.put(PRODUCT_RRP, 269.00);
-        contentValues.put(PRODUCT_PRICE, 209.00);
-        contentValues.put(PRODUCT_SAVING, 22);
+        contentValues.put(PRODUCT_RRP, 250.00);
+        contentValues.put(PRODUCT_PRICE, 200.00);
+        contentValues.put(PRODUCT_SAVING, 20);
         contentValues.put(PRODUCT_CODE, "123456789012");
         contentValues.put(PRODUCT_IMAGE, R.drawable.dysonvacuum);
+        contentValues.put(PRODUCT_LINK, "http://www.currys.co.uk/gbuk/home-appliances/floorcare/vacuum-cleaners/dyson-dc44-origin-cordless-vacuum-cleaner-silver-10127000-pdt.html?gclid=CKPf2a3a28cCFcSRGwodhgMK2A&srcid=198&cmpid=ppc~gg~~~Exact&mctag=gg_goog_7904&s_kwcid=AL!3391!3!61011142404!!!g!121781171124!&ef_id=VeYgUgAABbISXTTy:20150903203000:s");
+        contentValues.put(PRODUCT_LINK_NAME, "www.currys.co.uk");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
         contentValues.put(PRODUCT_NAME, "Jeff Banks Charcoal Suit Jacket");
         contentValues.put(PRODUCT_BRAND, "Jeff Banks");
         contentValues.put(PRODUCT_CAT, "Menswear");
-        contentValues.put(PRODUCT_RRP, 95.00);
-        contentValues.put(PRODUCT_PRICE, 57.00);
-        contentValues.put(PRODUCT_SAVING, 40);
+        contentValues.put(PRODUCT_RRP, 115.00);
+        contentValues.put(PRODUCT_PRICE, 65.00);
+        contentValues.put(PRODUCT_SAVING, 43);
         contentValues.put(PRODUCT_CODE, "9781855683006");
         contentValues.put(PRODUCT_IMAGE, R.drawable.suitjacket);
+        contentValues.put(PRODUCT_LINK, "http://www.jeffbanksstores.co.uk/stvdio-by-jeff-banks-grey-check-2-button-front-tailored-fit-ivy-league-suit-jacket-4109");
+        contentValues.put(PRODUCT_LINK_NAME, "www.jeffbanksstores.co.uk");
         db.insert(TABLE_NAME_PRODUCT, null, contentValues);
 
     }

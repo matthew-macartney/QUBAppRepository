@@ -3,6 +3,7 @@ package com.example.matthew.qubapp.Database;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.matthew.qubapp.Model.Offer;
 import com.example.matthew.qubapp.Model.Product;
@@ -30,7 +31,7 @@ public class ProductDataSource {
 
     public ProductDataSource(Context context){
 
-        myProductDB = new ProductTable(context);
+        myProductDB = ProductTable.getInstance(context);
     }
 
     public void open()throws SQLException {
@@ -43,15 +44,22 @@ public class ProductDataSource {
         myProductDB.close();
     }
 
-    public Product getProduct(String barcode){
+    public Product getProduct(String barcode) throws Exception{
 
-        String query = "SELECT * FROM " + TABLE_NAME_PRODUCT + " WHERE " + PRODUCT_CODE + " = '" + barcode + "'";
+        Product product = null;
 
-        Cursor cursor = database.rawQuery(query, null);
-        cursor.moveToFirst();
-        Product product = cursorToProduct(cursor);
-        cursor.close();
+        try {
+            String query = "SELECT * FROM " + TABLE_NAME_PRODUCT + " WHERE " + PRODUCT_CODE + " = '" + barcode + "'";
+
+            Cursor cursor = database.rawQuery(query, null);
+            cursor.moveToFirst();
+            product = cursorToProduct(cursor);
+            cursor.close();
+        }catch(Exception ex){
+            Log.d("PRODUCT RETRIEVAL ERROR", "Unable to retrieve product");
+        }
         return product;
+
     }
 
     private Product cursorToProduct(Cursor cursor) {
@@ -66,6 +74,8 @@ public class ProductDataSource {
         product.setSaving(cursor.getInt(6));
         product.setBarcode(cursor.getString(7));
         product.setImage(cursor.getString(8));
+        product.setLink(cursor.getString(9));
+        product.setLinkName(cursor.getString(10));
 
         return product;
     }

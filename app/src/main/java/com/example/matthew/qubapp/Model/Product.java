@@ -14,12 +14,14 @@ public class Product {
     private int saving;
     private String barcode;
     private String image;
+    private String link;
+    private String linkName;
 
     public Product(){
         super();
     }
 
-    public Product(int id, String description, String brand, String category, double RRP, double price, int saving, String barcode, String image) {
+    public Product(int id, String description, String brand, String category, double RRP, double price, int saving, String barcode, String image, String link, String linkName) {
         this.id = id;
         this.description = description;
         this.brand = brand;
@@ -29,6 +31,8 @@ public class Product {
         this.saving = saving;
         this.barcode = barcode;
         this.image = image;
+        this.link = link;
+        this.linkName = linkName;
     }
 
     public int getId() {
@@ -101,5 +105,21 @@ public class Product {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getLinkName() {
+        return linkName;
+    }
+
+    public void setLinkName(String linkName) {
+        this.linkName = linkName;
     }
 }

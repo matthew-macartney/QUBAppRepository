@@ -3,6 +3,7 @@ package com.example.matthew.qubapp.GUI;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +36,7 @@ public class OfferActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer);
 
+
         offerName = (TextView)findViewById(R.id.textViewOfferName12);
         offerShop = (TextView)findViewById(R.id.textViewProductPrice);
         offerExpiry = (TextView)findViewById(R.id.textViewPreviousExpiry);
@@ -44,32 +46,12 @@ public class OfferActivity extends Activity {
 
         Intent intent = getIntent();
         offer = (Offer) intent.getSerializableExtra("Offer");
+        getActionBar()/* or getSupportActionBar() */.setTitle(Html.fromHtml("<font color=\"#ffffff\"> " + offer.getShop()+ " </font>"));
         setOfferDetails(offer);
 
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_offer, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     public void onMapButtonClick(View v){
 

@@ -3,7 +3,9 @@ package com.example.matthew.qubapp.GUI;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 
+import com.example.matthew.qubapp.R;
 import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -19,7 +21,8 @@ public class SimpleScannerActivity extends Activity implements ZXingScannerView.
     public void onCreate(Bundle state) {
         super.onCreate(state);
         mScannerView = new ZXingScannerView(this);   // Programmatically initialize the scanner view
-        setContentView(mScannerView);                // Set the scanner view as the content view
+        setContentView(mScannerView);// Set the scanner view as the content view
+        getActionBar()/* or getSupportActionBar() */.setTitle(Html.fromHtml("<font color=\"#ffffff\"> Scanning... </font>"));
     }
 
     @Override

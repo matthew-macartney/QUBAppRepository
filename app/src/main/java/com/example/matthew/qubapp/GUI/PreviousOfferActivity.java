@@ -3,6 +3,7 @@ package com.example.matthew.qubapp.GUI;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,7 @@ public class PreviousOfferActivity extends Activity {
     ImageView icon;
     PreviousOfferDataSource myPreviousOfferDB;
     Button delete;
+    Button map;
 
     BeaconOffer beaconOffer;
 
@@ -35,8 +37,12 @@ public class PreviousOfferActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_previous_offer);
+
+
         Intent intent = getIntent();
         beaconOffer = (BeaconOffer)intent.getSerializableExtra("BeaconOffer");
+
+        getActionBar().setTitle(Html.fromHtml("<font color=\"#ffffff\"> " + beaconOffer.getStore() + " </font>"));
 
         myPreviousOfferDB = new PreviousOfferDataSource(this);
         try {
@@ -51,6 +57,8 @@ public class PreviousOfferActivity extends Activity {
         offerExpiry = (TextView)findViewById(R.id.textViewPreviousExpiry);
         icon = (ImageView)findViewById(R.id.imageViewPreviousIcon);
         delete = (Button)findViewById(R.id.buttonDelete);
+        map = (Button)findViewById(R.id.buttonPreviousMap);
+
 
         setBeaconOfferDetails(beaconOffer);
 
@@ -66,28 +74,16 @@ public class PreviousOfferActivity extends Activity {
             }
         });
 
-    }
+        map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_offer, menu);
-        return true;
-    }
+                Intent intent = new Intent(PreviousOfferActivity.this, MapsActivity.class);
+                intent.putExtra("BeaconOffer", beaconOffer);
+                startActivity(intent);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+            }
+        });
     }
 
     public void setBeaconOfferDetails(BeaconOffer beaconOffer){

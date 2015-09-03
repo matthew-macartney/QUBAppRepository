@@ -22,14 +22,4 @@
         android:layout_weight="1"
         android:background="#ffffff" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Map"
-        android:id="@+id/buttonMap"
-        android:textSize="16dp"
-        android:background="#ff1666ad"
-        android:textColor="#ffffff"
-        android:onClick="onMapButtonClick" />
-
 </LinearLayout>
