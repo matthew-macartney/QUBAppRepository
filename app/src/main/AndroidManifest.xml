@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:uses-permissionandroid="http://schemas.android.com/tools"
-    package="com.example.matthew.qubapp"
+    package="com.example.matthew.BargainBuddy"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0">
 
     <uses-sdk
         android:minSdkVersion="18"
@@ -39,7 +38,7 @@
         android:theme="@style/Theme.MyStyle" >
         <activity
             android:icon="@drawable/tag_icon3"
-            android:name=".GUI.MainActivity"
+            android:name="com.BargainBuddy.matthew.BargainBuddy.GUI.MainActivity"
             android:label="Bargain Buddy"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -56,10 +55,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".GUI.ListBeaconActivity"
-            android:label="Select Beacon" />
-        <activity
-            android:name=".GUI.SimpleScannerActivity"
+            android:icon="@drawable/tag_icon3"
+            android:name="com.BargainBuddy.matthew.BargainBuddy.GUI.SimpleScannerActivity"
             android:label="Scanning..." />
 
         <!-- Jaalee service responsible for scanning beacons. -->
@@ -75,26 +72,26 @@
             android:value="AIzaSyA2b1Jgul6Ef1tJ8o_mp0l5tZkRnib4X6Y" />
 
         <activity
-            android:name=".GUI.BarcodeProductActivity"
-            android:label="Product Found"
+            android:icon="@drawable/tag_icon3"
+            android:name="com.BargainBuddy.matthew.BargainBuddy.GUI.BarcodeProductActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".GUI.OfferActivity"
-            android:label="Current Offer"
+            android:icon="@drawable/tag_icon3"
+            android:name="com.BargainBuddy.matthew.BargainBuddy.GUI.OfferActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".GUI.PreviousOfferActivity"
+            android:icon="@drawable/tag_icon3"
+            android:name="com.BargainBuddy.matthew.BargainBuddy.GUI.PreviousOfferActivity"
             android:label="Previous iBeacon Offers"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".GUI.MapsActivity"
+            android:icon="@drawable/tag_icon3"
+            android:name="com.BargainBuddy.matthew.BargainBuddy.GUI.MapsActivity"
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait">
-            <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-            <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
         </activity>
     </application>
 
