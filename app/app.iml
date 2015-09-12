@@ -116,6 +116,7 @@
     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="mediarouter-v7-22.2.0" level="project" />
+    <orderEntry type="library" exported="" name="beacon-android-sdk-master_2.5" level="project" />
     <orderEntry type="library" exported="" name="play-services-cast-7.8.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-gcm-7.8.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-games-7.8.0" level="project" />
@@ -136,7 +137,6 @@
     <orderEntry type="library" exported="" name="play-services-base-7.8.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-fitness-7.8.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-vision-7.8.0" level="project" />
-    <orderEntry type="library" exported="" name="jaalee-beacon-android-sdk-master_2.5" level="project" />
     <orderEntry type="library" exported="" name="zxing-1.8.2" level="project" />
     <orderEntry type="library" exported="" name="play-services-nearby-7.8.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-location-7.8.0" level="project" />

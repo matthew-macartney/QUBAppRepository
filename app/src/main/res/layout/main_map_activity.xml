@@ -7,7 +7,7 @@
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
         android:layout_height="fill_parent" android:id="@+id/map"
-        tools:context="com.BargainBuddy.matthew.BargainBuddy.GUI.MapsActivity"
+        tools:context="com.BargainBuddy.matthew.BargainBuddy.View.MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_weight="0.98" />
 

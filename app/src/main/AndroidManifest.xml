@@ -38,7 +38,7 @@
         android:theme="@style/Theme.MyStyle" >
         <activity
             android:icon="@drawable/tag_icon3"
-            android:name="com.BargainBuddy.matthew.BargainBuddy.GUI.MainActivity"
+            android:name="com.BargainBuddy.matthew.BargainBuddy.View.MainActivity"
             android:label="Bargain Buddy"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -56,7 +56,7 @@
         </activity>
         <activity
             android:icon="@drawable/tag_icon3"
-            android:name="com.BargainBuddy.matthew.BargainBuddy.GUI.SimpleScannerActivity"
+            android:name="com.BargainBuddy.matthew.BargainBuddy.View.SimpleScannerActivity"
             android:label="Scanning..." />
 
         <!-- Jaalee service responsible for scanning beacons. -->
@@ -73,23 +73,23 @@
 
         <activity
             android:icon="@drawable/tag_icon3"
-            android:name="com.BargainBuddy.matthew.BargainBuddy.GUI.BarcodeProductActivity"
+            android:name="com.BargainBuddy.matthew.BargainBuddy.View.BarcodeProductActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:icon="@drawable/tag_icon3"
-            android:name="com.BargainBuddy.matthew.BargainBuddy.GUI.OfferActivity"
+            android:name="com.BargainBuddy.matthew.BargainBuddy.View.OfferActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:icon="@drawable/tag_icon3"
-            android:name="com.BargainBuddy.matthew.BargainBuddy.GUI.PreviousOfferActivity"
+            android:name="com.BargainBuddy.matthew.BargainBuddy.View.PreviousOfferActivity"
             android:label="Previous iBeacon Offers"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:icon="@drawable/tag_icon3"
-            android:name="com.BargainBuddy.matthew.BargainBuddy.GUI.MapsActivity"
+            android:name="com.BargainBuddy.matthew.BargainBuddy.View.MapsActivity"
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait">
         </activity>
