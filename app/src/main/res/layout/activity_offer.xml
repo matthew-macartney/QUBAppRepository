@@ -44,7 +44,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Please present this QR code to a member of staff to redeem your offer"
+        android:text="Please present this QR code to a member of staff to redeem your nearbyOffer"
         android:id="@+id/textView3"
         android:textSize="15dp"
         android:textAlignment="center"
