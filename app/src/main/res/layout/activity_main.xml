@@ -20,15 +20,15 @@
             android:paddingBottom="0dp" >
 
             <ImageButton
+                android:id="@+id/imageButtonBarcode"
+                android:onClick="barcodeButtonOnClick"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
-                android:id="@+id/imageButtonBarcode"
                 android:src="@drawable/barcode"
                 android:layout_gravity="bottom|center_horizontal"
                 android:layout_weight="1"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:onClick="barcodeButtonOnClick"
                 android:scaleType="fitCenter"
                 android:padding="5dp"
                 android:background="@drawable/selector"

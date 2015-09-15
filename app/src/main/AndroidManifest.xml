@@ -56,7 +56,7 @@
         </activity>
         <activity
             android:icon="@drawable/tag_icon3"
-            android:name="com.BargainBuddy.matthew.Main.View.Activities.SimpleScannerActivity"
+            android:name="com.BargainBuddy.matthew.Main.View.Activities.BarcodeScannerActivity"
             android:label="Scanning..." />
 
         <!-- Jaalee service responsible for scanning beacons. -->
@@ -78,7 +78,7 @@
         </activity>
         <activity
             android:icon="@drawable/tag_icon3"
-            android:name="com.BargainBuddy.matthew.Main.View.Activities.OfferActivity"
+            android:name="com.BargainBuddy.matthew.Main.View.Activities.NearbyOfferActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
@@ -96,3 +96,5 @@
     </application>
 
 </manifest>
+
+
